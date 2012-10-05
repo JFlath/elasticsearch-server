@@ -1,0 +1,2 @@
+org.elasticsearch.common.compress.snappy.SnappyCompressor
+org.elasticsearch.common.compress.snappy.xerial.XerialSnappyCompressor
