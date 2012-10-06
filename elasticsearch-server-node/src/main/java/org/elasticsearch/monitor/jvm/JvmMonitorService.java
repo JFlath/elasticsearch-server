@@ -29,7 +29,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.monitor.dump.DumpGenerator;
 import org.elasticsearch.monitor.dump.DumpMonitorService;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -51,7 +51,7 @@ import static org.elasticsearch.monitor.jvm.JvmStats.jvmStats;
  */
 public class JvmMonitorService extends AbstractLifecycleComponent<JvmMonitorService> {
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final DumpMonitorService dumpMonitorService;
 
@@ -88,7 +88,7 @@ public class JvmMonitorService extends AbstractLifecycleComponent<JvmMonitorServ
     }
 
     @Inject
-    public JvmMonitorService(Settings settings, ServerThreadPool threadPool, DumpMonitorService dumpMonitorService) {
+    public JvmMonitorService(Settings settings, ThreadPool threadPool, DumpMonitorService dumpMonitorService) {
         super(settings);
         this.threadPool = threadPool;
         this.dumpMonitorService = dumpMonitorService;

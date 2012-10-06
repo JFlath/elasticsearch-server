@@ -33,7 +33,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.engine.Engine;
 import org.elasticsearch.index.shard.service.IndexShard;
 import org.elasticsearch.indices.IndicesService;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 /**
@@ -43,7 +43,7 @@ public class TransportShardDeleteAction extends TransportShardReplicationOperati
 
     @Inject
     public TransportShardDeleteAction(Settings settings, TransportService transportService,
-                                      ClusterService clusterService, IndicesService indicesService, ServerThreadPool threadPool,
+                                      ClusterService clusterService, IndicesService indicesService, ThreadPool threadPool,
                                       ShardStateAction shardStateAction) {
         super(settings, transportService, clusterService, indicesService, threadPool, shardStateAction);
     }
@@ -75,7 +75,7 @@ public class TransportShardDeleteAction extends TransportShardReplicationOperati
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.INDEX;
+        return ThreadPool.Names.INDEX;
     }
 
     @Override

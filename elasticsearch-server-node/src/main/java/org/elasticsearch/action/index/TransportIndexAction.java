@@ -47,7 +47,7 @@ import org.elasticsearch.index.service.IndexService;
 import org.elasticsearch.index.shard.service.IndexShard;
 import org.elasticsearch.indices.IndexAlreadyExistsException;
 import org.elasticsearch.indices.IndicesService;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.io.IOException;
@@ -78,7 +78,7 @@ public class TransportIndexAction extends TransportShardReplicationOperationActi
 
     @Inject
     public TransportIndexAction(Settings settings, TransportService transportService, ClusterService clusterService,
-                                IndicesService indicesService, ServerThreadPool threadPool, ShardStateAction shardStateAction,
+                                IndicesService indicesService, ThreadPool threadPool, ShardStateAction shardStateAction,
                                 TransportCreateIndexAction createIndexAction, MappingUpdatedAction mappingUpdatedAction) {
         super(settings, transportService, clusterService, indicesService, threadPool, shardStateAction);
         this.createIndexAction = createIndexAction;
@@ -162,7 +162,7 @@ public class TransportIndexAction extends TransportShardReplicationOperationActi
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.INDEX;
+        return ThreadPool.Names.INDEX;
     }
 
     @Override

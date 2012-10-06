@@ -38,7 +38,7 @@ import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.util.concurrent.CountDownLatch;
@@ -59,7 +59,7 @@ public class TransportDeleteMappingAction extends TransportMasterNodeOperationAc
 
     @Inject
     public TransportDeleteMappingAction(Settings settings, TransportService transportService, ClusterService clusterService,
-                                        ServerThreadPool threadPool, MetaDataMappingService metaDataMappingService,
+                                        ThreadPool threadPool, MetaDataMappingService metaDataMappingService,
                                         TransportDeleteByQueryAction deleteByQueryAction, TransportRefreshAction refreshAction, TransportFlushAction flushAction) {
         super(settings, transportService, clusterService, threadPool);
         this.metaDataMappingService = metaDataMappingService;
@@ -70,7 +70,7 @@ public class TransportDeleteMappingAction extends TransportMasterNodeOperationAc
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.MANAGEMENT;
+        return ThreadPool.Names.MANAGEMENT;
     }
 
     @Override

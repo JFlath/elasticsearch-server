@@ -57,7 +57,7 @@ import org.elasticsearch.indices.IndexAlreadyExistsException;
 import org.elasticsearch.indices.IndicesService;
 import org.elasticsearch.indices.InvalidIndexNameException;
 import org.elasticsearch.river.RiverIndexName;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.io.File;
 import java.io.FileReader;
@@ -80,7 +80,7 @@ public class MetaDataCreateIndexService extends AbstractComponent {
 
     private final ClusterEnvironment environment;
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final ClusterService clusterService;
 
@@ -95,7 +95,7 @@ public class MetaDataCreateIndexService extends AbstractComponent {
     private final String riverIndexName;
 
     @Inject
-    public MetaDataCreateIndexService(Settings settings, ClusterEnvironment environment, ServerThreadPool threadPool, ClusterService clusterService, IndicesService indicesService,
+    public MetaDataCreateIndexService(Settings settings, ClusterEnvironment environment, ThreadPool threadPool, ClusterService clusterService, IndicesService indicesService,
                                       AllocationService allocationService, NodeIndexCreatedAction nodeIndexCreatedAction, MetaDataService metaDataService, @RiverIndexName String riverIndexName) {
         super(settings);
         this.environment = environment;
@@ -341,7 +341,7 @@ public class MetaDataCreateIndexService extends AbstractComponent {
 
                     nodeIndexCreatedAction.add(nodeIndexCreatedListener);
 
-                    listener.future = threadPool.schedule(request.timeout, ServerThreadPool.Names.SAME, new Runnable() {
+                    listener.future = threadPool.schedule(request.timeout, ThreadPool.Names.SAME, new Runnable() {
                         @Override
                         public void run() {
                             listener.onResponse(new Response(false, indexMetaData));

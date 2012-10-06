@@ -43,7 +43,7 @@ import org.elasticsearch.common.util.concurrent.ConcurrentCollections;
 import org.elasticsearch.common.xcontent.*;
 import org.elasticsearch.env.NodeEnvironment;
 import org.elasticsearch.index.Index;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -95,7 +95,7 @@ public class LocalGatewayMetaState extends AbstractComponent implements ClusterS
     }
 
     private final NodeEnvironment nodeEnv;
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final LocalAllocateDangledIndices allocateDangledIndices;
 
@@ -112,7 +112,7 @@ public class LocalGatewayMetaState extends AbstractComponent implements ClusterS
     private final Object danglingMutex = new Object();
 
     @Inject
-    public LocalGatewayMetaState(Settings settings, ServerThreadPool threadPool, NodeEnvironment nodeEnv,
+    public LocalGatewayMetaState(Settings settings, ThreadPool threadPool, NodeEnvironment nodeEnv,
                                  TransportNodesListGatewayMetaState nodesListGatewayMetaState, LocalAllocateDangledIndices allocateDangledIndices) throws Exception {
         super(settings);
         this.nodeEnv = nodeEnv;
@@ -255,7 +255,7 @@ public class LocalGatewayMetaState extends AbstractComponent implements ClusterS
                                     FileSystemUtils.deleteRecursively(nodeEnv.indexLocations(new Index(indexName)));
                                 } else {
                                     logger.info("[{}] dangling index, exists on local file system, but not in cluster metadata, scheduling to delete in [{}], auto import to cluster state [{}]", indexName, danglingTimeout, autoImportDangled);
-                                    danglingIndices.put(indexName, new DanglingIndex(indexName, threadPool.schedule(danglingTimeout, ServerThreadPool.Names.SAME, new RemoveDanglingIndex(indexName))));
+                                    danglingIndices.put(indexName, new DanglingIndex(indexName, threadPool.schedule(danglingTimeout, ThreadPool.Names.SAME, new RemoveDanglingIndex(indexName))));
                                 }
                             }
                         }

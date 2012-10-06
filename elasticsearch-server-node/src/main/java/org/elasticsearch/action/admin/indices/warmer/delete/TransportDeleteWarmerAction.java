@@ -37,7 +37,7 @@ import org.elasticsearch.index.Index;
 import org.elasticsearch.indices.IndexMissingException;
 import org.elasticsearch.search.warmer.IndexWarmerMissingException;
 import org.elasticsearch.search.warmer.IndexWarmersMetaData;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.util.List;
@@ -50,13 +50,13 @@ import java.util.concurrent.atomic.AtomicReference;
 public class TransportDeleteWarmerAction extends TransportMasterNodeOperationAction<DeleteWarmerRequest, DeleteWarmerResponse> {
 
     @Inject
-    public TransportDeleteWarmerAction(Settings settings, TransportService transportService, ClusterService clusterService, ServerThreadPool threadPool) {
+    public TransportDeleteWarmerAction(Settings settings, TransportService transportService, ClusterService clusterService, ThreadPool threadPool) {
         super(settings, transportService, clusterService, threadPool);
     }
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.MANAGEMENT;
+        return ThreadPool.Names.MANAGEMENT;
     }
 
     @Override

@@ -32,7 +32,7 @@ import org.elasticsearch.index.percolator.PercolatorExecutor;
 import org.elasticsearch.index.percolator.PercolatorService;
 import org.elasticsearch.index.service.IndexService;
 import org.elasticsearch.indices.IndicesService;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 /**
@@ -43,7 +43,7 @@ public class TransportPercolateAction extends TransportSingleCustomOperationActi
     private final IndicesService indicesService;
 
     @Inject
-    public TransportPercolateAction(Settings settings, ServerThreadPool threadPool, ClusterService clusterService, TransportService transportService,
+    public TransportPercolateAction(Settings settings, ThreadPool threadPool, ClusterService clusterService, TransportService transportService,
                                     IndicesService indicesService) {
         super(settings, threadPool, clusterService, transportService);
         this.indicesService = indicesService;
@@ -51,7 +51,7 @@ public class TransportPercolateAction extends TransportSingleCustomOperationActi
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.PERCOLATE;
+        return ThreadPool.Names.PERCOLATE;
     }
 
     @Override

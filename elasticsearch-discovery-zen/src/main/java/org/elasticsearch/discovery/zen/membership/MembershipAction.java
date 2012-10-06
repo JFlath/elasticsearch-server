@@ -29,7 +29,7 @@ import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.discovery.zen.DiscoveryNodesProvider;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 
 import java.io.IOException;
@@ -172,7 +172,7 @@ public class MembershipAction extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.GENERIC;
+            return ThreadPool.Names.GENERIC;
         }
     }
 
@@ -217,7 +217,7 @@ public class MembershipAction extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.GENERIC;
+            return ThreadPool.Names.GENERIC;
         }
     }
 
@@ -262,7 +262,7 @@ public class MembershipAction extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.GENERIC;
+            return ThreadPool.Names.GENERIC;
         }
     }
 }

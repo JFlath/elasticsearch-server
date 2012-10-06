@@ -29,7 +29,7 @@ import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 
 import java.io.IOException;
@@ -41,7 +41,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class NodeMappingCreatedAction extends AbstractComponent {
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final TransportService transportService;
 
@@ -50,7 +50,7 @@ public class NodeMappingCreatedAction extends AbstractComponent {
     private final List<Listener> listeners = new CopyOnWriteArrayList<Listener>();
 
     @Inject
-    public NodeMappingCreatedAction(Settings settings, ServerThreadPool threadPool, TransportService transportService, ClusterService clusterService) {
+    public NodeMappingCreatedAction(Settings settings, ThreadPool threadPool, TransportService transportService, ClusterService clusterService) {
         super(settings);
         this.threadPool = threadPool;
         this.transportService = transportService;
@@ -60,7 +60,7 @@ public class NodeMappingCreatedAction extends AbstractComponent {
 
     public void add(final Listener listener, TimeValue timeout) {
         listeners.add(listener);
-        threadPool.schedule(timeout, ServerThreadPool.Names.GENERIC, new Runnable() {
+        threadPool.schedule(timeout, ThreadPool.Names.GENERIC, new Runnable() {
             @Override
             public void run() {
                 boolean removed = listeners.remove(listener);
@@ -120,7 +120,7 @@ public class NodeMappingCreatedAction extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
     }
 

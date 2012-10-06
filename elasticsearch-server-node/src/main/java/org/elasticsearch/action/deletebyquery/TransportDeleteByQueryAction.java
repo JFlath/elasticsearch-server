@@ -27,7 +27,7 @@ import org.elasticsearch.cluster.block.ClusterBlockException;
 import org.elasticsearch.cluster.block.ClusterBlockLevel;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.util.Map;
@@ -40,7 +40,7 @@ public class TransportDeleteByQueryAction extends TransportIndicesReplicationOpe
 
     @Inject
     public TransportDeleteByQueryAction(Settings settings, ClusterService clusterService, TransportService transportService,
-                                        ServerThreadPool threadPool, TransportIndexDeleteByQueryAction indexDeleteByQueryAction) {
+                                        ThreadPool threadPool, TransportIndexDeleteByQueryAction indexDeleteByQueryAction) {
         super(settings, transportService, clusterService, threadPool, indexDeleteByQueryAction);
     }
 

@@ -19,7 +19,7 @@
 
 package org.elasticsearch.transport;
 
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 /**
  * A response handler to be used when all interaction will be done through the {@link TransportFuture}.
@@ -36,6 +36,6 @@ public abstract class FutureTransportResponseHandler<T extends TransportResponse
 
     @Override
     public String executor() {
-        return ServerThreadPool.Names.SAME;
+        return ThreadPool.Names.SAME;
     }
 }

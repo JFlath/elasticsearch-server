@@ -30,7 +30,7 @@ import org.elasticsearch.cluster.metadata.AliasAction;
 import org.elasticsearch.cluster.metadata.MetaDataIndexAliasesService;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.util.Set;
@@ -46,14 +46,14 @@ public class TransportIndicesAliasesAction extends TransportMasterNodeOperationA
 
     @Inject
     public TransportIndicesAliasesAction(Settings settings, TransportService transportService, ClusterService clusterService,
-                                         ServerThreadPool threadPool, MetaDataIndexAliasesService indexAliasesService) {
+                                         ThreadPool threadPool, MetaDataIndexAliasesService indexAliasesService) {
         super(settings, transportService, clusterService, threadPool);
         this.indexAliasesService = indexAliasesService;
     }
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.MANAGEMENT;
+        return ThreadPool.Names.MANAGEMENT;
     }
 
     @Override

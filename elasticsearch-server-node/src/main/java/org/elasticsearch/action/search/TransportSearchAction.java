@@ -28,7 +28,7 @@ import org.elasticsearch.cluster.ClusterState;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.indices.IndexMissingException;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.BaseTransportRequestHandler;
 import org.elasticsearch.transport.TransportChannel;
 import org.elasticsearch.transport.TransportService;
@@ -60,7 +60,7 @@ public class TransportSearchAction extends TransportAction<SearchRequest, Search
     private final boolean optimizeSingleShard;
 
     @Inject
-    public TransportSearchAction(Settings settings, ServerThreadPool threadPool,
+    public TransportSearchAction(Settings settings, ThreadPool threadPool,
                                  TransportService transportService, ClusterService clusterService,
                                  TransportSearchDfsQueryThenFetchAction dfsQueryThenFetchAction,
                                  TransportSearchQueryThenFetchAction queryThenFetchAction,
@@ -156,7 +156,7 @@ public class TransportSearchAction extends TransportAction<SearchRequest, Search
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
     }
 }

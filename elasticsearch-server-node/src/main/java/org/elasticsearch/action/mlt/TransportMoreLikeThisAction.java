@@ -43,7 +43,7 @@ import org.elasticsearch.index.mapper.internal.SourceFieldMapper;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MoreLikeThisFieldQueryBuilder;
 import org.elasticsearch.indices.IndicesService;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 
 import java.util.Collections;
@@ -73,7 +73,7 @@ public class TransportMoreLikeThisAction extends TransportAction<MoreLikeThisReq
     private final TransportService transportService;
 
     @Inject
-    public TransportMoreLikeThisAction(Settings settings, ServerThreadPool threadPool, TransportSearchAction searchAction, TransportGetAction getAction,
+    public TransportMoreLikeThisAction(Settings settings, ThreadPool threadPool, TransportSearchAction searchAction, TransportGetAction getAction,
                                        ClusterService clusterService, IndicesService indicesService, TransportService transportService) {
         super(settings, threadPool);
         this.searchAction = searchAction;
@@ -253,7 +253,7 @@ public class TransportMoreLikeThisAction extends TransportAction<MoreLikeThisReq
 
             @Override
             public String executor() {
-                return ServerThreadPool.Names.SAME;
+                return ThreadPool.Names.SAME;
             }
         });
     }
@@ -335,7 +335,7 @@ public class TransportMoreLikeThisAction extends TransportAction<MoreLikeThisReq
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
     }
 }

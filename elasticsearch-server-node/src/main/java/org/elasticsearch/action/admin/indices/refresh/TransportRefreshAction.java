@@ -39,7 +39,7 @@ import org.elasticsearch.index.shard.IllegalIndexShardStateException;
 import org.elasticsearch.index.shard.service.IndexShard;
 import org.elasticsearch.indices.IndexMissingException;
 import org.elasticsearch.indices.IndicesService;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.util.List;
@@ -55,7 +55,7 @@ public class TransportRefreshAction extends TransportBroadcastOperationAction<Re
     private final IndicesService indicesService;
 
     @Inject
-    public TransportRefreshAction(Settings settings, ServerThreadPool threadPool, ClusterService clusterService,
+    public TransportRefreshAction(Settings settings, ThreadPool threadPool, ClusterService clusterService,
                                   TransportService transportService, IndicesService indicesService) {
         super(settings, threadPool, clusterService, transportService);
         this.indicesService = indicesService;
@@ -63,7 +63,7 @@ public class TransportRefreshAction extends TransportBroadcastOperationAction<Re
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.REFRESH;
+        return ThreadPool.Names.REFRESH;
     }
 
     @Override

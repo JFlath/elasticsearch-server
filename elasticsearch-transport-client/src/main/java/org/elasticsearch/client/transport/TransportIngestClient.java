@@ -62,7 +62,6 @@ import org.elasticsearch.node.internal.InternalSettingsPerparer;
 import org.elasticsearch.plugins.PluginsModule;
 import org.elasticsearch.plugins.PluginsService;
 import org.elasticsearch.search.TransportSearchModule;
-import org.elasticsearch.threadpool.ServerThreadPool;
 import org.elasticsearch.threadpool.ThreadPoolModule;
 import org.elasticsearch.transport.TransportModule;
 import org.elasticsearch.transport.TransportService;

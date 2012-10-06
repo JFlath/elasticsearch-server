@@ -40,7 +40,7 @@ import org.elasticsearch.index.shard.service.InternalIndexShard;
 import org.elasticsearch.index.store.StoreFileMetaData;
 import org.elasticsearch.index.translog.Translog;
 import org.elasticsearch.indices.IndicesService;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 
 import java.io.IOException;
@@ -289,7 +289,7 @@ public class RecoverySource extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.GENERIC;
+            return ThreadPool.Names.GENERIC;
         }
 
         @Override

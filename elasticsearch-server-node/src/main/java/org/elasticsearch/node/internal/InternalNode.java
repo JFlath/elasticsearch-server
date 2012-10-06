@@ -89,7 +89,7 @@ import org.elasticsearch.script.ScriptModule;
 import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.search.SearchModule;
 import org.elasticsearch.search.SearchService;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.threadpool.ThreadPoolModule;
 import org.elasticsearch.transport.TransportModule;
 import org.elasticsearch.transport.TransportService;
@@ -365,15 +365,15 @@ public final class InternalNode implements Node {
         injector.getInstance(ScriptService.class).close();
 
         stopWatch.stop().start("thread_pool");
-        injector.getInstance(ServerThreadPool.class).shutdown();
+        injector.getInstance(ThreadPool.class).shutdown();
         try {
-            injector.getInstance(ServerThreadPool.class).awaitTermination(10, TimeUnit.SECONDS);
+            injector.getInstance(ThreadPool.class).awaitTermination(10, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             // ignore
         }
         stopWatch.stop().start("thread_pool_force_shutdown");
         try {
-            injector.getInstance(ServerThreadPool.class).shutdownNow();
+            injector.getInstance(ThreadPool.class).shutdownNow();
         } catch (Exception e) {
             // ignore
         }

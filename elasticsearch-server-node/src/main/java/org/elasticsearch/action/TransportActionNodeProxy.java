@@ -25,7 +25,7 @@ import org.elasticsearch.cluster.node.DiscoveryNode;
 import org.elasticsearch.common.component.AbstractComponent;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.BaseTransportResponseHandler;
 import org.elasticsearch.transport.TransportException;
 import org.elasticsearch.transport.TransportRequestOptions;
@@ -69,9 +69,9 @@ public class TransportActionNodeProxy<Request extends ActionRequest, Response ex
             @Override
             public String executor() {
                 if (request.listenerThreaded()) {
-                    return ServerThreadPool.Names.GENERIC;
+                    return ThreadPool.Names.GENERIC;
                 }
-                return ServerThreadPool.Names.SAME;
+                return ThreadPool.Names.SAME;
             }
 
             @Override

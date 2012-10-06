@@ -38,7 +38,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.service.InternalIndexService;
 import org.elasticsearch.index.shard.service.InternalIndexShard;
 import org.elasticsearch.indices.IndicesService;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.io.IOException;
@@ -55,7 +55,7 @@ public class TransportIndicesSegmentsAction extends TransportBroadcastOperationA
     private final IndicesService indicesService;
 
     @Inject
-    public TransportIndicesSegmentsAction(Settings settings, ServerThreadPool threadPool, ClusterService clusterService, TransportService transportService,
+    public TransportIndicesSegmentsAction(Settings settings, ThreadPool threadPool, ClusterService clusterService, TransportService transportService,
                                           IndicesService indicesService) {
         super(settings, threadPool, clusterService, transportService);
         this.indicesService = indicesService;
@@ -63,7 +63,7 @@ public class TransportIndicesSegmentsAction extends TransportBroadcastOperationA
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.MANAGEMENT;
+        return ThreadPool.Names.MANAGEMENT;
     }
 
     @Override

@@ -29,7 +29,7 @@ import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 
 import java.io.IOException;
@@ -39,7 +39,7 @@ import java.io.IOException;
  */
 public class NodeMappingRefreshAction extends AbstractComponent {
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final TransportService transportService;
 
@@ -48,7 +48,7 @@ public class NodeMappingRefreshAction extends AbstractComponent {
     private final MetaDataMappingService metaDataMappingService;
 
     @Inject
-    public NodeMappingRefreshAction(Settings settings, ServerThreadPool threadPool, TransportService transportService, ClusterService clusterService,
+    public NodeMappingRefreshAction(Settings settings, ThreadPool threadPool, TransportService transportService, ClusterService clusterService,
                                     MetaDataMappingService metaDataMappingService) {
         super(settings);
         this.threadPool = threadPool;
@@ -94,7 +94,7 @@ public class NodeMappingRefreshAction extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
     }
 

@@ -35,7 +35,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.engine.Engine;
 import org.elasticsearch.index.shard.service.IndexShard;
 import org.elasticsearch.indices.IndicesService;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.util.List;
@@ -51,14 +51,14 @@ public class TransportFlushAction extends TransportBroadcastOperationAction<Flus
     private final IndicesService indicesService;
 
     @Inject
-    public TransportFlushAction(Settings settings, ServerThreadPool threadPool, ClusterService clusterService, TransportService transportService, IndicesService indicesService) {
+    public TransportFlushAction(Settings settings, ThreadPool threadPool, ClusterService clusterService, TransportService transportService, IndicesService indicesService) {
         super(settings, threadPool, clusterService, transportService);
         this.indicesService = indicesService;
     }
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.FLUSH;
+        return ThreadPool.Names.FLUSH;
     }
 
     @Override

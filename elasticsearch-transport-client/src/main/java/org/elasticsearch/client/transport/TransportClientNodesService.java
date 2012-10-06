@@ -39,7 +39,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.util.concurrent.ConcurrentCollections;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 
 import java.util.*;
@@ -62,7 +62,7 @@ public class TransportClientNodesService extends AbstractComponent {
 
     private final TransportService transportService;
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     // nodes that are added to be discovered
     private volatile ImmutableList<DiscoveryNode> listedNodes = ImmutableList.of();
@@ -85,7 +85,7 @@ public class TransportClientNodesService extends AbstractComponent {
 
     @Inject
     public TransportClientNodesService(Settings settings, ClusterName clusterName,
-                                       TransportService transportService, ServerThreadPool threadPool) {
+                                       TransportService transportService, ThreadPool threadPool) {
         super(settings);
         this.clusterName = clusterName;
         this.transportService = transportService;
@@ -104,7 +104,7 @@ public class TransportClientNodesService extends AbstractComponent {
         } else {
             this.nodesSampler = new SimpleNodeSampler();
         }
-        this.nodesSamplerFuture = threadPool.schedule(nodesSamplerInterval, ServerThreadPool.Names.GENERIC, new ScheduledNodeSampler());
+        this.nodesSamplerFuture = threadPool.schedule(nodesSamplerInterval, ThreadPool.Names.GENERIC, new ScheduledNodeSampler());
 
         // we want the transport service to throw connect exceptions, so we can retry
         transportService.throwConnectException(true);
@@ -281,7 +281,7 @@ public class TransportClientNodesService extends AbstractComponent {
             try {
                 nodesSampler.sample();
                 if (!closed) {
-                    nodesSamplerFuture = threadPool.schedule(nodesSamplerInterval, ServerThreadPool.Names.GENERIC, this);
+                    nodesSamplerFuture = threadPool.schedule(nodesSamplerInterval, ThreadPool.Names.GENERIC, this);
                 }
             } catch (Exception e) {
                 logger.warn("failed to sample", e);
@@ -351,7 +351,7 @@ public class TransportClientNodesService extends AbstractComponent {
             final CountDownLatch latch = new CountDownLatch(nodesToPing.size());
             final Queue<ClusterStateResponse> clusterStateResponses = ConcurrentCollections.newQueue();
             for (final DiscoveryNode listedNode : nodesToPing) {
-                threadPool.executor(ServerThreadPool.Names.MANAGEMENT).execute(new Runnable() {
+                threadPool.executor(ThreadPool.Names.MANAGEMENT).execute(new Runnable() {
                     @Override
                     public void run() {
                         try {
@@ -386,7 +386,7 @@ public class TransportClientNodesService extends AbstractComponent {
 
                                         @Override
                                         public String executor() {
-                                            return ServerThreadPool.Names.SAME;
+                                            return ThreadPool.Names.SAME;
                                         }
 
                                         @Override

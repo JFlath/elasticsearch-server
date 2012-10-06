@@ -28,7 +28,7 @@ import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 
 import java.io.IOException;
@@ -40,7 +40,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class NodeIndexDeletedAction extends AbstractComponent {
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final TransportService transportService;
 
@@ -49,7 +49,7 @@ public class NodeIndexDeletedAction extends AbstractComponent {
     private final List<Listener> listeners = new CopyOnWriteArrayList<Listener>();
 
     @Inject
-    public NodeIndexDeletedAction(Settings settings, ServerThreadPool threadPool, TransportService transportService, ClusterService clusterService) {
+    public NodeIndexDeletedAction(Settings settings, ThreadPool threadPool, TransportService transportService, ClusterService clusterService) {
         super(settings);
         this.threadPool = threadPool;
         this.transportService = transportService;
@@ -107,7 +107,7 @@ public class NodeIndexDeletedAction extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
     }
 

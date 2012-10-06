@@ -43,7 +43,7 @@ import org.elasticsearch.index.translog.Translog;
 import org.elasticsearch.index.translog.TranslogStreams;
 import org.elasticsearch.index.translog.fs.FsTranslog;
 import org.elasticsearch.rest.RestStatus;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.io.EOFException;
 import java.io.File;
@@ -57,7 +57,7 @@ import java.util.concurrent.ScheduledFuture;
  */
 public class LocalIndexShardGateway extends AbstractIndexShardComponent implements IndexShardGateway {
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final InternalIndexShard indexShard;
 
@@ -67,7 +67,7 @@ public class LocalIndexShardGateway extends AbstractIndexShardComponent implemen
     private final TimeValue syncInterval;
 
     @Inject
-    public LocalIndexShardGateway(ShardId shardId, @IndexSettings Settings indexSettings, ServerThreadPool threadPool, IndexShard indexShard) {
+    public LocalIndexShardGateway(ShardId shardId, @IndexSettings Settings indexSettings, ThreadPool threadPool, IndexShard indexShard) {
         super(shardId, indexSettings);
         this.threadPool = threadPool;
         this.indexShard = (InternalIndexShard) indexShard;
@@ -75,7 +75,7 @@ public class LocalIndexShardGateway extends AbstractIndexShardComponent implemen
         syncInterval = componentSettings.getAsTime("sync", TimeValue.timeValueSeconds(5));
         if (syncInterval.millis() > 0) {
             this.indexShard.translog().syncOnEachOperation(false);
-            flushScheduler = threadPool.schedule(syncInterval, ServerThreadPool.Names.SAME, new Sync());
+            flushScheduler = threadPool.schedule(syncInterval, ThreadPool.Names.SAME, new Sync());
         } else if (syncInterval.millis() == 0) {
             flushScheduler = null;
             this.indexShard.translog().syncOnEachOperation(true);
@@ -285,7 +285,7 @@ public class LocalIndexShardGateway extends AbstractIndexShardComponent implemen
                 return;
             }
             if (indexShard.state() == IndexShardState.STARTED && indexShard.translog().syncNeeded()) {
-                threadPool.executor(ServerThreadPool.Names.SNAPSHOT).execute(new Runnable() {
+                threadPool.executor(ThreadPool.Names.SNAPSHOT).execute(new Runnable() {
                     @Override
                     public void run() {
                         try {
@@ -296,12 +296,12 @@ public class LocalIndexShardGateway extends AbstractIndexShardComponent implemen
                             }
                         }
                         if (indexShard.state() != IndexShardState.CLOSED) {
-                            flushScheduler = threadPool.schedule(syncInterval, ServerThreadPool.Names.SAME, Sync.this);
+                            flushScheduler = threadPool.schedule(syncInterval, ThreadPool.Names.SAME, Sync.this);
                         }
                     }
                 });
             } else {
-                flushScheduler = threadPool.schedule(syncInterval, ServerThreadPool.Names.SAME, Sync.this);
+                flushScheduler = threadPool.schedule(syncInterval, ThreadPool.Names.SAME, Sync.this);
             }
         }
     }

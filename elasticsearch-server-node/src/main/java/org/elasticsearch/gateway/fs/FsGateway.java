@@ -30,7 +30,7 @@ import org.elasticsearch.common.util.concurrent.EsExecutors;
 import org.elasticsearch.env.ClusterEnvironment;
 import org.elasticsearch.gateway.blobstore.BlobStoreGateway;
 import org.elasticsearch.index.gateway.fs.FsIndexGatewayModule;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,7 +45,7 @@ public class FsGateway extends BlobStoreGateway {
     private final ExecutorService concurrentStreamPool;
 
     @Inject
-    public FsGateway(Settings settings, ServerThreadPool threadPool, ClusterService clusterService,
+    public FsGateway(Settings settings, ThreadPool threadPool, ClusterService clusterService,
                      ClusterEnvironment environment, ClusterName clusterName) throws IOException {
         super(settings, threadPool, clusterService);
 

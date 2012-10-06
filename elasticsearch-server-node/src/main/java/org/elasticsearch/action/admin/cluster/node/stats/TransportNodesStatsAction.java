@@ -30,7 +30,7 @@ import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.service.NodeService;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.io.IOException;
@@ -45,7 +45,7 @@ public class TransportNodesStatsAction extends TransportNodesOperationAction<Nod
     private final NodeService nodeService;
 
     @Inject
-    public TransportNodesStatsAction(Settings settings, ClusterName clusterName, ServerThreadPool threadPool,
+    public TransportNodesStatsAction(Settings settings, ClusterName clusterName, ThreadPool threadPool,
                                      ClusterService clusterService, TransportService transportService,
                                      NodeService nodeService) {
         super(settings, clusterName, threadPool, clusterService, transportService);
@@ -54,7 +54,7 @@ public class TransportNodesStatsAction extends TransportNodesOperationAction<Nod
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.MANAGEMENT;
+        return ThreadPool.Names.MANAGEMENT;
     }
 
     @Override

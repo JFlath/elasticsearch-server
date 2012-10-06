@@ -31,7 +31,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.BoundTransportAddress;
 import org.elasticsearch.common.transport.LocalTransportAddress;
 import org.elasticsearch.common.transport.TransportAddress;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 import org.elasticsearch.transport.support.TransportStatus;
 
@@ -47,7 +47,7 @@ import static org.elasticsearch.common.util.concurrent.ConcurrentCollections.new
  */
 public class LocalTransport extends AbstractLifecycleComponent<Transport> implements Transport {
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private volatile TransportServiceAdapter transportServiceAdapter;
 
@@ -61,12 +61,12 @@ public class LocalTransport extends AbstractLifecycleComponent<Transport> implem
 
     private final ConcurrentMap<DiscoveryNode, LocalTransport> connectedNodes = newConcurrentMap();
 
-    public LocalTransport(ServerThreadPool threadPool) {
+    public LocalTransport(ThreadPool threadPool) {
         this(ImmutableSettings.Builder.EMPTY_SETTINGS, threadPool);
     }
 
     @Inject
-    public LocalTransport(Settings settings, ServerThreadPool threadPool) {
+    public LocalTransport(Settings settings, ThreadPool threadPool) {
         super(settings);
         this.threadPool = threadPool;
     }
@@ -191,7 +191,7 @@ public class LocalTransport extends AbstractLifecycleComponent<Transport> implem
         }
     }
 
-    ServerThreadPool threadPool() {
+    ThreadPool threadPool() {
         return this.threadPool;
     }
 

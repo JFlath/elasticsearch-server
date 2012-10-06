@@ -63,7 +63,7 @@ import org.elasticsearch.index.translog.Translog;
 import org.elasticsearch.index.translog.TranslogStreams;
 import org.elasticsearch.indices.warmer.IndicesWarmer;
 import org.elasticsearch.indices.warmer.InternalIndicesWarmer;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.server.ServerThreadPool;
 
 import java.io.IOException;
 import java.util.*;

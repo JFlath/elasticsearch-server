@@ -44,7 +44,7 @@ import org.elasticsearch.index.shard.service.InternalIndexShard;
 import org.elasticsearch.indices.IndicesService;
 import org.elasticsearch.indices.recovery.RecoveryStatus;
 import org.elasticsearch.indices.recovery.RecoveryTarget;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.io.IOException;
@@ -63,7 +63,7 @@ public class TransportIndicesStatusAction extends TransportBroadcastOperationAct
     private final RecoveryTarget peerRecoveryTarget;
 
     @Inject
-    public TransportIndicesStatusAction(Settings settings, ServerThreadPool threadPool, ClusterService clusterService, TransportService transportService,
+    public TransportIndicesStatusAction(Settings settings, ThreadPool threadPool, ClusterService clusterService, TransportService transportService,
                                         IndicesService indicesService, RecoveryTarget peerRecoveryTarget) {
         super(settings, threadPool, clusterService, transportService);
         this.peerRecoveryTarget = peerRecoveryTarget;
@@ -72,7 +72,7 @@ public class TransportIndicesStatusAction extends TransportBroadcastOperationAct
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.MANAGEMENT;
+        return ThreadPool.Names.MANAGEMENT;
     }
 
     @Override

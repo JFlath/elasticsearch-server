@@ -1,10 +1,11 @@
-package org.elasticsearch.threadpool;
+package org.elasticsearch.threadpool.server;
 
 import java.io.IOException;
 import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.xcontent.ToXContent.Params;
 import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.threadpool.ThreadPoolStatsElement;
 import org.elasticsearch.threadpool.ThreadPoolStatsElement;
 
 public class ServerThreadPoolStatsElement implements ThreadPoolStatsElement {

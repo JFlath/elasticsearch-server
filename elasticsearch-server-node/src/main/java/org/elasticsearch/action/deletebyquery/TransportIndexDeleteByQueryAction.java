@@ -27,7 +27,7 @@ import org.elasticsearch.cluster.block.ClusterBlockLevel;
 import org.elasticsearch.cluster.routing.GroupShardsIterator;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.util.concurrent.atomic.AtomicReferenceArray;
@@ -39,7 +39,7 @@ public class TransportIndexDeleteByQueryAction extends TransportIndexReplication
 
     @Inject
     public TransportIndexDeleteByQueryAction(Settings settings, ClusterService clusterService, TransportService transportService,
-                                             ServerThreadPool threadPool, TransportShardDeleteByQueryAction shardDeleteByQueryAction) {
+                                             ThreadPool threadPool, TransportShardDeleteByQueryAction shardDeleteByQueryAction) {
         super(settings, transportService, clusterService, threadPool, shardDeleteByQueryAction);
     }
 

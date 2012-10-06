@@ -29,7 +29,7 @@ import org.elasticsearch.cluster.metadata.IndexTemplateMetaData;
 import org.elasticsearch.cluster.metadata.MetaData;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import static org.elasticsearch.cluster.ClusterState.newClusterStateBuilder;
@@ -43,7 +43,7 @@ public class TransportClusterStateAction extends TransportMasterNodeOperationAct
     private final ClusterName clusterName;
 
     @Inject
-    public TransportClusterStateAction(Settings settings, TransportService transportService, ClusterService clusterService, ServerThreadPool threadPool,
+    public TransportClusterStateAction(Settings settings, TransportService transportService, ClusterService clusterService, ThreadPool threadPool,
                                        ClusterName clusterName) {
         super(settings, transportService, clusterService, threadPool);
         this.clusterName = clusterName;
@@ -51,7 +51,7 @@ public class TransportClusterStateAction extends TransportMasterNodeOperationAct
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.GENERIC;
+        return ThreadPool.Names.GENERIC;
     }
 
     @Override

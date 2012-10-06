@@ -29,7 +29,7 @@ import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.discovery.zen.DiscoveryNodesProvider;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 
 import java.io.IOException;
@@ -51,7 +51,7 @@ public class MasterFaultDetection extends AbstractComponent {
         void onDisconnectedFromMaster();
     }
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final TransportService transportService;
 
@@ -84,7 +84,7 @@ public class MasterFaultDetection extends AbstractComponent {
 
     private final AtomicBoolean notifiedMasterFailure = new AtomicBoolean();
 
-    public MasterFaultDetection(Settings settings, ServerThreadPool threadPool, TransportService transportService, DiscoveryNodesProvider nodesProvider) {
+    public MasterFaultDetection(Settings settings, ThreadPool threadPool, TransportService transportService, DiscoveryNodesProvider nodesProvider) {
         super(settings);
         this.threadPool = threadPool;
         this.transportService = transportService;
@@ -155,7 +155,7 @@ public class MasterFaultDetection extends AbstractComponent {
         }
         this.masterPinger = new MasterPinger();
         // start the ping process
-        threadPool.schedule(pingInterval, ServerThreadPool.Names.SAME, masterPinger);
+        threadPool.schedule(pingInterval, ThreadPool.Names.SAME, masterPinger);
     }
 
     public void stop(String reason) {
@@ -199,7 +199,7 @@ public class MasterFaultDetection extends AbstractComponent {
                         masterPinger.stop();
                     }
                     this.masterPinger = new MasterPinger();
-                    threadPool.schedule(pingInterval, ServerThreadPool.Names.SAME, masterPinger);
+                    threadPool.schedule(pingInterval, ThreadPool.Names.SAME, masterPinger);
                 } catch (Exception e) {
                     logger.trace("[master] [{}] transport disconnected (with verified connect)", masterNode);
                     notifyMasterFailure(masterNode, "transport disconnected (with verified connect)");
@@ -264,7 +264,7 @@ public class MasterFaultDetection extends AbstractComponent {
             final DiscoveryNode masterToPing = masterNode;
             if (masterToPing == null) {
                 // master is null, should not happen, but we are still running, so reschedule
-                threadPool.schedule(pingInterval, ServerThreadPool.Names.SAME, MasterPinger.this);
+                threadPool.schedule(pingInterval, ThreadPool.Names.SAME, MasterPinger.this);
                 return;
             }
             transportService.sendRequest(masterToPing, MasterPingRequestHandler.ACTION, new MasterPingRequest(nodesProvider.nodes().localNode().id(), masterToPing.id()), options().withHighType().withTimeout(pingRetryTimeout),
@@ -288,7 +288,7 @@ public class MasterFaultDetection extends AbstractComponent {
                                     notifyDisconnectedFromMaster();
                                 }
                                 // we don't stop on disconnection from master, we keep pinging it
-                                threadPool.schedule(pingInterval, ServerThreadPool.Names.SAME, MasterPinger.this);
+                                threadPool.schedule(pingInterval, ThreadPool.Names.SAME, MasterPinger.this);
                             }
                         }
 
@@ -333,7 +333,7 @@ public class MasterFaultDetection extends AbstractComponent {
 
                         @Override
                         public String executor() {
-                            return ServerThreadPool.Names.SAME;
+                            return ThreadPool.Names.SAME;
                         }
                     });
         }
@@ -390,7 +390,7 @@ public class MasterFaultDetection extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
     }
 

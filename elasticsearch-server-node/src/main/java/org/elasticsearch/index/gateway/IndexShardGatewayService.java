@@ -35,7 +35,7 @@ import org.elasticsearch.index.shard.*;
 import org.elasticsearch.index.shard.service.IndexShard;
 import org.elasticsearch.index.shard.service.InternalIndexShard;
 import org.elasticsearch.index.translog.Translog;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.util.concurrent.ScheduledFuture;
 
@@ -48,7 +48,7 @@ public class IndexShardGatewayService extends AbstractIndexShardComponent implem
 
     private final boolean snapshotOnClose;
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final IndexSettingsService indexSettingsService;
 
@@ -79,7 +79,7 @@ public class IndexShardGatewayService extends AbstractIndexShardComponent implem
 
     @Inject
     public IndexShardGatewayService(ShardId shardId, @IndexSettings Settings indexSettings, IndexSettingsService indexSettingsService,
-                                    ServerThreadPool threadPool, IndexShard indexShard, IndexShardGateway shardGateway) {
+                                    ThreadPool threadPool, IndexShard indexShard, IndexShardGateway shardGateway) {
         super(shardId, indexSettings);
         this.threadPool = threadPool;
         this.indexSettingsService = indexSettingsService;
@@ -355,7 +355,7 @@ public class IndexShardGatewayService extends AbstractIndexShardComponent implem
             if (logger.isDebugEnabled()) {
                 logger.debug("scheduling snapshot every [{}]", snapshotInterval);
             }
-            snapshotScheduleFuture = threadPool.schedule(snapshotInterval, ServerThreadPool.Names.SNAPSHOT, snapshotRunnable);
+            snapshotScheduleFuture = threadPool.schedule(snapshotInterval, ThreadPool.Names.SNAPSHOT, snapshotRunnable);
         }
     }
 
@@ -372,7 +372,7 @@ public class IndexShardGatewayService extends AbstractIndexShardComponent implem
             }
             // schedule it again
             if (indexShard.state() != IndexShardState.CLOSED) {
-                snapshotScheduleFuture = threadPool.schedule(snapshotInterval, ServerThreadPool.Names.SNAPSHOT, this);
+                snapshotScheduleFuture = threadPool.schedule(snapshotInterval, ThreadPool.Names.SNAPSHOT, this);
             }
         }
     }

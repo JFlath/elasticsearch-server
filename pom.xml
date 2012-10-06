@@ -86,6 +86,7 @@
         <module>elasticsearch-transport-client</module>
         <module>elasticsearch-lang-mvel</module>
         <module>elasticsearch-discovery-zen</module>
+        <module>elasticsearch-cloud-aws</module>
     </modules>
 
     <dependencies>

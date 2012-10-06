@@ -45,7 +45,7 @@ import org.elasticsearch.index.mapper.internal.AllFieldMapper;
 import org.elasticsearch.index.service.IndexService;
 import org.elasticsearch.indices.IndicesService;
 import org.elasticsearch.indices.analysis.IndicesAnalysisService;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.io.IOException;
@@ -61,7 +61,7 @@ public class TransportAnalyzeAction extends TransportSingleCustomOperationAction
     private final IndicesAnalysisService indicesAnalysisService;
 
     @Inject
-    public TransportAnalyzeAction(Settings settings, ServerThreadPool threadPool, ClusterService clusterService, TransportService transportService,
+    public TransportAnalyzeAction(Settings settings, ThreadPool threadPool, ClusterService clusterService, TransportService transportService,
                                   IndicesService indicesService, IndicesAnalysisService indicesAnalysisService) {
         super(settings, threadPool, clusterService, transportService);
         this.indicesService = indicesService;
@@ -70,7 +70,7 @@ public class TransportAnalyzeAction extends TransportSingleCustomOperationAction
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.INDEX;
+        return ThreadPool.Names.INDEX;
     }
 
     @Override

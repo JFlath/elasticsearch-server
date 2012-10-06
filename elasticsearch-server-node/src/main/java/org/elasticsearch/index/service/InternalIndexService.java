@@ -72,7 +72,7 @@ import org.elasticsearch.indices.IndicesLifecycle;
 import org.elasticsearch.indices.InternalIndicesLifecycle;
 import org.elasticsearch.plugins.PluginsService;
 import org.elasticsearch.plugins.ShardsPluginsModule;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.io.IOException;
 import java.util.Map;
@@ -94,7 +94,7 @@ public class InternalIndexService extends AbstractIndexComponent implements Inde
 
     private final NodeEnvironment nodeEnv;
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final PluginsService pluginsService;
 
@@ -129,7 +129,7 @@ public class InternalIndexService extends AbstractIndexComponent implements Inde
     private volatile boolean closed = false;
 
     @Inject
-    public InternalIndexService(Injector injector, Index index, @IndexSettings Settings indexSettings, NodeEnvironment nodeEnv, ServerThreadPool threadPool,
+    public InternalIndexService(Injector injector, Index index, @IndexSettings Settings indexSettings, NodeEnvironment nodeEnv, ThreadPool threadPool,
                                 PercolatorService percolatorService, AnalysisService analysisService, MapperService mapperService,
                                 IndexQueryParserService queryParserService, SimilarityService similarityService, IndexAliasesService aliasesService,
                                 IndexCache indexCache, IndexEngine indexEngine, IndexGateway indexGateway, IndexStore indexStore, IndexSettingsService settingsService) {

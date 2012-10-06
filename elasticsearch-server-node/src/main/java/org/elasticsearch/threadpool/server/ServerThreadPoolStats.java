@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.threadpool;
+package org.elasticsearch.threadpool.server;
 
 import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.io.stream.StreamOutput;
@@ -29,6 +29,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.elasticsearch.threadpool.ThreadPoolStats;
+import org.elasticsearch.threadpool.ThreadPoolStatsElement;
 
 /**
  */

@@ -28,7 +28,7 @@ import org.elasticsearch.common.component.AbstractLifecycleComponent;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.util.concurrent.Future;
 
@@ -42,7 +42,7 @@ public class RoutingService extends AbstractLifecycleComponent<RoutingService> i
 
     private static final String CLUSTER_UPDATE_TASK_SOURCE = "routing-table-updater";
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final ClusterService clusterService;
 
@@ -55,7 +55,7 @@ public class RoutingService extends AbstractLifecycleComponent<RoutingService> i
     private volatile Future scheduledRoutingTableFuture;
 
     @Inject
-    public RoutingService(Settings settings, ServerThreadPool threadPool, ClusterService clusterService, AllocationService allocationService) {
+    public RoutingService(Settings settings, ThreadPool threadPool, ClusterService clusterService, AllocationService allocationService) {
         super(settings);
         this.threadPool = threadPool;
         this.clusterService = clusterService;

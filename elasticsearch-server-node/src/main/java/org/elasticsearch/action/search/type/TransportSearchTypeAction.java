@@ -42,7 +42,7 @@ import org.elasticsearch.search.controller.SearchPhaseController;
 import org.elasticsearch.search.controller.ShardDoc;
 import org.elasticsearch.search.internal.ShardSearchRequest;
 import org.elasticsearch.search.query.QuerySearchResultProvider;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -65,7 +65,7 @@ public abstract class TransportSearchTypeAction extends TransportAction<SearchRe
 
     protected final TransportSearchCache searchCache;
 
-    public TransportSearchTypeAction(Settings settings, ServerThreadPool threadPool, ClusterService clusterService,
+    public TransportSearchTypeAction(Settings settings, ThreadPool threadPool, ClusterService clusterService,
                                      TransportSearchCache searchCache, SearchServiceTransportAction searchService, SearchPhaseController searchPhaseController) {
         super(settings, threadPool);
         this.clusterService = clusterService;
@@ -149,7 +149,7 @@ public abstract class TransportSearchTypeAction extends TransportAction<SearchRe
             if (localOperations > 0) {
                 if (request.operationThreading() == SearchOperationThreading.SINGLE_THREAD) {
                     request.beforeLocalFork();
-                    threadPool.executor(ServerThreadPool.Names.SEARCH).execute(new Runnable() {
+                    threadPool.executor(ThreadPool.Names.SEARCH).execute(new Runnable() {
                         @Override
                         public void run() {
                             for (final ShardIterator shardIt : shardsIts) {
@@ -172,7 +172,7 @@ public abstract class TransportSearchTypeAction extends TransportAction<SearchRe
                         if (shard != null) {
                             if (shard.currentNodeId().equals(nodes.localNodeId())) {
                                 if (localAsync) {
-                                    threadPool.executor(ServerThreadPool.Names.SEARCH).execute(new Runnable() {
+                                    threadPool.executor(ThreadPool.Names.SEARCH).execute(new Runnable() {
                                         @Override
                                         public void run() {
                                             performFirstPhase(shardIt);

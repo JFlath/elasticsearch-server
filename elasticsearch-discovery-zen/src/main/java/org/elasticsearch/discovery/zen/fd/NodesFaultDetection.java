@@ -28,7 +28,7 @@ import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 
 import java.io.IOException;
@@ -50,7 +50,7 @@ public class NodesFaultDetection extends AbstractComponent {
         void onNodeFailure(DiscoveryNode node, String reason);
     }
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final TransportService transportService;
 
@@ -77,7 +77,7 @@ public class NodesFaultDetection extends AbstractComponent {
 
     private volatile boolean running = false;
 
-    public NodesFaultDetection(Settings settings, ServerThreadPool threadPool, TransportService transportService) {
+    public NodesFaultDetection(Settings settings, ThreadPool threadPool, TransportService transportService) {
         super(settings);
         this.threadPool = threadPool;
         this.transportService = transportService;
@@ -120,7 +120,7 @@ public class NodesFaultDetection extends AbstractComponent {
             }
             if (!nodesFD.containsKey(newNode)) {
                 nodesFD.put(newNode, new NodeFD());
-                threadPool.schedule(pingInterval, ServerThreadPool.Names.SAME, new SendPingRequest(newNode));
+                threadPool.schedule(pingInterval, ThreadPool.Names.SAME, new SendPingRequest(newNode));
             }
         }
         for (DiscoveryNode removedNode : delta.removedNodes()) {
@@ -166,7 +166,7 @@ public class NodesFaultDetection extends AbstractComponent {
             try {
                 transportService.connectToNode(node);
                 nodesFD.put(node, new NodeFD());
-                threadPool.schedule(pingInterval, ServerThreadPool.Names.SAME, new SendPingRequest(node));
+                threadPool.schedule(pingInterval, ThreadPool.Names.SAME, new SendPingRequest(node));
             } catch (Exception e) {
                 logger.trace("[node  ] [{}] transport disconnected (with verified connect)", node);
                 notifyNodeFailure(node, "transport disconnected (with verified connect)");
@@ -219,7 +219,7 @@ public class NodesFaultDetection extends AbstractComponent {
                                     return;
                                 }
                                 nodeFD.retryCount = 0;
-                                threadPool.schedule(pingInterval, ServerThreadPool.Names.SAME, SendPingRequest.this);
+                                threadPool.schedule(pingInterval, ThreadPool.Names.SAME, SendPingRequest.this);
                             }
                         }
 
@@ -256,7 +256,7 @@ public class NodesFaultDetection extends AbstractComponent {
 
                         @Override
                         public String executor() {
-                            return ServerThreadPool.Names.SAME;
+                            return ThreadPool.Names.SAME;
                         }
                     });
         }
@@ -300,7 +300,7 @@ public class NodesFaultDetection extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
     }
 

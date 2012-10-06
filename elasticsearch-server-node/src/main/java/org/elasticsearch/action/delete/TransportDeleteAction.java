@@ -42,7 +42,7 @@ import org.elasticsearch.index.engine.Engine;
 import org.elasticsearch.index.shard.service.IndexShard;
 import org.elasticsearch.indices.IndexAlreadyExistsException;
 import org.elasticsearch.indices.IndicesService;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 /**
@@ -58,7 +58,7 @@ public class TransportDeleteAction extends TransportShardReplicationOperationAct
 
     @Inject
     public TransportDeleteAction(Settings settings, TransportService transportService, ClusterService clusterService,
-                                 IndicesService indicesService, ServerThreadPool threadPool, ShardStateAction shardStateAction,
+                                 IndicesService indicesService, ThreadPool threadPool, ShardStateAction shardStateAction,
                                  TransportCreateIndexAction createIndexAction, TransportIndexDeleteAction indexDeleteAction) {
         super(settings, transportService, clusterService, indicesService, threadPool, shardStateAction);
         this.createIndexAction = createIndexAction;
@@ -68,7 +68,7 @@ public class TransportDeleteAction extends TransportShardReplicationOperationAct
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.INDEX;
+        return ThreadPool.Names.INDEX;
     }
 
     @Override

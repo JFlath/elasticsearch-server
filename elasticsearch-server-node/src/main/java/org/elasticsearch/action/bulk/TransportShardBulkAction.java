@@ -51,7 +51,7 @@ import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.index.shard.service.IndexShard;
 import org.elasticsearch.indices.IndicesService;
 import org.elasticsearch.rest.RestStatus;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportRequestOptions;
 import org.elasticsearch.transport.TransportService;
 
@@ -68,7 +68,7 @@ public class TransportShardBulkAction extends TransportShardReplicationOperation
 
     @Inject
     public TransportShardBulkAction(Settings settings, TransportService transportService, ClusterService clusterService,
-                                    IndicesService indicesService, ServerThreadPool threadPool, ShardStateAction shardStateAction,
+                                    IndicesService indicesService, ThreadPool threadPool, ShardStateAction shardStateAction,
                                     MappingUpdatedAction mappingUpdatedAction) {
         super(settings, transportService, clusterService, indicesService, threadPool, shardStateAction);
         this.mappingUpdatedAction = mappingUpdatedAction;
@@ -76,7 +76,7 @@ public class TransportShardBulkAction extends TransportShardReplicationOperation
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.BULK;
+        return ThreadPool.Names.BULK;
     }
 
     @Override

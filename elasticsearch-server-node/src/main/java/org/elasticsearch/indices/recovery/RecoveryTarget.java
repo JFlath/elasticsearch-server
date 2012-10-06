@@ -44,7 +44,7 @@ import org.elasticsearch.index.translog.Translog;
 import org.elasticsearch.indices.IndexMissingException;
 import org.elasticsearch.indices.IndicesLifecycle;
 import org.elasticsearch.indices.IndicesService;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 
 import java.io.IOException;
@@ -71,7 +71,7 @@ public class RecoveryTarget extends AbstractComponent {
         public static final String FINALIZE = "index/shard/recovery/finalize";
     }
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final TransportService transportService;
 
@@ -82,7 +82,7 @@ public class RecoveryTarget extends AbstractComponent {
     private final ConcurrentMapLong<RecoveryStatus> onGoingRecoveries = ConcurrentCollections.newConcurrentMapLong();
 
     @Inject
-    public RecoveryTarget(Settings settings, ServerThreadPool threadPool, TransportService transportService, IndicesService indicesService,
+    public RecoveryTarget(Settings settings, ThreadPool threadPool, TransportService transportService, IndicesService indicesService,
                           IndicesLifecycle indicesLifecycle, RecoverySettings recoverySettings) {
         super(settings);
         this.threadPool = threadPool;
@@ -355,7 +355,7 @@ public class RecoveryTarget extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.GENERIC;
+            return ThreadPool.Names.GENERIC;
         }
 
         @Override
@@ -386,7 +386,7 @@ public class RecoveryTarget extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.GENERIC;
+            return ThreadPool.Names.GENERIC;
         }
 
         @Override
@@ -419,7 +419,7 @@ public class RecoveryTarget extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.GENERIC;
+            return ThreadPool.Names.GENERIC;
         }
 
         @Override
@@ -456,7 +456,7 @@ public class RecoveryTarget extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.GENERIC;
+            return ThreadPool.Names.GENERIC;
         }
 
         @Override
@@ -491,7 +491,7 @@ public class RecoveryTarget extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.GENERIC;
+            return ThreadPool.Names.GENERIC;
         }
 
         @Override
@@ -563,7 +563,7 @@ public class RecoveryTarget extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.GENERIC;
+            return ThreadPool.Names.GENERIC;
         }
 
         @Override

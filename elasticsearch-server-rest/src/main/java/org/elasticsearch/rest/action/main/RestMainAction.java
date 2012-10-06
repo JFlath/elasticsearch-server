@@ -85,6 +85,7 @@ public class RestMainAction extends BaseRestHandler<ClusterAdminClient> {
                     builder.endObject();
                     channel.sendResponse(new XContentRestResponse(request, status, builder));
                 } catch (Exception e) {
+                    logger.warn(e.getMessage(), e);
                     onFailure(e);
                 }
             }

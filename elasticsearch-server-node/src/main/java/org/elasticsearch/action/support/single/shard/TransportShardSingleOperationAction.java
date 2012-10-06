@@ -36,7 +36,7 @@ import org.elasticsearch.common.Nullable;
 import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 
 import java.io.IOException;
@@ -54,7 +54,7 @@ public abstract class TransportShardSingleOperationAction<Request extends Single
     final String transportShardAction;
     final String executor;
 
-    protected TransportShardSingleOperationAction(Settings settings, ServerThreadPool threadPool, ClusterService clusterService, TransportService transportService) {
+    protected TransportShardSingleOperationAction(Settings settings, ThreadPool threadPool, ClusterService clusterService, TransportService transportService) {
         super(settings, threadPool);
         this.clusterService = clusterService;
         this.transportService = transportService;
@@ -180,7 +180,7 @@ public abstract class TransportShardSingleOperationAction<Request extends Single
 
                     @Override
                     public String executor() {
-                        return ServerThreadPool.Names.SAME;
+                        return ThreadPool.Names.SAME;
                     }
 
                     @Override
@@ -206,7 +206,7 @@ public abstract class TransportShardSingleOperationAction<Request extends Single
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
 
         @Override

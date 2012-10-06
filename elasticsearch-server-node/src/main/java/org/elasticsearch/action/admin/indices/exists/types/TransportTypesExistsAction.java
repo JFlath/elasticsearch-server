@@ -29,7 +29,7 @@ import org.elasticsearch.cluster.block.ClusterBlockLevel;
 import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 /**
@@ -39,13 +39,13 @@ public class TransportTypesExistsAction extends TransportMasterNodeOperationActi
 
     @Inject
     public TransportTypesExistsAction(Settings settings, TransportService transportService, ClusterService clusterService,
-                                      ServerThreadPool threadPool) {
+                                      ThreadPool threadPool) {
         super(settings, transportService, clusterService, threadPool);
     }
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.MANAGEMENT;
+        return ThreadPool.Names.MANAGEMENT;
     }
 
     @Override

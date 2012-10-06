@@ -27,7 +27,7 @@ import org.elasticsearch.common.component.AbstractComponent;
 import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 
 import java.io.IOException;
@@ -76,7 +76,7 @@ public class PublishRiverClusterStateAction extends AbstractComponent {
                 continue;
             }
 
-            transportService.sendRequest(node, PublishClusterStateRequestHandler.ACTION, new PublishClusterStateRequest(clusterState), new EmptyTransportResponseHandler(ServerThreadPool.Names.SAME) {
+            transportService.sendRequest(node, PublishClusterStateRequestHandler.ACTION, new PublishClusterStateRequest(clusterState), new EmptyTransportResponseHandler(ThreadPool.Names.SAME) {
                 @Override
                 public void handleException(TransportException exp) {
                     logger.debug("failed to send cluster state to [{}], should be detected as failed soon...", exp, node);
@@ -120,7 +120,7 @@ public class PublishRiverClusterStateAction extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
 
         @Override

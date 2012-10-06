@@ -37,7 +37,7 @@ import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.util.concurrent.ConcurrentCollections;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 
 import java.io.IOException;
@@ -56,13 +56,13 @@ public class ShardStateAction extends AbstractComponent {
     private final TransportService transportService;
     private final ClusterService clusterService;
     private final AllocationService allocationService;
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final BlockingQueue<ShardRouting> startedShardsQueue = ConcurrentCollections.newBlockingQueue();
 
     @Inject
     public ShardStateAction(Settings settings, ClusterService clusterService, TransportService transportService,
-                            AllocationService allocationService, ServerThreadPool threadPool) {
+                            AllocationService allocationService, ThreadPool threadPool) {
         super(settings);
         this.clusterService = clusterService;
         this.transportService = transportService;
@@ -80,7 +80,7 @@ public class ShardStateAction extends AbstractComponent {
             innerShardFailed(shardRouting, reason);
         } else {
             transportService.sendRequest(clusterService.state().nodes().masterNode(),
-                    ShardFailedTransportHandler.ACTION, new ShardRoutingEntry(shardRouting, reason), new EmptyTransportResponseHandler(ServerThreadPool.Names.SAME) {
+                    ShardFailedTransportHandler.ACTION, new ShardRoutingEntry(shardRouting, reason), new EmptyTransportResponseHandler(ThreadPool.Names.SAME) {
                 @Override
                 public void handleException(TransportException exp) {
                     logger.warn("failed to send failed shard to [{}]", exp, clusterService.state().nodes().masterNode());
@@ -98,7 +98,7 @@ public class ShardStateAction extends AbstractComponent {
             innerShardStarted(shardRouting, reason);
         } else {
             transportService.sendRequest(clusterService.state().nodes().masterNode(),
-                    ShardStartedTransportHandler.ACTION, new ShardRoutingEntry(shardRouting, reason), new EmptyTransportResponseHandler(ServerThreadPool.Names.SAME) {
+                    ShardStartedTransportHandler.ACTION, new ShardRoutingEntry(shardRouting, reason), new EmptyTransportResponseHandler(ThreadPool.Names.SAME) {
                 @Override
                 public void handleException(TransportException exp) {
                     logger.warn("failed to send shard started to [{}]", exp, clusterService.state().nodes().masterNode());
@@ -208,7 +208,7 @@ public class ShardStateAction extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
     }
 
@@ -229,7 +229,7 @@ public class ShardStateAction extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
     }
 

@@ -28,7 +28,7 @@ import org.elasticsearch.cluster.block.ClusterBlockLevel;
 import org.elasticsearch.cluster.metadata.MetaDataStateIndexService;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.util.concurrent.CountDownLatch;
@@ -43,14 +43,14 @@ public class TransportOpenIndexAction extends TransportMasterNodeOperationAction
 
     @Inject
     public TransportOpenIndexAction(Settings settings, TransportService transportService, ClusterService clusterService,
-                                    ServerThreadPool threadPool, MetaDataStateIndexService stateIndexService) {
+                                    ThreadPool threadPool, MetaDataStateIndexService stateIndexService) {
         super(settings, transportService, clusterService, threadPool);
         this.stateIndexService = stateIndexService;
     }
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.MANAGEMENT;
+        return ThreadPool.Names.MANAGEMENT;
     }
 
     @Override

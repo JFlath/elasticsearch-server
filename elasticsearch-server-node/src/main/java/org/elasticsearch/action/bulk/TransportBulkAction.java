@@ -43,7 +43,7 @@ import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.indices.IndexAlreadyExistsException;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.BaseTransportRequestHandler;
 import org.elasticsearch.transport.TransportChannel;
 import org.elasticsearch.transport.TransportService;
@@ -71,7 +71,7 @@ public class TransportBulkAction extends TransportAction<BulkRequest, BulkRespon
     private final TransportCreateIndexAction createIndexAction;
 
     @Inject
-    public TransportBulkAction(Settings settings, ServerThreadPool threadPool, TransportService transportService, ClusterService clusterService,
+    public TransportBulkAction(Settings settings, ThreadPool threadPool, TransportService transportService, ClusterService clusterService,
                                TransportShardBulkAction shardBulkAction, TransportCreateIndexAction createIndexAction) {
         super(settings, threadPool);
         this.clusterService = clusterService;
@@ -291,7 +291,7 @@ public class TransportBulkAction extends TransportAction<BulkRequest, BulkRespon
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
     }
 

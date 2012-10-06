@@ -60,7 +60,7 @@ import org.elasticsearch.indices.recovery.RecoveryFailedException;
 import org.elasticsearch.indices.recovery.RecoveryStatus;
 import org.elasticsearch.indices.recovery.RecoveryTarget;
 import org.elasticsearch.indices.recovery.StartRecoveryRequest;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.util.List;
 import java.util.Set;
@@ -78,7 +78,7 @@ public class IndicesClusterStateService extends AbstractLifecycleComponent<Indic
 
     private final ClusterService clusterService;
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final RecoveryTarget recoveryTarget;
 
@@ -104,7 +104,7 @@ public class IndicesClusterStateService extends AbstractLifecycleComponent<Indic
 
     @Inject
     public IndicesClusterStateService(Settings settings, IndicesService indicesService, ClusterService clusterService,
-                                      ServerThreadPool threadPool, RecoveryTarget recoveryTarget,
+                                      ThreadPool threadPool, RecoveryTarget recoveryTarget,
                                       ShardStateAction shardStateAction,
                                       NodeIndexCreatedAction nodeIndexCreatedAction, NodeIndexDeletedAction nodeIndexDeletedAction,
                                       NodeMappingCreatedAction nodeMappingCreatedAction, NodeMappingRefreshAction nodeMappingRefreshAction,

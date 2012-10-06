@@ -39,7 +39,7 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.discovery.zen.DiscoveryNodesProvider;
 import org.elasticsearch.discovery.zen.ping.ZenPing;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 
 import java.io.IOException;
@@ -72,7 +72,7 @@ public class MulticastZenPing extends AbstractLifecycleComponent<ZenPing> implem
 
     private final int ttl;
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final TransportService transportService;
 
@@ -103,11 +103,11 @@ public class MulticastZenPing extends AbstractLifecycleComponent<ZenPing> implem
 
     private final Object receiveMutex = new Object();
 
-    public MulticastZenPing(ServerThreadPool threadPool, TransportService transportService, ClusterName clusterName) {
+    public MulticastZenPing(ThreadPool threadPool, TransportService transportService, ClusterName clusterName) {
         this(EMPTY_SETTINGS, threadPool, transportService, clusterName, new NetworkService(EMPTY_SETTINGS));
     }
 
-    public MulticastZenPing(Settings settings, ServerThreadPool threadPool, TransportService transportService, ClusterName clusterName, NetworkService networkService) {
+    public MulticastZenPing(Settings settings, ThreadPool threadPool, TransportService transportService, ClusterName clusterName, NetworkService networkService) {
         super(settings);
         this.threadPool = threadPool;
         this.transportService = transportService;
@@ -244,7 +244,7 @@ public class MulticastZenPing extends AbstractLifecycleComponent<ZenPing> implem
         sendPingRequest(id);
         // try and send another ping request halfway through (just in case someone woke up during it...)
         // this can be a good trade-off to nailing the initial lookup or un-delivered messages
-        threadPool.schedule(TimeValue.timeValueMillis(timeout.millis() / 2), ServerThreadPool.Names.GENERIC, new Runnable() {
+        threadPool.schedule(TimeValue.timeValueMillis(timeout.millis() / 2), ThreadPool.Names.GENERIC, new Runnable() {
             @Override
             public void run() {
                 try {
@@ -254,7 +254,7 @@ public class MulticastZenPing extends AbstractLifecycleComponent<ZenPing> implem
                 }
             }
         });
-        threadPool.schedule(timeout, ServerThreadPool.Names.GENERIC, new Runnable() {
+        threadPool.schedule(timeout, ThreadPool.Names.GENERIC, new Runnable() {
             @Override
             public void run() {
                 ConcurrentMap<DiscoveryNode, PingResponse> responses = receivedResponses.remove(id);
@@ -322,7 +322,7 @@ public class MulticastZenPing extends AbstractLifecycleComponent<ZenPing> implem
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
     }
 
@@ -535,7 +535,7 @@ public class MulticastZenPing extends AbstractLifecycleComponent<ZenPing> implem
                         // connect to the node if possible
                         try {
                             transportService.connectToNode(requestingNode);
-                            transportService.sendRequest(requestingNode, MulticastPingResponseRequestHandler.ACTION, multicastPingResponse, new EmptyTransportResponseHandler(ServerThreadPool.Names.SAME) {
+                            transportService.sendRequest(requestingNode, MulticastPingResponseRequestHandler.ACTION, multicastPingResponse, new EmptyTransportResponseHandler(ThreadPool.Names.SAME) {
                                 @Override
                                 public void handleException(TransportException exp) {
                                     logger.warn("failed to receive confirmation on sent ping response to [{}]", exp, requestingNode);
@@ -547,7 +547,7 @@ public class MulticastZenPing extends AbstractLifecycleComponent<ZenPing> implem
                     }
                 });
             } else {
-                transportService.sendRequest(requestingNode, MulticastPingResponseRequestHandler.ACTION, multicastPingResponse, new EmptyTransportResponseHandler(ServerThreadPool.Names.SAME) {
+                transportService.sendRequest(requestingNode, MulticastPingResponseRequestHandler.ACTION, multicastPingResponse, new EmptyTransportResponseHandler(ThreadPool.Names.SAME) {
                     @Override
                     public void handleException(TransportException exp) {
                         logger.warn("failed to receive confirmation on sent ping response to [{}]", exp, requestingNode);

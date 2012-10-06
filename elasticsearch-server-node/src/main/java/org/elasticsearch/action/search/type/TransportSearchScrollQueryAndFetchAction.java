@@ -36,7 +36,7 @@ import org.elasticsearch.search.controller.SearchPhaseController;
 import org.elasticsearch.search.controller.ShardDoc;
 import org.elasticsearch.search.fetch.QueryFetchSearchResult;
 import org.elasticsearch.search.internal.InternalSearchResponse;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.util.Map;
 import java.util.Queue;
@@ -49,7 +49,7 @@ import static org.elasticsearch.action.search.type.TransportSearchHelper.interna
  */
 public class TransportSearchScrollQueryAndFetchAction extends AbstractComponent {
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final ClusterService clusterService;
 
@@ -60,7 +60,7 @@ public class TransportSearchScrollQueryAndFetchAction extends AbstractComponent 
     private final TransportSearchCache searchCache;
 
     @Inject
-    public TransportSearchScrollQueryAndFetchAction(Settings settings, ServerThreadPool threadPool, ClusterService clusterService,
+    public TransportSearchScrollQueryAndFetchAction(Settings settings, ThreadPool threadPool, ClusterService clusterService,
                                                     TransportSearchCache searchCache,
                                                     SearchServiceTransportAction searchService, SearchPhaseController searchPhaseController) {
         super(settings);
@@ -149,7 +149,7 @@ public class TransportSearchScrollQueryAndFetchAction extends AbstractComponent 
 
             if (localOperations > 0) {
                 if (request.operationThreading() == SearchOperationThreading.SINGLE_THREAD) {
-                    threadPool.executor(ServerThreadPool.Names.SEARCH).execute(new Runnable() {
+                    threadPool.executor(ThreadPool.Names.SEARCH).execute(new Runnable() {
                         @Override
                         public void run() {
                             for (Tuple<String, Long> target : scrollId.context()) {
@@ -166,7 +166,7 @@ public class TransportSearchScrollQueryAndFetchAction extends AbstractComponent 
                         final DiscoveryNode node = nodes.get(target.v1());
                         if (node != null && nodes.localNodeId().equals(node.id())) {
                             if (localAsync) {
-                                threadPool.executor(ServerThreadPool.Names.SEARCH).execute(new Runnable() {
+                                threadPool.executor(ThreadPool.Names.SEARCH).execute(new Runnable() {
                                     @Override
                                     public void run() {
                                         executePhase(node, target.v2());

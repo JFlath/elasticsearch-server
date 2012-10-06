@@ -32,7 +32,7 @@ import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.node.Node;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.io.IOException;
@@ -55,7 +55,7 @@ public class TransportNodesRestartAction extends TransportNodesOperationAction<N
     private AtomicBoolean restartRequested = new AtomicBoolean();
 
     @Inject
-    public TransportNodesRestartAction(Settings settings, ClusterName clusterName, ServerThreadPool threadPool,
+    public TransportNodesRestartAction(Settings settings, ClusterName clusterName, ThreadPool threadPool,
                                        ClusterService clusterService, TransportService transportService,
                                        Node node) {
         super(settings, clusterName, threadPool, clusterService, transportService);
@@ -70,7 +70,7 @@ public class TransportNodesRestartAction extends TransportNodesOperationAction<N
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.GENERIC;
+        return ThreadPool.Names.GENERIC;
     }
 
     @Override
@@ -119,7 +119,7 @@ public class TransportNodesRestartAction extends TransportNodesOperationAction<N
             return new NodesRestartResponse.NodeRestartResponse(clusterService.state().nodes().localNode());
         }
         logger.info("Restarting in [{}]", request.delay);
-        threadPool.schedule(request.delay, ServerThreadPool.Names.GENERIC, new Runnable() {
+        threadPool.schedule(request.delay, ThreadPool.Names.GENERIC, new Runnable() {
             @Override
             public void run() {
                 boolean restartWithWrapper = false;

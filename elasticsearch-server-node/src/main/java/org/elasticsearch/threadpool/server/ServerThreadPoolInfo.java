@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.threadpool;
+package org.elasticsearch.threadpool.server;
 
 import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.io.stream.StreamOutput;
@@ -33,7 +33,9 @@ import org.elasticsearch.common.Nullable;
 import org.elasticsearch.common.unit.SizeValue;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.ToXContent.Params;
-import org.elasticsearch.threadpool.ServerThreadPoolInfo.Fields;
+import org.elasticsearch.threadpool.server.ServerThreadPoolInfo.Fields;
+import org.elasticsearch.threadpool.ThreadPoolInfo;
+import org.elasticsearch.threadpool.ThreadPoolInfoElement;
 
 public class ServerThreadPoolInfo implements ThreadPoolInfo {
 

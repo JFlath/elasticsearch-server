@@ -33,7 +33,7 @@ import org.elasticsearch.monitor.network.NetworkInfo;
 import org.elasticsearch.monitor.os.OsInfo;
 import org.elasticsearch.monitor.process.ProcessInfo;
 import org.elasticsearch.threadpool.ThreadPoolInfo;
-import org.elasticsearch.threadpool.ServerThreadPoolInfo;
+import org.elasticsearch.threadpool.server.ServerThreadPoolInfo;
 import org.elasticsearch.transport.TransportInfo;
 
 import java.io.IOException;

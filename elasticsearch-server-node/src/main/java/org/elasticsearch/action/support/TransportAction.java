@@ -23,7 +23,7 @@ import org.elasticsearch.ElasticSearchException;
 import org.elasticsearch.action.*;
 import org.elasticsearch.common.component.AbstractComponent;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import static org.elasticsearch.action.support.PlainActionFuture.newFuture;
 
@@ -32,9 +32,9 @@ import static org.elasticsearch.action.support.PlainActionFuture.newFuture;
  */
 public abstract class TransportAction<Request extends ActionRequest, Response extends ActionResponse> extends AbstractComponent {
 
-    protected final ServerThreadPool threadPool;
+    protected final ThreadPool threadPool;
 
-    protected TransportAction(Settings settings, ServerThreadPool threadPool) {
+    protected TransportAction(Settings settings, ThreadPool threadPool) {
         super(settings);
         this.threadPool = threadPool;
     }
@@ -68,11 +68,11 @@ public abstract class TransportAction<Request extends ActionRequest, Response ex
 
     static class ThreadedActionListener<Response> implements ActionListener<Response> {
 
-        private final ServerThreadPool threadPool;
+        private final ThreadPool threadPool;
 
         private final ActionListener<Response> listener;
 
-        ThreadedActionListener(ServerThreadPool threadPool, ActionListener<Response> listener) {
+        ThreadedActionListener(ThreadPool threadPool, ActionListener<Response> listener) {
             this.threadPool = threadPool;
             this.listener = listener;
         }

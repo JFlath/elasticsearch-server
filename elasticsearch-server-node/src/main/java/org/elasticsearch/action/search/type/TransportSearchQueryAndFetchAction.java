@@ -34,7 +34,7 @@ import org.elasticsearch.search.controller.SearchPhaseController;
 import org.elasticsearch.search.fetch.QueryFetchSearchResult;
 import org.elasticsearch.search.internal.InternalSearchResponse;
 import org.elasticsearch.search.internal.ShardSearchRequest;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.util.Map;
 
@@ -46,7 +46,7 @@ import static org.elasticsearch.action.search.type.TransportSearchHelper.buildSc
 public class TransportSearchQueryAndFetchAction extends TransportSearchTypeAction {
 
     @Inject
-    public TransportSearchQueryAndFetchAction(Settings settings, ServerThreadPool threadPool, ClusterService clusterService,
+    public TransportSearchQueryAndFetchAction(Settings settings, ThreadPool threadPool, ClusterService clusterService,
                                               TransportSearchCache transportSearchCache, SearchServiceTransportAction searchService, SearchPhaseController searchPhaseController) {
         super(settings, threadPool, clusterService, transportSearchCache, searchService, searchPhaseController);
     }

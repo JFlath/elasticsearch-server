@@ -28,7 +28,7 @@ import org.elasticsearch.action.search.type.TransportSearchScrollScanAction;
 import org.elasticsearch.action.support.TransportAction;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.BaseTransportRequestHandler;
 import org.elasticsearch.transport.TransportChannel;
 import org.elasticsearch.transport.TransportService;
@@ -48,7 +48,7 @@ public class TransportSearchScrollAction extends TransportAction<SearchScrollReq
     private final TransportSearchScrollScanAction scanAction;
 
     @Inject
-    public TransportSearchScrollAction(Settings settings, ServerThreadPool threadPool, TransportService transportService,
+    public TransportSearchScrollAction(Settings settings, ThreadPool threadPool, TransportService transportService,
                                        TransportSearchScrollQueryThenFetchAction queryThenFetchAction,
                                        TransportSearchScrollQueryAndFetchAction queryAndFetchAction,
                                        TransportSearchScrollScanAction scanAction) {
@@ -112,7 +112,7 @@ public class TransportSearchScrollAction extends TransportAction<SearchScrollReq
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
     }
 }

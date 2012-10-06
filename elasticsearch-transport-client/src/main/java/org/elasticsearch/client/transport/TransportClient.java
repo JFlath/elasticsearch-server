@@ -85,7 +85,7 @@ import org.elasticsearch.node.internal.InternalSettingsPerparer;
 import org.elasticsearch.plugins.PluginsModule;
 import org.elasticsearch.plugins.PluginsService;
 import org.elasticsearch.search.TransportSearchModule;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.threadpool.ThreadPoolModule;
 import org.elasticsearch.transport.TransportModule;
 import org.elasticsearch.transport.TransportService;
@@ -284,14 +284,14 @@ public class TransportClient extends AbstractComponent {
             injector.getInstance(plugin).close();
         }
 
-        injector.getInstance(ServerThreadPool.class).shutdown();
+        injector.getInstance(ThreadPool.class).shutdown();
         try {
-            injector.getInstance(ServerThreadPool.class).awaitTermination(10, TimeUnit.SECONDS);
+            injector.getInstance(ThreadPool.class).awaitTermination(10, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             // ignore
         }
         try {
-            injector.getInstance(ServerThreadPool.class).shutdownNow();
+            injector.getInstance(ThreadPool.class).shutdownNow();
         } catch (Exception e) {
             // ignore
         }

@@ -48,7 +48,7 @@ import org.elasticsearch.indices.IndexMissingException;
 import org.elasticsearch.indices.IndicesService;
 import org.elasticsearch.node.NodeClosedException;
 import org.elasticsearch.rest.RestStatus;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 
 import java.io.IOException;
@@ -82,7 +82,7 @@ public abstract class TransportShardReplicationOperationAction<Request extends S
 
     protected TransportShardReplicationOperationAction(Settings settings, TransportService transportService,
                                                        ClusterService clusterService, IndicesService indicesService,
-                                                       ServerThreadPool threadPool, ShardStateAction shardStateAction) {
+                                                       ThreadPool threadPool, ShardStateAction shardStateAction) {
         super(settings, threadPool);
         this.transportService = transportService;
         this.clusterService = clusterService;
@@ -207,7 +207,7 @@ public abstract class TransportShardReplicationOperationAction<Request extends S
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
 
         @Override
@@ -446,7 +446,7 @@ public abstract class TransportShardReplicationOperationAction<Request extends S
 
                         @Override
                         public String executor() {
-                            return ServerThreadPool.Names.SAME;
+                            return ThreadPool.Names.SAME;
                         }
 
                         @Override
@@ -631,7 +631,7 @@ public abstract class TransportShardReplicationOperationAction<Request extends S
             final ReplicaOperationRequest shardRequest = new ReplicaOperationRequest(shardIt.shardId().id(), response.replicaRequest());
             if (!nodeId.equals(nodes.localNodeId())) {
                 DiscoveryNode node = nodes.get(nodeId);
-                transportService.sendRequest(node, transportReplicaAction, shardRequest, transportOptions, new EmptyTransportResponseHandler(ServerThreadPool.Names.SAME) {
+                transportService.sendRequest(node, transportReplicaAction, shardRequest, transportOptions, new EmptyTransportResponseHandler(ThreadPool.Names.SAME) {
                     @Override
                     public void handleResponse(TransportResponse.Empty vResponse) {
                         finishIfPossible();

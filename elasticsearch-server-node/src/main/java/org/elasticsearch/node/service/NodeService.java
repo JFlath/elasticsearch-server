@@ -33,7 +33,7 @@ import org.elasticsearch.discovery.Discovery;
 import org.elasticsearch.http.HttpServer;
 import org.elasticsearch.indices.IndicesService;
 import org.elasticsearch.monitor.MonitorService;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.net.InetAddress;
@@ -42,7 +42,7 @@ import java.net.InetAddress;
  */
 public class NodeService extends AbstractComponent {
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final MonitorService monitorService;
 
@@ -61,7 +61,7 @@ public class NodeService extends AbstractComponent {
     private String hostname;
 
     @Inject
-    public NodeService(Settings settings, ServerThreadPool threadPool, MonitorService monitorService, Discovery discovery, ClusterService clusterService, TransportService transportService, IndicesService indicesService) {
+    public NodeService(Settings settings, ThreadPool threadPool, MonitorService monitorService, Discovery discovery, ClusterService clusterService, TransportService transportService, IndicesService indicesService) {
         super(settings);
         this.threadPool = threadPool;
         this.monitorService = monitorService;

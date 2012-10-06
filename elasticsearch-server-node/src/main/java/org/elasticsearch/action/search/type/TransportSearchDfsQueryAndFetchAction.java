@@ -36,7 +36,7 @@ import org.elasticsearch.search.fetch.QueryFetchSearchResult;
 import org.elasticsearch.search.internal.InternalSearchResponse;
 import org.elasticsearch.search.internal.ShardSearchRequest;
 import org.elasticsearch.search.query.QuerySearchRequest;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.util.Collection;
 import java.util.Map;
@@ -50,7 +50,7 @@ import static org.elasticsearch.action.search.type.TransportSearchHelper.buildSc
 public class TransportSearchDfsQueryAndFetchAction extends TransportSearchTypeAction {
 
     @Inject
-    public TransportSearchDfsQueryAndFetchAction(Settings settings, ServerThreadPool threadPool, ClusterService clusterService,
+    public TransportSearchDfsQueryAndFetchAction(Settings settings, ThreadPool threadPool, ClusterService clusterService,
                                                  TransportSearchCache transportSearchCache, SearchServiceTransportAction searchService, SearchPhaseController searchPhaseController) {
         super(settings, threadPool, clusterService, transportSearchCache, searchService, searchPhaseController);
     }
@@ -103,7 +103,7 @@ public class TransportSearchDfsQueryAndFetchAction extends TransportSearchTypeAc
             }
             if (localOperations > 0) {
                 if (request.operationThreading() == SearchOperationThreading.SINGLE_THREAD) {
-                    threadPool.executor(ServerThreadPool.Names.SEARCH).execute(new Runnable() {
+                    threadPool.executor(ThreadPool.Names.SEARCH).execute(new Runnable() {
                         @Override
                         public void run() {
                             for (final DfsSearchResult dfsResult : dfsResults) {
@@ -122,7 +122,7 @@ public class TransportSearchDfsQueryAndFetchAction extends TransportSearchTypeAc
                         if (node.id().equals(nodes.localNodeId())) {
                             final QuerySearchRequest querySearchRequest = new QuerySearchRequest(request, dfsResult.id(), dfs);
                             if (localAsync) {
-                                threadPool.executor(ServerThreadPool.Names.SEARCH).execute(new Runnable() {
+                                threadPool.executor(ThreadPool.Names.SEARCH).execute(new Runnable() {
                                     @Override
                                     public void run() {
                                         executeSecondPhase(dfsResult, counter, node, querySearchRequest);

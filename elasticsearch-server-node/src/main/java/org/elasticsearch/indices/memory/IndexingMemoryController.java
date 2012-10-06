@@ -39,7 +39,7 @@ import org.elasticsearch.index.translog.Translog;
 import org.elasticsearch.indices.IndicesLifecycle;
 import org.elasticsearch.indices.IndicesService;
 import org.elasticsearch.monitor.jvm.JvmInfo;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.server.ServerThreadPool;
 
 import java.util.List;
 import java.util.Map;

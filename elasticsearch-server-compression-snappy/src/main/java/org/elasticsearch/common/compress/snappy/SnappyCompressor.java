@@ -34,6 +34,7 @@ import org.jboss.netty.buffer.ChannelBuffer;
 import java.io.IOException;
 
 /**
+ * See XerialSnappyCompressor for implementation
  */
 public abstract class SnappyCompressor implements Compressor {
 
@@ -44,7 +45,7 @@ public abstract class SnappyCompressor implements Compressor {
     // default block size (32k)
     static final int DEFAULT_CHUNK_SIZE = 1 << 15;
 
-    protected SnappyCompressor() {
+    public SnappyCompressor() {
         this.compressorContext = new SnappyCompressorContext(DEFAULT_CHUNK_SIZE, maxCompressedLength(DEFAULT_CHUNK_SIZE));
     }
 

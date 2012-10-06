@@ -35,7 +35,7 @@ import org.elasticsearch.cluster.routing.ShardsIterator;
 import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 
 import java.io.IOException;
@@ -53,7 +53,7 @@ public abstract class TransportSingleCustomOperationAction<Request extends Singl
     final String transportShardAction;
     final String executor;
 
-    protected TransportSingleCustomOperationAction(Settings settings, ServerThreadPool threadPool, ClusterService clusterService, TransportService transportService) {
+    protected TransportSingleCustomOperationAction(Settings settings, ThreadPool threadPool, ClusterService clusterService, TransportService transportService) {
         super(settings, threadPool);
         this.clusterService = clusterService;
         this.transportService = transportService;
@@ -254,7 +254,7 @@ public abstract class TransportSingleCustomOperationAction<Request extends Singl
 
                         @Override
                         public String executor() {
-                            return ServerThreadPool.Names.SAME;
+                            return ThreadPool.Names.SAME;
                         }
 
                         @Override
@@ -308,7 +308,7 @@ public abstract class TransportSingleCustomOperationAction<Request extends Singl
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
     }
 

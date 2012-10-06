@@ -36,7 +36,7 @@ import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.regex.Regex;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.percolator.PercolatorService;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.util.concurrent.CountDownLatch;
@@ -55,7 +55,7 @@ public class TransportDeleteIndexAction extends TransportMasterNodeOperationActi
 
     @Inject
     public TransportDeleteIndexAction(Settings settings, TransportService transportService, ClusterService clusterService,
-                                      ServerThreadPool threadPool, MetaDataDeleteIndexService deleteIndexService, TransportDeleteMappingAction deleteMappingAction) {
+                                      ThreadPool threadPool, MetaDataDeleteIndexService deleteIndexService, TransportDeleteMappingAction deleteMappingAction) {
         super(settings, transportService, clusterService, threadPool);
         this.deleteIndexService = deleteIndexService;
         this.deleteMappingAction = deleteMappingAction;
@@ -65,7 +65,7 @@ public class TransportDeleteIndexAction extends TransportMasterNodeOperationActi
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.MANAGEMENT;
+        return ThreadPool.Names.MANAGEMENT;
     }
 
     @Override

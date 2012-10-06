@@ -1,4 +1,4 @@
-package org.elasticsearch.threadpool;
+package org.elasticsearch.threadpool.server;
 
 import java.io.IOException;
 import org.elasticsearch.common.Nullable;
@@ -8,6 +8,7 @@ import org.elasticsearch.common.unit.SizeValue;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.ToXContent.Params;
 import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.threadpool.ThreadPoolInfoElement;
 import org.elasticsearch.threadpool.ThreadPoolInfoElement;
 
 public class ServerThreadPoolInfoElement implements ThreadPoolInfoElement {

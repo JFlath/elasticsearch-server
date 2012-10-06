@@ -28,7 +28,7 @@ import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.service.IndexService;
 import org.elasticsearch.index.shard.service.IndexShard;
 import org.elasticsearch.indices.IndicesService;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
@@ -38,7 +38,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class InternalIndicesWarmer extends AbstractComponent implements IndicesWarmer {
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final ClusterService clusterService;
 
@@ -47,7 +47,7 @@ public class InternalIndicesWarmer extends AbstractComponent implements IndicesW
     private final CopyOnWriteArrayList<Listener> listeners = new CopyOnWriteArrayList<Listener>();
 
     @Inject
-    public InternalIndicesWarmer(Settings settings, ServerThreadPool threadPool, ClusterService clusterService, IndicesService indicesService) {
+    public InternalIndicesWarmer(Settings settings, ThreadPool threadPool, ClusterService clusterService, IndicesService indicesService) {
         super(settings);
         this.threadPool = threadPool;
         this.clusterService = clusterService;

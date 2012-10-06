@@ -55,7 +55,7 @@ import org.elasticsearch.river.cluster.RiverClusterState;
 import org.elasticsearch.river.cluster.RiverClusterStateListener;
 import org.elasticsearch.river.routing.RiverRouting;
 import org.elasticsearch.search.lookup.SourceLookup;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
@@ -71,7 +71,7 @@ public class RiversService extends AbstractLifecycleComponent<RiversService> {
     
     private IngestClient ingestClient;
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final ClusterService clusterService;
 
@@ -84,7 +84,7 @@ public class RiversService extends AbstractLifecycleComponent<RiversService> {
     private volatile ImmutableMap<RiverName, River> rivers = ImmutableMap.of();
 
     @Inject
-    public RiversService(Settings settings, IngestClient client, ServerThreadPool threadPool, ClusterService clusterService, RiversTypesRegistry typesRegistry, RiverClusterService riverClusterService, Injector injector) {
+    public RiversService(Settings settings, IngestClient client, ThreadPool threadPool, ClusterService clusterService, RiversTypesRegistry typesRegistry, RiverClusterService riverClusterService, Injector injector) {
         super(settings);
         this.riverIndexName = RiverIndexName.Conf.indexName(settings);
         this.ingestClient = client;
@@ -288,7 +288,7 @@ public class RiversService extends AbstractLifecycleComponent<RiversService> {
                         if ((failure instanceof NoShardAvailableActionException) || (failure instanceof ClusterBlockException) || (failure instanceof IndexMissingException)) {
                             logger.debug("failed to get _meta from [{}]/[{}], retrying...", e, routing.riverName().type(), routing.riverName().name());
                             final ActionListener<GetResponse> listener = this;
-                            threadPool.schedule(TimeValue.timeValueSeconds(5), ServerThreadPool.Names.SAME, new Runnable() {
+                            threadPool.schedule(TimeValue.timeValueSeconds(5), ThreadPool.Names.SAME, new Runnable() {
                                 @Override
                                 public void run() {
                                     ingestClient.prepareGet(riverIndexName, routing.riverName().name(), "_meta").setListenerThreaded(true).execute(listener);

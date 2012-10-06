@@ -37,7 +37,7 @@ import org.elasticsearch.common.util.concurrent.ConcurrentCollections;
 import org.elasticsearch.discovery.Discovery;
 import org.elasticsearch.discovery.DiscoveryService;
 import org.elasticsearch.node.settings.NodeSettingsService;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.util.Iterator;
@@ -55,7 +55,7 @@ import static org.elasticsearch.common.util.concurrent.EsExecutors.daemonThreadF
  */
 public class InternalClusterService extends AbstractLifecycleComponent<ClusterService> implements ClusterService {
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final DiscoveryService discoveryService;
 
@@ -84,7 +84,7 @@ public class InternalClusterService extends AbstractLifecycleComponent<ClusterSe
 
     @Inject
     public InternalClusterService(Settings settings, DiscoveryService discoveryService, OperationRouting operationRouting, TransportService transportService,
-                                  NodeSettingsService nodeSettingsService, ServerThreadPool threadPool) {
+                                  NodeSettingsService nodeSettingsService, ThreadPool threadPool) {
         super(settings);
         this.operationRouting = operationRouting;
         this.transportService = transportService;
@@ -115,7 +115,7 @@ public class InternalClusterService extends AbstractLifecycleComponent<ClusterSe
         add(localNodeMasterListeners);
         this.clusterState = newClusterStateBuilder().blocks(initialBlocks).build();
         this.updateTasksExecutor = newSingleThreadExecutor(daemonThreadFactory(settings, "clusterService#updateTask"));
-        this.reconnectToNodes = threadPool.schedule(reconnectInterval, ServerThreadPool.Names.GENERIC, new ReconnectToNodes());
+        this.reconnectToNodes = threadPool.schedule(reconnectInterval, ThreadPool.Names.GENERIC, new ReconnectToNodes());
     }
 
     @Override
@@ -193,7 +193,7 @@ public class InternalClusterService extends AbstractLifecycleComponent<ClusterSe
             return;
         }
         NotifyTimeout notifyTimeout = new NotifyTimeout(listener, timeout);
-        notifyTimeout.future = threadPool.schedule(timeout, ServerThreadPool.Names.GENERIC, notifyTimeout);
+        notifyTimeout.future = threadPool.schedule(timeout, ThreadPool.Names.GENERIC, notifyTimeout);
         onGoingTimeouts.add(notifyTimeout);
         clusterStateListeners.add(listener);
         // call the post added notification on the same event thread
@@ -425,7 +425,7 @@ public class InternalClusterService extends AbstractLifecycleComponent<ClusterSe
                 }
             }
             if (lifecycle.started()) {
-                reconnectToNodes = threadPool.schedule(reconnectInterval, ServerThreadPool.Names.GENERIC, this);
+                reconnectToNodes = threadPool.schedule(reconnectInterval, ThreadPool.Names.GENERIC, this);
             }
         }
     }
@@ -437,10 +437,10 @@ public class InternalClusterService extends AbstractLifecycleComponent<ClusterSe
     private static class LocalNodeMasterListeners implements ClusterStateListener {
 
         private final List<LocalNodeMasterListener> listeners = new CopyOnWriteArrayList<LocalNodeMasterListener>();
-        private final ServerThreadPool threadPool;
+        private final ThreadPool threadPool;
         private volatile boolean master = false;
 
-        private LocalNodeMasterListeners(ServerThreadPool threadPool) {
+        private LocalNodeMasterListeners(ThreadPool threadPool) {
             this.threadPool = threadPool;
         }
 

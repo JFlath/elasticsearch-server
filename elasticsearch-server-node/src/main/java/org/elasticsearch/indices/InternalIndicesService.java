@@ -71,7 +71,7 @@ import org.elasticsearch.indices.recovery.RecoverySettings;
 import org.elasticsearch.indices.store.IndicesStore;
 import org.elasticsearch.plugins.IndexPluginsModule;
 import org.elasticsearch.plugins.PluginsService;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -102,7 +102,7 @@ public class InternalIndicesService extends AbstractLifecycleComponent<IndicesSe
 
     private final NodeEnvironment nodeEnv;
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final InternalIndicesLifecycle indicesLifecycle;
 
@@ -121,7 +121,7 @@ public class InternalIndicesService extends AbstractLifecycleComponent<IndicesSe
     private final OldShardsStats oldShardsStats = new OldShardsStats();
 
     @Inject
-    public InternalIndicesService(Settings settings, NodeEnvironment nodeEnv, ServerThreadPool threadPool, IndicesLifecycle indicesLifecycle, IndicesAnalysisService indicesAnalysisService, IndicesStore indicesStore, Injector injector) {
+    public InternalIndicesService(Settings settings, NodeEnvironment nodeEnv, ThreadPool threadPool, IndicesLifecycle indicesLifecycle, IndicesAnalysisService indicesAnalysisService, IndicesStore indicesStore, Injector injector) {
         super(settings);
         this.nodeEnv = nodeEnv;
         this.threadPool = threadPool;

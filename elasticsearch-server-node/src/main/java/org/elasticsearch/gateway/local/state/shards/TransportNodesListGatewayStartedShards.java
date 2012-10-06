@@ -34,7 +34,7 @@ import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.shard.ShardId;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.io.IOException;
@@ -50,7 +50,7 @@ public class TransportNodesListGatewayStartedShards extends TransportNodesOperat
     private LocalGatewayShardsState shardsState;
 
     @Inject
-    public TransportNodesListGatewayStartedShards(Settings settings, ClusterName clusterName, ServerThreadPool threadPool, ClusterService clusterService, TransportService transportService) {
+    public TransportNodesListGatewayStartedShards(Settings settings, ClusterName clusterName, ThreadPool threadPool, ClusterService clusterService, TransportService transportService) {
         super(settings, clusterName, threadPool, clusterService, transportService);
     }
 
@@ -65,7 +65,7 @@ public class TransportNodesListGatewayStartedShards extends TransportNodesOperat
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.GENERIC;
+        return ThreadPool.Names.GENERIC;
     }
 
     @Override

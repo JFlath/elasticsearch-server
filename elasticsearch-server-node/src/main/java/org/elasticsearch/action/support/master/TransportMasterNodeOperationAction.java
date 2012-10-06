@@ -34,7 +34,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.discovery.MasterNotDiscoveredException;
 import org.elasticsearch.node.NodeClosedException;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 
 /**
@@ -49,7 +49,7 @@ public abstract class TransportMasterNodeOperationAction<Request extends MasterN
     final String transportAction;
     final String executor;
 
-    protected TransportMasterNodeOperationAction(Settings settings, TransportService transportService, ClusterService clusterService, ServerThreadPool threadPool) {
+    protected TransportMasterNodeOperationAction(Settings settings, TransportService transportService, ClusterService clusterService, ThreadPool threadPool) {
         super(settings, threadPool);
         this.transportService = transportService;
         this.clusterService = clusterService;
@@ -195,7 +195,7 @@ public abstract class TransportMasterNodeOperationAction<Request extends MasterN
 
                 @Override
                 public String executor() {
-                    return ServerThreadPool.Names.SAME;
+                    return ThreadPool.Names.SAME;
                 }
 
                 @Override
@@ -250,7 +250,7 @@ public abstract class TransportMasterNodeOperationAction<Request extends MasterN
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
 
         @Override

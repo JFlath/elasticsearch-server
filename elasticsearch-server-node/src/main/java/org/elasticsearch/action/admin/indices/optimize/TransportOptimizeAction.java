@@ -35,7 +35,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.engine.Engine;
 import org.elasticsearch.index.shard.service.IndexShard;
 import org.elasticsearch.indices.IndicesService;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.util.List;
@@ -53,7 +53,7 @@ public class TransportOptimizeAction extends TransportBroadcastOperationAction<O
     private final Object optimizeMutex = new Object();
 
     @Inject
-    public TransportOptimizeAction(Settings settings, ServerThreadPool threadPool, ClusterService clusterService,
+    public TransportOptimizeAction(Settings settings, ThreadPool threadPool, ClusterService clusterService,
                                    TransportService transportService, IndicesService indicesService) {
         super(settings, threadPool, clusterService, transportService);
         this.indicesService = indicesService;
@@ -61,7 +61,7 @@ public class TransportOptimizeAction extends TransportBroadcastOperationAction<O
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.MERGE;
+        return ThreadPool.Names.MERGE;
     }
 
     @Override

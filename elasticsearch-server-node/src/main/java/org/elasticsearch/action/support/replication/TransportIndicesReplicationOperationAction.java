@@ -29,7 +29,7 @@ import org.elasticsearch.cluster.ClusterState;
 import org.elasticsearch.cluster.block.ClusterBlockException;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.BaseTransportRequestHandler;
 import org.elasticsearch.transport.TransportChannel;
 import org.elasticsearch.transport.TransportService;
@@ -53,7 +53,7 @@ public abstract class TransportIndicesReplicationOperationAction<Request extends
     final String transportAction;
 
     @Inject
-    public TransportIndicesReplicationOperationAction(Settings settings, TransportService transportService, ClusterService clusterService, ServerThreadPool threadPool,
+    public TransportIndicesReplicationOperationAction(Settings settings, TransportService transportService, ClusterService clusterService, ThreadPool threadPool,
                                                       TransportIndexReplicationOperationAction<IndexRequest, IndexResponse, ShardRequest, ShardReplicaRequest, ShardResponse> indexAction) {
         super(settings, threadPool);
         this.clusterService = clusterService;
@@ -142,7 +142,7 @@ public abstract class TransportIndicesReplicationOperationAction<Request extends
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
 
         @Override

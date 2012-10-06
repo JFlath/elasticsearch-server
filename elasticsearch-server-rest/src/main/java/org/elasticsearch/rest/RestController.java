@@ -141,6 +141,7 @@ public class RestController extends AbstractLifecycleComponent<RestController> {
             try {
                 executeHandler(request, channel);
             } catch (Exception e) {
+                logger.error(e.getMessage(), e);
                 try {
                     channel.sendResponse(new XContentThrowableRestResponse(request, e));
                 } catch (IOException e1) {

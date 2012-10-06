@@ -43,7 +43,7 @@ import org.elasticsearch.search.SearchShardTarget;
 import org.elasticsearch.search.internal.SearchContext;
 import org.elasticsearch.search.internal.ShardSearchRequest;
 import org.elasticsearch.search.query.QueryPhaseExecutionException;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.util.List;
@@ -63,7 +63,7 @@ public class TransportCountAction extends TransportBroadcastOperationAction<Coun
     private final ScriptService scriptService;
 
     @Inject
-    public TransportCountAction(Settings settings, ServerThreadPool threadPool, ClusterService clusterService, TransportService transportService,
+    public TransportCountAction(Settings settings, ThreadPool threadPool, ClusterService clusterService, TransportService transportService,
                                 IndicesService indicesService, ScriptService scriptService) {
         super(settings, threadPool, clusterService, transportService);
         this.indicesService = indicesService;
@@ -72,7 +72,7 @@ public class TransportCountAction extends TransportBroadcastOperationAction<Coun
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.SEARCH;
+        return ThreadPool.Names.SEARCH;
     }
 
     @Override

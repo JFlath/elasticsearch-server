@@ -40,7 +40,7 @@ import org.elasticsearch.search.internal.ShardSearchRequest;
 import org.elasticsearch.search.query.QuerySearchRequest;
 import org.elasticsearch.search.query.QuerySearchResult;
 import org.elasticsearch.search.query.ScrollQuerySearchResult;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 
 import java.io.IOException;
@@ -56,7 +56,7 @@ public class SearchServiceTransportAction extends AbstractComponent {
         private final ESLogger logger;
 
         FreeContextResponseHandler(ESLogger logger) {
-            super(ServerThreadPool.Names.SAME);
+            super(ThreadPool.Names.SAME);
             this.logger = logger;
         }
 
@@ -130,7 +130,7 @@ public class SearchServiceTransportAction extends AbstractComponent {
 
                 @Override
                 public String executor() {
-                    return ServerThreadPool.Names.SAME;
+                    return ThreadPool.Names.SAME;
                 }
             });
         }
@@ -164,7 +164,7 @@ public class SearchServiceTransportAction extends AbstractComponent {
 
                 @Override
                 public String executor() {
-                    return ServerThreadPool.Names.SAME;
+                    return ThreadPool.Names.SAME;
                 }
             });
         }
@@ -198,7 +198,7 @@ public class SearchServiceTransportAction extends AbstractComponent {
 
                 @Override
                 public String executor() {
-                    return ServerThreadPool.Names.SAME;
+                    return ThreadPool.Names.SAME;
                 }
             });
         }
@@ -232,7 +232,7 @@ public class SearchServiceTransportAction extends AbstractComponent {
 
                 @Override
                 public String executor() {
-                    return ServerThreadPool.Names.SAME;
+                    return ThreadPool.Names.SAME;
                 }
             });
         }
@@ -266,7 +266,7 @@ public class SearchServiceTransportAction extends AbstractComponent {
 
                 @Override
                 public String executor() {
-                    return ServerThreadPool.Names.SAME;
+                    return ThreadPool.Names.SAME;
                 }
             });
         }
@@ -300,7 +300,7 @@ public class SearchServiceTransportAction extends AbstractComponent {
 
                 @Override
                 public String executor() {
-                    return ServerThreadPool.Names.SAME;
+                    return ThreadPool.Names.SAME;
                 }
             });
         }
@@ -334,7 +334,7 @@ public class SearchServiceTransportAction extends AbstractComponent {
 
                 @Override
                 public String executor() {
-                    return ServerThreadPool.Names.SAME;
+                    return ThreadPool.Names.SAME;
                 }
             });
         }
@@ -368,7 +368,7 @@ public class SearchServiceTransportAction extends AbstractComponent {
 
                 @Override
                 public String executor() {
-                    return ServerThreadPool.Names.SAME;
+                    return ThreadPool.Names.SAME;
                 }
             });
         }
@@ -402,7 +402,7 @@ public class SearchServiceTransportAction extends AbstractComponent {
 
                 @Override
                 public String executor() {
-                    return ServerThreadPool.Names.SAME;
+                    return ThreadPool.Names.SAME;
                 }
             });
         }
@@ -436,7 +436,7 @@ public class SearchServiceTransportAction extends AbstractComponent {
 
                 @Override
                 public String executor() {
-                    return ServerThreadPool.Names.SAME;
+                    return ThreadPool.Names.SAME;
                 }
             });
         }
@@ -490,7 +490,7 @@ public class SearchServiceTransportAction extends AbstractComponent {
         public String executor() {
             // freeing the context is cheap,
             // no need for fork it to another thread
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
     }
 
@@ -512,7 +512,7 @@ public class SearchServiceTransportAction extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SEARCH;
+            return ThreadPool.Names.SEARCH;
         }
     }
 
@@ -533,7 +533,7 @@ public class SearchServiceTransportAction extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SEARCH;
+            return ThreadPool.Names.SEARCH;
         }
     }
 
@@ -554,7 +554,7 @@ public class SearchServiceTransportAction extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SEARCH;
+            return ThreadPool.Names.SEARCH;
         }
     }
 
@@ -575,7 +575,7 @@ public class SearchServiceTransportAction extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SEARCH;
+            return ThreadPool.Names.SEARCH;
         }
     }
 
@@ -596,7 +596,7 @@ public class SearchServiceTransportAction extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SEARCH;
+            return ThreadPool.Names.SEARCH;
         }
     }
 
@@ -617,7 +617,7 @@ public class SearchServiceTransportAction extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SEARCH;
+            return ThreadPool.Names.SEARCH;
         }
     }
 
@@ -638,7 +638,7 @@ public class SearchServiceTransportAction extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SEARCH;
+            return ThreadPool.Names.SEARCH;
         }
     }
 
@@ -659,7 +659,7 @@ public class SearchServiceTransportAction extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SEARCH;
+            return ThreadPool.Names.SEARCH;
         }
     }
 
@@ -680,7 +680,7 @@ public class SearchServiceTransportAction extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SEARCH;
+            return ThreadPool.Names.SEARCH;
         }
     }
 
@@ -701,7 +701,7 @@ public class SearchServiceTransportAction extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SEARCH;
+            return ThreadPool.Names.SEARCH;
         }
     }
 }

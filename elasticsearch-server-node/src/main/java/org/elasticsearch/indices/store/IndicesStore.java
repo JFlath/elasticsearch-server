@@ -35,7 +35,7 @@ import org.elasticsearch.index.service.IndexService;
 import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.indices.IndicesService;
 import org.elasticsearch.node.settings.NodeSettingsService;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.io.File;
 
@@ -81,7 +81,7 @@ public class IndicesStore extends AbstractComponent implements ClusterStateListe
 
     private final ClusterService clusterService;
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private volatile String rateLimitingType;
     private volatile ByteSizeValue rateLimitingThrottle;
@@ -90,7 +90,7 @@ public class IndicesStore extends AbstractComponent implements ClusterStateListe
     private final ApplySettings applySettings = new ApplySettings();
 
     @Inject
-    public IndicesStore(Settings settings, NodeEnvironment nodeEnv, NodeSettingsService nodeSettingsService, IndicesService indicesService, ClusterService clusterService, ServerThreadPool threadPool) {
+    public IndicesStore(Settings settings, NodeEnvironment nodeEnv, NodeSettingsService nodeSettingsService, IndicesService indicesService, ClusterService clusterService, ThreadPool threadPool) {
         super(settings);
         this.nodeEnv = nodeEnv;
         this.nodeSettingsService = nodeSettingsService;

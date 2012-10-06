@@ -44,7 +44,7 @@ import org.elasticsearch.indices.IndicesService;
 import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.search.internal.SearchContext;
 import org.elasticsearch.search.internal.ShardSearchRequest;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.io.IOException;
@@ -60,7 +60,7 @@ public class TransportExplainAction extends TransportShardSingleOperationAction<
     private final ScriptService scriptService;
 
     @Inject
-    public TransportExplainAction(Settings settings, ServerThreadPool threadPool, ClusterService clusterService,
+    public TransportExplainAction(Settings settings, ThreadPool threadPool, ClusterService clusterService,
                                   TransportService transportService, IndicesService indicesService,
                                   ScriptService scriptService) {
         super(settings, threadPool, clusterService, transportService);
@@ -73,7 +73,7 @@ public class TransportExplainAction extends TransportShardSingleOperationAction<
     }
 
     protected String executor() {
-        return ServerThreadPool.Names.GET; // Or use Names.SEARCH?
+        return ThreadPool.Names.GET; // Or use Names.SEARCH?
     }
 
     @Override

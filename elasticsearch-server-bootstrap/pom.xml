@@ -39,6 +39,22 @@
         </dependency>
 
         <dependency>
+            <groupId>org.elasticsearch.server</groupId>
+            <artifactId>elasticsearch-discovery-zen</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.elasticsearch.server</groupId>
+            <artifactId>elasticsearch-server-compression-snappy</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
             <version>3.3.0</version>

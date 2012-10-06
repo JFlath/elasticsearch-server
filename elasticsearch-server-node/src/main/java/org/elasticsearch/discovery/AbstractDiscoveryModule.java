@@ -31,10 +31,12 @@ public abstract class AbstractDiscoveryModule extends AbstractModule implements 
      */
     public AbstractDiscoveryModule() {        
     }
-    
+
     /**
      * Adds a custom unicast hosts provider to build a dynamic list of unicast hosts list when doing unicast discovery.
      */
-    public abstract DiscoveryModule addUnicastHostProvider(Class<? extends UnicastHostsProvider> unicastHostProvider);
-
+    public DiscoveryModule addUnicastHostProvider(Class<? extends UnicastHostsProvider> unicastHostProvider) {
+        return null;
+    }
+    
 }

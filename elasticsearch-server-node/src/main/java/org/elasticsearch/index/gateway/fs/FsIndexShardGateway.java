@@ -31,7 +31,7 @@ import org.elasticsearch.index.settings.IndexSettings;
 import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.index.shard.service.IndexShard;
 import org.elasticsearch.index.store.Store;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.io.IOException;
 
@@ -43,7 +43,7 @@ public class FsIndexShardGateway extends BlobStoreIndexShardGateway {
     private final boolean snapshotLock;
 
     @Inject
-    public FsIndexShardGateway(ShardId shardId, @IndexSettings Settings indexSettings, ServerThreadPool threadPool, IndexGateway fsIndexGateway,
+    public FsIndexShardGateway(ShardId shardId, @IndexSettings Settings indexSettings, ThreadPool threadPool, IndexGateway fsIndexGateway,
                                IndexShard indexShard, Store store) {
         super(shardId, indexSettings, threadPool, fsIndexGateway, indexShard, store);
         this.snapshotLock = indexSettings.getAsBoolean("gateway.fs.snapshot_lock", true);

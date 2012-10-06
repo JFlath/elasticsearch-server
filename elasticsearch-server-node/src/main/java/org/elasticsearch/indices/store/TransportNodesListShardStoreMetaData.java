@@ -44,7 +44,7 @@ import org.elasticsearch.index.shard.service.InternalIndexShard;
 import org.elasticsearch.index.store.Store;
 import org.elasticsearch.index.store.StoreFileMetaData;
 import org.elasticsearch.indices.IndicesService;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.io.File;
@@ -65,7 +65,7 @@ public class TransportNodesListShardStoreMetaData extends TransportNodesOperatio
     private final NodeEnvironment nodeEnv;
 
     @Inject
-    public TransportNodesListShardStoreMetaData(Settings settings, ClusterName clusterName, ServerThreadPool threadPool, ClusterService clusterService, TransportService transportService,
+    public TransportNodesListShardStoreMetaData(Settings settings, ClusterName clusterName, ThreadPool threadPool, ClusterService clusterService, TransportService transportService,
                                                 IndicesService indicesService, NodeEnvironment nodeEnv) {
         super(settings, clusterName, threadPool, clusterService, transportService);
         this.indicesService = indicesService;
@@ -78,7 +78,7 @@ public class TransportNodesListShardStoreMetaData extends TransportNodesOperatio
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.GENERIC;
+        return ThreadPool.Names.GENERIC;
     }
 
     @Override

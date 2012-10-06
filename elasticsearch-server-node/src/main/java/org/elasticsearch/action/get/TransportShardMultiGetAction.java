@@ -34,7 +34,7 @@ import org.elasticsearch.index.get.GetResult;
 import org.elasticsearch.index.service.IndexService;
 import org.elasticsearch.index.shard.service.IndexShard;
 import org.elasticsearch.indices.IndicesService;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 public class TransportShardMultiGetAction extends TransportShardSingleOperationAction<MultiGetShardRequest, MultiGetShardResponse> {
@@ -45,7 +45,7 @@ public class TransportShardMultiGetAction extends TransportShardSingleOperationA
 
     @Inject
     public TransportShardMultiGetAction(Settings settings, ClusterService clusterService, TransportService transportService,
-                                        IndicesService indicesService, ServerThreadPool threadPool) {
+                                        IndicesService indicesService, ThreadPool threadPool) {
         super(settings, threadPool, clusterService, transportService);
         this.indicesService = indicesService;
 
@@ -54,7 +54,7 @@ public class TransportShardMultiGetAction extends TransportShardSingleOperationA
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.GET;
+        return ThreadPool.Names.GET;
     }
 
     @Override

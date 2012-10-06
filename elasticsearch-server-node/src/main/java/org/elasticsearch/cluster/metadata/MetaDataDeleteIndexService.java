@@ -33,7 +33,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.Index;
 import org.elasticsearch.indices.IndexMissingException;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -47,7 +47,7 @@ import static org.elasticsearch.cluster.metadata.MetaData.newMetaDataBuilder;
  */
 public class MetaDataDeleteIndexService extends AbstractComponent {
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final ClusterService clusterService;
 
@@ -58,7 +58,7 @@ public class MetaDataDeleteIndexService extends AbstractComponent {
     private final MetaDataService metaDataService;
 
     @Inject
-    public MetaDataDeleteIndexService(Settings settings, ServerThreadPool threadPool, ClusterService clusterService, AllocationService allocationService,
+    public MetaDataDeleteIndexService(Settings settings, ThreadPool threadPool, ClusterService clusterService, AllocationService allocationService,
                                       NodeIndexDeletedAction nodeIndexDeletedAction, MetaDataService metaDataService) {
         super(settings);
         this.threadPool = threadPool;
@@ -119,7 +119,7 @@ public class MetaDataDeleteIndexService extends AbstractComponent {
                     };
                     nodeIndexDeletedAction.add(nodeIndexDeleteListener);
 
-                    listener.future = threadPool.schedule(request.timeout, ServerThreadPool.Names.SAME, new Runnable() {
+                    listener.future = threadPool.schedule(request.timeout, ThreadPool.Names.SAME, new Runnable() {
                         @Override
                         public void run() {
                             listener.onResponse(new Response(false));

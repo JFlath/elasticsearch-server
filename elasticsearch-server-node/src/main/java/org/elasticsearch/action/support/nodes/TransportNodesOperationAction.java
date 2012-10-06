@@ -32,7 +32,7 @@ import org.elasticsearch.cluster.node.DiscoveryNode;
 import org.elasticsearch.cluster.node.DiscoveryNodes;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -54,7 +54,7 @@ public abstract class TransportNodesOperationAction<Request extends NodesOperati
     final String executor;
 
     @Inject
-    public TransportNodesOperationAction(Settings settings, ClusterName clusterName, ServerThreadPool threadPool,
+    public TransportNodesOperationAction(Settings settings, ClusterName clusterName, ThreadPool threadPool,
                                          ClusterService clusterService, TransportService transportService) {
         super(settings, threadPool);
         this.clusterName = clusterName;
@@ -188,7 +188,7 @@ public abstract class TransportNodesOperationAction<Request extends NodesOperati
 
                             @Override
                             public String executor() {
-                                return ServerThreadPool.Names.SAME;
+                                return ThreadPool.Names.SAME;
                             }
                         });
                     }
@@ -256,7 +256,7 @@ public abstract class TransportNodesOperationAction<Request extends NodesOperati
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
 
         @Override

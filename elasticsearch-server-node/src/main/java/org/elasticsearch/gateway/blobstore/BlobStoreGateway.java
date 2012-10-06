@@ -39,7 +39,7 @@ import org.elasticsearch.gateway.shared.SharedStorageGateway;
 import org.elasticsearch.index.gateway.CommitPoint;
 import org.elasticsearch.index.gateway.CommitPoints;
 import org.elasticsearch.index.gateway.blobstore.BlobStoreIndexGateway;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.io.IOException;
 import java.util.List;
@@ -61,7 +61,7 @@ public abstract class BlobStoreGateway extends SharedStorageGateway {
 
     private volatile int currentIndex;
 
-    protected BlobStoreGateway(Settings settings, ServerThreadPool threadPool, ClusterService clusterService) {
+    protected BlobStoreGateway(Settings settings, ThreadPool threadPool, ClusterService clusterService) {
         super(settings, threadPool, clusterService);
     }
 

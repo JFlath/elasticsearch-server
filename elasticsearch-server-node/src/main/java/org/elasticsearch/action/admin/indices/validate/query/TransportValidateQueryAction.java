@@ -42,7 +42,7 @@ import org.elasticsearch.indices.IndicesService;
 import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.search.internal.SearchContext;
 import org.elasticsearch.search.internal.ShardSearchRequest;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.util.List;
@@ -62,7 +62,7 @@ public class TransportValidateQueryAction extends TransportBroadcastOperationAct
     private final ScriptService scriptService;
 
     @Inject
-    public TransportValidateQueryAction(Settings settings, ServerThreadPool threadPool, ClusterService clusterService, TransportService transportService, IndicesService indicesService, ScriptService scriptService) {
+    public TransportValidateQueryAction(Settings settings, ThreadPool threadPool, ClusterService clusterService, TransportService transportService, IndicesService indicesService, ScriptService scriptService) {
         super(settings, threadPool, clusterService, transportService);
         this.indicesService = indicesService;
         this.scriptService = scriptService;
@@ -70,7 +70,7 @@ public class TransportValidateQueryAction extends TransportBroadcastOperationAct
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.SEARCH;
+        return ThreadPool.Names.SEARCH;
     }
 
     @Override

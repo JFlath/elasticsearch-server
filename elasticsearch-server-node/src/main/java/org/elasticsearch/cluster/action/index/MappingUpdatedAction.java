@@ -32,7 +32,7 @@ import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.io.IOException;
@@ -48,7 +48,7 @@ public class MappingUpdatedAction extends TransportMasterNodeOperationAction<Map
     private final MetaDataMappingService metaDataMappingService;
 
     @Inject
-    public MappingUpdatedAction(Settings settings, TransportService transportService, ClusterService clusterService, ServerThreadPool threadPool,
+    public MappingUpdatedAction(Settings settings, TransportService transportService, ClusterService clusterService, ThreadPool threadPool,
                                 MetaDataMappingService metaDataMappingService) {
         super(settings, transportService, clusterService, threadPool);
         this.metaDataMappingService = metaDataMappingService;
@@ -61,7 +61,7 @@ public class MappingUpdatedAction extends TransportMasterNodeOperationAction<Map
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.GENERIC;
+        return ThreadPool.Names.GENERIC;
     }
 
     @Override

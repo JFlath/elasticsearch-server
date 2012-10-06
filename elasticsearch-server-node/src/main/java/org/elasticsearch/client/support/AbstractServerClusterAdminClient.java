@@ -26,7 +26,7 @@ import org.elasticsearch.action.admin.cluster.reroute.ClusterRerouteRequest;
 import org.elasticsearch.action.admin.cluster.reroute.ClusterRerouteRequestBuilder;
 import org.elasticsearch.action.admin.cluster.reroute.ClusterRerouteResponse;
 import org.elasticsearch.client.ServerClusterAdminClient;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.server.ServerThreadPool;
 import org.elasticsearch.threadpool.ThreadPool;
 
 /**

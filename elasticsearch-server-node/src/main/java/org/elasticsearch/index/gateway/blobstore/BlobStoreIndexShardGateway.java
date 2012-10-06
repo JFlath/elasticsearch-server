@@ -46,7 +46,7 @@ import org.elasticsearch.index.store.Store;
 import org.elasticsearch.index.store.StoreFileMetaData;
 import org.elasticsearch.index.translog.Translog;
 import org.elasticsearch.index.translog.TranslogStreams;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -63,7 +63,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public abstract class BlobStoreIndexShardGateway extends AbstractIndexShardComponent implements IndexShardGateway {
 
-    protected final ServerThreadPool threadPool;
+    protected final ThreadPool threadPool;
 
     protected final InternalIndexShard indexShard;
 
@@ -83,7 +83,7 @@ public abstract class BlobStoreIndexShardGateway extends AbstractIndexShardCompo
 
     private volatile SnapshotStatus currentSnapshotStatus;
 
-    protected BlobStoreIndexShardGateway(ShardId shardId, @IndexSettings Settings indexSettings, ServerThreadPool threadPool, IndexGateway indexGateway,
+    protected BlobStoreIndexShardGateway(ShardId shardId, @IndexSettings Settings indexSettings, ThreadPool threadPool, IndexGateway indexGateway,
                                          IndexShard indexShard, Store store) {
         super(shardId, indexSettings);
 

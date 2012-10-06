@@ -28,7 +28,7 @@ import org.elasticsearch.cluster.block.ClusterBlockLevel;
 import org.elasticsearch.cluster.metadata.MetaDataIndexTemplateService;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.util.concurrent.CountDownLatch;
@@ -43,14 +43,14 @@ public class TransportDeleteIndexTemplateAction extends TransportMasterNodeOpera
 
     @Inject
     public TransportDeleteIndexTemplateAction(Settings settings, TransportService transportService, ClusterService clusterService,
-                                              ServerThreadPool threadPool, MetaDataIndexTemplateService indexTemplateService) {
+                                              ThreadPool threadPool, MetaDataIndexTemplateService indexTemplateService) {
         super(settings, transportService, clusterService, threadPool);
         this.indexTemplateService = indexTemplateService;
     }
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.MANAGEMENT;
+        return ThreadPool.Names.MANAGEMENT;
     }
 
     @Override

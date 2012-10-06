@@ -33,7 +33,7 @@ import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.indices.IndexMissingException;
 import org.elasticsearch.rest.RestStatus;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 /**
@@ -44,7 +44,7 @@ public class TransportClusterHealthAction extends TransportMasterNodeOperationAc
     private final ClusterName clusterName;
 
     @Inject
-    public TransportClusterHealthAction(Settings settings, TransportService transportService, ClusterService clusterService, ServerThreadPool threadPool,
+    public TransportClusterHealthAction(Settings settings, TransportService transportService, ClusterService clusterService, ThreadPool threadPool,
                                         ClusterName clusterName) {
         super(settings, transportService, clusterService, threadPool);
         this.clusterName = clusterName;
@@ -52,7 +52,7 @@ public class TransportClusterHealthAction extends TransportMasterNodeOperationAc
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.GENERIC;
+        return ThreadPool.Names.GENERIC;
     }
 
     @Override

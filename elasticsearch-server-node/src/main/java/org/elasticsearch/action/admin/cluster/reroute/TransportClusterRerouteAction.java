@@ -28,7 +28,7 @@ import org.elasticsearch.cluster.routing.allocation.AllocationService;
 import org.elasticsearch.cluster.routing.allocation.RoutingAllocationResult;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.util.concurrent.CountDownLatch;
@@ -43,7 +43,7 @@ public class TransportClusterRerouteAction extends TransportMasterNodeOperationA
     private final AllocationService allocationService;
 
     @Inject
-    public TransportClusterRerouteAction(Settings settings, TransportService transportService, ClusterService clusterService, ServerThreadPool threadPool,
+    public TransportClusterRerouteAction(Settings settings, TransportService transportService, ClusterService clusterService, ThreadPool threadPool,
                                          AllocationService allocationService) {
         super(settings, transportService, clusterService, threadPool);
         this.allocationService = allocationService;
@@ -51,7 +51,7 @@ public class TransportClusterRerouteAction extends TransportMasterNodeOperationA
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.GENERIC;
+        return ThreadPool.Names.GENERIC;
     }
 
     @Override

@@ -34,7 +34,7 @@ import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.discovery.zen.DiscoveryNodesProvider;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 
 import java.io.IOException;
@@ -99,7 +99,7 @@ public class PublishClusterStateAction extends AbstractComponent {
                         new PublishClusterStateRequest(entry.bytes().bytes()),
                         TransportRequestOptions.options().withHighType().withCompress(false), // no need to compress, we already compressed the bytes
 
-                        new EmptyTransportResponseHandler(ServerThreadPool.Names.SAME) {
+                        new EmptyTransportResponseHandler(ThreadPool.Names.SAME) {
                             @Override
                             public void handleException(TransportException exp) {
                                 logger.debug("failed to send cluster state to [{}], should be detected as failed soon...", exp, node);
@@ -165,7 +165,7 @@ public class PublishClusterStateAction extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
     }
 }

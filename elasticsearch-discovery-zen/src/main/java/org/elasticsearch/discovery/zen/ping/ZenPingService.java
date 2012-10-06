@@ -35,7 +35,7 @@ import org.elasticsearch.discovery.zen.DiscoveryNodesProvider;
 import org.elasticsearch.discovery.zen.ping.multicast.MulticastZenPing;
 import org.elasticsearch.discovery.unicast.UnicastHostsProvider;
 import org.elasticsearch.discovery.zen.ping.unicast.UnicastZenPing;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.util.Set;
@@ -53,7 +53,7 @@ public class ZenPingService extends AbstractLifecycleComponent<ZenPing> implemen
     private volatile ImmutableList<? extends ZenPing> zenPings = ImmutableList.of();
 
     @Inject
-    public ZenPingService(Settings settings, ServerThreadPool threadPool, TransportService transportService, ClusterName clusterName, NetworkService networkService,
+    public ZenPingService(Settings settings, ThreadPool threadPool, TransportService transportService, ClusterName clusterName, NetworkService networkService,
                           @Nullable Set<UnicastHostsProvider> unicastHostsProviders) {
         super(settings);
 

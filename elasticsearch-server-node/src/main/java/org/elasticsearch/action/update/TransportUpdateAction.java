@@ -65,7 +65,7 @@ import org.elasticsearch.indices.IndicesService;
 import org.elasticsearch.script.ExecutableScript;
 import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.search.lookup.SourceLookup;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.util.ArrayList;
@@ -87,7 +87,7 @@ public class TransportUpdateAction extends TransportInstanceSingleOperationActio
     private final ScriptService scriptService;
 
     @Inject
-    public TransportUpdateAction(Settings settings, ServerThreadPool threadPool, ClusterService clusterService, TransportService transportService,
+    public TransportUpdateAction(Settings settings, ThreadPool threadPool, ClusterService clusterService, TransportService transportService,
                                  IndicesService indicesService, TransportIndexAction indexAction, TransportDeleteAction deleteAction, ScriptService scriptService) {
         super(settings, threadPool, clusterService, transportService);
         this.indicesService = indicesService;
@@ -103,7 +103,7 @@ public class TransportUpdateAction extends TransportInstanceSingleOperationActio
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.INDEX;
+        return ThreadPool.Names.INDEX;
     }
 
     @Override

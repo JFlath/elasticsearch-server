@@ -36,7 +36,7 @@ import org.elasticsearch.env.NodeEnvironment;
 import org.elasticsearch.gateway.Gateway;
 import org.elasticsearch.gateway.GatewayException;
 import org.elasticsearch.index.Index;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -51,7 +51,7 @@ public abstract class SharedStorageGateway extends AbstractLifecycleComponent<Ga
 
     private final ClusterService clusterService;
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private ExecutorService writeStateExecutor;
 
@@ -59,7 +59,7 @@ public abstract class SharedStorageGateway extends AbstractLifecycleComponent<Ga
 
     private NodeEnvironment nodeEnv;
 
-    public SharedStorageGateway(Settings settings, ServerThreadPool threadPool, ClusterService clusterService) {
+    public SharedStorageGateway(Settings settings, ThreadPool threadPool, ClusterService clusterService) {
         super(settings);
         this.threadPool = threadPool;
         this.clusterService = clusterService;

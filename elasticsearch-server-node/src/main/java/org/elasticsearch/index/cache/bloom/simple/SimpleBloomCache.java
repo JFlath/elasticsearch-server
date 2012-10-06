@@ -37,7 +37,7 @@ import org.elasticsearch.index.AbstractIndexComponent;
 import org.elasticsearch.index.Index;
 import org.elasticsearch.index.cache.bloom.BloomCache;
 import org.elasticsearch.index.settings.IndexSettings;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.nio.channels.ClosedChannelException;
 import java.util.concurrent.ConcurrentMap;
@@ -48,7 +48,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class SimpleBloomCache extends AbstractIndexComponent implements BloomCache, SegmentReader.CoreClosedListener {
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final long maxSize;
 
@@ -57,7 +57,7 @@ public class SimpleBloomCache extends AbstractIndexComponent implements BloomCac
     private final Object creationMutex = new Object();
 
     @Inject
-    public SimpleBloomCache(Index index, @IndexSettings Settings indexSettings, ServerThreadPool threadPool) {
+    public SimpleBloomCache(Index index, @IndexSettings Settings indexSettings, ThreadPool threadPool) {
         super(index, indexSettings);
         this.threadPool = threadPool;
 
@@ -144,7 +144,7 @@ public class SimpleBloomCache extends AbstractIndexComponent implements BloomCac
                         filter.loading.set(true);
                         BloomFilterLoader loader = new BloomFilterLoader(reader, fieldName);
                         if (asyncLoad) {
-                            threadPool.executor(ServerThreadPool.Names.CACHE).execute(loader);
+                            threadPool.executor(ThreadPool.Names.CACHE).execute(loader);
                         } else {
                             loader.run();
                             filter = fieldCache.get(fieldName);
@@ -159,7 +159,7 @@ public class SimpleBloomCache extends AbstractIndexComponent implements BloomCac
                 // do the async loading
                 BloomFilterLoader loader = new BloomFilterLoader(reader, fieldName);
                 if (asyncLoad) {
-                    threadPool.executor(ServerThreadPool.Names.CACHE).execute(loader);
+                    threadPool.executor(ThreadPool.Names.CACHE).execute(loader);
                 } else {
                     loader.run();
                     filter = fieldCache.get(fieldName);

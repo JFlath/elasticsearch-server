@@ -35,7 +35,7 @@ import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.gateway.IndexShardGatewayService;
 import org.elasticsearch.indices.IndicesService;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.util.List;
@@ -49,7 +49,7 @@ public class TransportGatewaySnapshotAction extends TransportBroadcastOperationA
     private final IndicesService indicesService;
 
     @Inject
-    public TransportGatewaySnapshotAction(Settings settings, ServerThreadPool threadPool, ClusterService clusterService,
+    public TransportGatewaySnapshotAction(Settings settings, ThreadPool threadPool, ClusterService clusterService,
                                           TransportService transportService, IndicesService indicesService) {
         super(settings, threadPool, clusterService, transportService);
         this.indicesService = indicesService;
@@ -57,7 +57,7 @@ public class TransportGatewaySnapshotAction extends TransportBroadcastOperationA
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.SNAPSHOT;
+        return ThreadPool.Names.SNAPSHOT;
     }
 
     @Override

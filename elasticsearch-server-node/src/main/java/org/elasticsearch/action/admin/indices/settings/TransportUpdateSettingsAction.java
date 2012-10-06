@@ -26,7 +26,7 @@ import org.elasticsearch.cluster.ClusterState;
 import org.elasticsearch.cluster.metadata.MetaDataUpdateSettingsService;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.util.concurrent.CountDownLatch;
@@ -40,7 +40,7 @@ public class TransportUpdateSettingsAction extends TransportMasterNodeOperationA
     private final MetaDataUpdateSettingsService updateSettingsService;
 
     @Inject
-    public TransportUpdateSettingsAction(Settings settings, TransportService transportService, ClusterService clusterService, ServerThreadPool threadPool,
+    public TransportUpdateSettingsAction(Settings settings, TransportService transportService, ClusterService clusterService, ThreadPool threadPool,
                                          MetaDataUpdateSettingsService updateSettingsService) {
         super(settings, transportService, clusterService, threadPool);
         this.updateSettingsService = updateSettingsService;
@@ -48,7 +48,7 @@ public class TransportUpdateSettingsAction extends TransportMasterNodeOperationA
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.MANAGEMENT;
+        return ThreadPool.Names.MANAGEMENT;
     }
 
     @Override

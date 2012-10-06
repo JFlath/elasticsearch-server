@@ -34,7 +34,7 @@ import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.node.Node;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 
 import java.io.IOException;
@@ -52,7 +52,7 @@ public class TransportNodesShutdownAction extends TransportMasterNodeOperationAc
     private final TimeValue delay;
 
     @Inject
-    public TransportNodesShutdownAction(Settings settings, TransportService transportService, ClusterService clusterService, ServerThreadPool threadPool,
+    public TransportNodesShutdownAction(Settings settings, TransportService transportService, ClusterService clusterService, ThreadPool threadPool,
                                         Node node, ClusterName clusterName) {
         super(settings, transportService, clusterService, threadPool);
         this.node = node;
@@ -65,7 +65,7 @@ public class TransportNodesShutdownAction extends TransportMasterNodeOperationAc
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.GENERIC;
+        return ThreadPool.Names.GENERIC;
     }
 
     @Override
@@ -125,7 +125,7 @@ public class TransportNodesShutdownAction extends TransportMasterNodeOperationAc
                             latch.countDown();
                         } else {
                             logger.trace("[cluster_shutdown]: sending shutdown request to [{}]", node);
-                            transportService.sendRequest(node, NodeShutdownRequestHandler.ACTION, new NodeShutdownRequest(request), new EmptyTransportResponseHandler(ServerThreadPool.Names.SAME) {
+                            transportService.sendRequest(node, NodeShutdownRequestHandler.ACTION, new NodeShutdownRequest(request), new EmptyTransportResponseHandler(ThreadPool.Names.SAME) {
                                 @Override
                                 public void handleResponse(TransportResponse.Empty response) {
                                     logger.trace("[cluster_shutdown]: received shutdown response from [{}]", node);
@@ -149,7 +149,7 @@ public class TransportNodesShutdownAction extends TransportMasterNodeOperationAc
 
                     // now, kill the master
                     logger.trace("[cluster_shutdown]: shutting down the master [{}]", state.nodes().masterNode());
-                    transportService.sendRequest(state.nodes().masterNode(), NodeShutdownRequestHandler.ACTION, new NodeShutdownRequest(request), new EmptyTransportResponseHandler(ServerThreadPool.Names.SAME) {
+                    transportService.sendRequest(state.nodes().masterNode(), NodeShutdownRequestHandler.ACTION, new NodeShutdownRequest(request), new EmptyTransportResponseHandler(ThreadPool.Names.SAME) {
                         @Override
                         public void handleResponse(TransportResponse.Empty response) {
                             logger.trace("[cluster_shutdown]: received shutdown response from master");
@@ -193,7 +193,7 @@ public class TransportNodesShutdownAction extends TransportMasterNodeOperationAc
                         }
 
                         logger.trace("[partial_cluster_shutdown]: sending shutdown request to [{}]", node);
-                        transportService.sendRequest(node, NodeShutdownRequestHandler.ACTION, new NodeShutdownRequest(request), new EmptyTransportResponseHandler(ServerThreadPool.Names.SAME) {
+                        transportService.sendRequest(node, NodeShutdownRequestHandler.ACTION, new NodeShutdownRequest(request), new EmptyTransportResponseHandler(ThreadPool.Names.SAME) {
                             @Override
                             public void handleResponse(TransportResponse.Empty response) {
                                 logger.trace("[partial_cluster_shutdown]: received shutdown response from [{}]", node);
@@ -233,7 +233,7 @@ public class TransportNodesShutdownAction extends TransportMasterNodeOperationAc
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
 
         @Override

@@ -55,21 +55,13 @@ import org.elasticsearch.search.internal.SearchContext;
 import org.elasticsearch.search.internal.ShardSearchRequest;
 import org.elasticsearch.search.query.*;
 import org.elasticsearch.search.warmer.IndexWarmersMetaData;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.server.ServerThreadPool;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicLong;
-import org.elasticsearch.search.SearchContextMissingException;
-import org.elasticsearch.search.SearchContextMissingException;
-import org.elasticsearch.search.SearchParseElement;
-import org.elasticsearch.search.SearchParseElement;
-import org.elasticsearch.search.SearchParseException;
-import org.elasticsearch.search.SearchParseException;
-import org.elasticsearch.search.SearchShardTarget;
-import org.elasticsearch.search.SearchShardTarget;
 
 import static org.elasticsearch.common.unit.TimeValue.timeValueMinutes;
 

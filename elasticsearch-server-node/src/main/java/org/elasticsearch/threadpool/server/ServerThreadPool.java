@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.threadpool;
+package org.elasticsearch.threadpool.server;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -32,6 +32,10 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.SizeValue;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.util.concurrent.*;
+import org.elasticsearch.threadpool.ThreadPool;
+import org.elasticsearch.threadpool.ThreadPoolInfo;
+import org.elasticsearch.threadpool.ThreadPoolInfoElement;
+import org.elasticsearch.threadpool.ThreadPoolStatsElement;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,22 +51,6 @@ import static org.elasticsearch.common.unit.TimeValue.timeValueSeconds;
  *
  */
 public class ServerThreadPool extends AbstractComponent implements ThreadPool {
-
-    public static class Names {
-        public static final String SAME = "same";
-        public static final String GENERIC = "generic";
-        public static final String GET = "get";
-        public static final String INDEX = "index";
-        public static final String BULK = "bulk";
-        public static final String SEARCH = "search";
-        public static final String PERCOLATE = "percolate";
-        public static final String MANAGEMENT = "management";
-        public static final String FLUSH = "flush";
-        public static final String MERGE = "merge";
-        public static final String CACHE = "cache";
-        public static final String REFRESH = "refresh";
-        public static final String SNAPSHOT = "snapshot";
-    }
 
     private final ImmutableMap<String, ExecutorHolder> executors;
 

@@ -37,7 +37,7 @@ import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.discovery.Discovery;
 import org.elasticsearch.discovery.DiscoveryService;
 import org.elasticsearch.rest.RestStatus;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -55,7 +55,7 @@ public class GatewayService extends AbstractLifecycleComponent<GatewayService> i
 
     private final Gateway gateway;
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final AllocationService allocationService;
 
@@ -76,7 +76,7 @@ public class GatewayService extends AbstractLifecycleComponent<GatewayService> i
     private final AtomicBoolean scheduledRecovery = new AtomicBoolean();
 
     @Inject
-    public GatewayService(Settings settings, Gateway gateway, AllocationService allocationService, ClusterService clusterService, DiscoveryService discoveryService, ServerThreadPool threadPool) {
+    public GatewayService(Settings settings, Gateway gateway, AllocationService allocationService, ClusterService clusterService, DiscoveryService discoveryService, ThreadPool threadPool) {
         super(settings);
         this.gateway = gateway;
         this.allocationService = allocationService;
@@ -209,7 +209,7 @@ public class GatewayService extends AbstractLifecycleComponent<GatewayService> i
         if (!ignoreRecoverAfterTime && recoverAfterTime != null) {
             if (scheduledRecovery.compareAndSet(false, true)) {
                 logger.debug("delaying initial state recovery for [{}]", recoverAfterTime);
-                threadPool.schedule(recoverAfterTime, ServerThreadPool.Names.GENERIC, new Runnable() {
+                threadPool.schedule(recoverAfterTime, ThreadPool.Names.GENERIC, new Runnable() {
                     @Override
                     public void run() {
                         if (recovered.compareAndSet(false, true)) {

@@ -29,7 +29,7 @@ import org.elasticsearch.cluster.block.ClusterBlockLevel;
 import org.elasticsearch.cluster.metadata.MetaDataMappingService;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.util.concurrent.CountDownLatch;
@@ -44,14 +44,14 @@ public class TransportPutMappingAction extends TransportMasterNodeOperationActio
 
     @Inject
     public TransportPutMappingAction(Settings settings, TransportService transportService, ClusterService clusterService,
-                                     ServerThreadPool threadPool, MetaDataMappingService metaDataMappingService) {
+                                     ThreadPool threadPool, MetaDataMappingService metaDataMappingService) {
         super(settings, transportService, clusterService, threadPool);
         this.metaDataMappingService = metaDataMappingService;
     }
 
     @Override
     protected String executor() {
-        return ServerThreadPool.Names.MANAGEMENT;
+        return ThreadPool.Names.MANAGEMENT;
     }
 
     @Override

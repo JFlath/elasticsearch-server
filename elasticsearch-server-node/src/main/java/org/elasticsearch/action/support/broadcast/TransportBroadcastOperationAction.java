@@ -33,7 +33,7 @@ import org.elasticsearch.cluster.routing.ShardIterator;
 import org.elasticsearch.cluster.routing.ShardRouting;
 import org.elasticsearch.common.Nullable;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -49,13 +49,13 @@ public abstract class TransportBroadcastOperationAction<Request extends Broadcas
 
     protected final TransportService transportService;
 
-    protected final ServerThreadPool threadPool;
+    protected final ThreadPool threadPool;
 
     final String transportAction;
     final String transportShardAction;
     final String executor;
 
-    protected TransportBroadcastOperationAction(Settings settings, ServerThreadPool threadPool, ClusterService clusterService, TransportService transportService) {
+    protected TransportBroadcastOperationAction(Settings settings, ThreadPool threadPool, ClusterService clusterService, TransportService transportService) {
         super(settings, threadPool);
         this.clusterService = clusterService;
         this.transportService = transportService;
@@ -251,7 +251,7 @@ public abstract class TransportBroadcastOperationAction<Request extends Broadcas
 
                             @Override
                             public String executor() {
-                                return ServerThreadPool.Names.SAME;
+                                return ThreadPool.Names.SAME;
                             }
 
                             @Override
@@ -349,7 +349,7 @@ public abstract class TransportBroadcastOperationAction<Request extends Broadcas
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
 
         @Override

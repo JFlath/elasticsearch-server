@@ -39,7 +39,7 @@ import org.elasticsearch.search.controller.ShardScoreDoc;
 import org.elasticsearch.search.fetch.QueryFetchSearchResult;
 import org.elasticsearch.search.internal.InternalSearchHits;
 import org.elasticsearch.search.internal.InternalSearchResponse;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.io.IOException;
 import java.util.Map;
@@ -53,7 +53,7 @@ import static org.elasticsearch.action.search.type.TransportSearchHelper.interna
  */
 public class TransportSearchScrollScanAction extends AbstractComponent {
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final ClusterService clusterService;
 
@@ -64,7 +64,7 @@ public class TransportSearchScrollScanAction extends AbstractComponent {
     private final TransportSearchCache searchCache;
 
     @Inject
-    public TransportSearchScrollScanAction(Settings settings, ServerThreadPool threadPool, ClusterService clusterService,
+    public TransportSearchScrollScanAction(Settings settings, ThreadPool threadPool, ClusterService clusterService,
                                            TransportSearchCache searchCache,
                                            SearchServiceTransportAction searchService, SearchPhaseController searchPhaseController) {
         super(settings);
@@ -155,7 +155,7 @@ public class TransportSearchScrollScanAction extends AbstractComponent {
 
             if (localOperations > 0) {
                 if (request.operationThreading() == SearchOperationThreading.SINGLE_THREAD) {
-                    threadPool.executor(ServerThreadPool.Names.SEARCH).execute(new Runnable() {
+                    threadPool.executor(ThreadPool.Names.SEARCH).execute(new Runnable() {
                         @Override
                         public void run() {
                             for (Tuple<String, Long> target : scrollId.context()) {
@@ -172,7 +172,7 @@ public class TransportSearchScrollScanAction extends AbstractComponent {
                         final DiscoveryNode node = nodes.get(target.v1());
                         if (node != null && nodes.localNodeId().equals(node.id())) {
                             if (localAsync) {
-                                threadPool.executor(ServerThreadPool.Names.SEARCH).execute(new Runnable() {
+                                threadPool.executor(ThreadPool.Names.SEARCH).execute(new Runnable() {
                                     @Override
                                     public void run() {
                                         executePhase(node, target.v2());

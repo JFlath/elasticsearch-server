@@ -39,7 +39,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.node.NodeClosedException;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -56,7 +56,7 @@ public abstract class TransportInstanceSingleOperationAction<Request extends Ins
     final String transportAction;
     final String executor;
 
-    protected TransportInstanceSingleOperationAction(Settings settings, ServerThreadPool threadPool, ClusterService clusterService, TransportService transportService) {
+    protected TransportInstanceSingleOperationAction(Settings settings, ThreadPool threadPool, ClusterService clusterService, TransportService transportService) {
         super(settings, threadPool);
         this.clusterService = clusterService;
         this.transportService = transportService;
@@ -210,7 +210,7 @@ public abstract class TransportInstanceSingleOperationAction<Request extends Ins
 
                     @Override
                     public String executor() {
-                        return ServerThreadPool.Names.SAME;
+                        return ThreadPool.Names.SAME;
                     }
 
                     @Override
@@ -295,7 +295,7 @@ public abstract class TransportInstanceSingleOperationAction<Request extends Ins
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
 
         @Override

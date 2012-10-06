@@ -39,7 +39,7 @@ import org.elasticsearch.common.util.concurrent.ConcurrentCollections;
 import org.elasticsearch.common.util.concurrent.EsExecutors;
 import org.elasticsearch.discovery.zen.DiscoveryNodesProvider;
 import org.elasticsearch.discovery.zen.ping.ZenPing;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 
 import java.io.IOException;
@@ -61,7 +61,7 @@ public class UnicastZenPing extends AbstractLifecycleComponent<ZenPing> implemen
 
     public static final int LIMIT_PORTS_COUNT = 1;
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final TransportService transportService;
 
@@ -82,11 +82,11 @@ public class UnicastZenPing extends AbstractLifecycleComponent<ZenPing> implemen
 
     private final CopyOnWriteArrayList<UnicastHostsProvider> hostsProviders = new CopyOnWriteArrayList<UnicastHostsProvider>();
 
-    public UnicastZenPing(ServerThreadPool threadPool, TransportService transportService, ClusterName clusterName) {
+    public UnicastZenPing(ThreadPool threadPool, TransportService transportService, ClusterName clusterName) {
         this(EMPTY_SETTINGS, threadPool, transportService, clusterName, null);
     }
 
-    public UnicastZenPing(Settings settings, ServerThreadPool threadPool, TransportService transportService, ClusterName clusterName, @Nullable Set<UnicastHostsProvider> unicastHostsProviders) {
+    public UnicastZenPing(Settings settings, ThreadPool threadPool, TransportService transportService, ClusterName clusterName, @Nullable Set<UnicastHostsProvider> unicastHostsProviders) {
         super(settings);
         this.threadPool = threadPool;
         this.transportService = transportService;
@@ -174,11 +174,11 @@ public class UnicastZenPing extends AbstractLifecycleComponent<ZenPing> implemen
         final SendPingsHandler sendPingsHandler = new SendPingsHandler(pingIdGenerator.incrementAndGet());
         receivedResponses.put(sendPingsHandler.id(), ConcurrentCollections.<DiscoveryNode, PingResponse>newConcurrentMap());
         sendPings(timeout, null, sendPingsHandler);
-        threadPool.schedule(TimeValue.timeValueMillis(timeout.millis() / 2), ServerThreadPool.Names.GENERIC, new Runnable() {
+        threadPool.schedule(TimeValue.timeValueMillis(timeout.millis() / 2), ThreadPool.Names.GENERIC, new Runnable() {
             @Override
             public void run() {
                 sendPings(timeout, null, sendPingsHandler);
-                threadPool.schedule(TimeValue.timeValueMillis(timeout.millis() / 2), ServerThreadPool.Names.GENERIC, new Runnable() {
+                threadPool.schedule(TimeValue.timeValueMillis(timeout.millis() / 2), ThreadPool.Names.GENERIC, new Runnable() {
                     @Override
                     public void run() {
                         sendPings(timeout, TimeValue.timeValueMillis(timeout.millis() / 2), sendPingsHandler);
@@ -317,7 +317,7 @@ public class UnicastZenPing extends AbstractLifecycleComponent<ZenPing> implemen
 
             @Override
             public String executor() {
-                return ServerThreadPool.Names.SAME;
+                return ThreadPool.Names.SAME;
             }
 
             @Override
@@ -365,7 +365,7 @@ public class UnicastZenPing extends AbstractLifecycleComponent<ZenPing> implemen
             throw new ElasticSearchIllegalStateException("received ping request while stopped/closed");
         }
         temporalResponses.add(request.pingResponse);
-        threadPool.schedule(TimeValue.timeValueMillis(request.timeout.millis() * 2), ServerThreadPool.Names.SAME, new Runnable() {
+        threadPool.schedule(TimeValue.timeValueMillis(request.timeout.millis() * 2), ThreadPool.Names.SAME, new Runnable() {
             @Override
             public void run() {
                 temporalResponses.remove(request.pingResponse);
@@ -395,7 +395,7 @@ public class UnicastZenPing extends AbstractLifecycleComponent<ZenPing> implemen
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
 
         @Override

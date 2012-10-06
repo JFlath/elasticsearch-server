@@ -38,17 +38,17 @@ public class NodeClusterAdminClient extends AbstractServerClusterAdminClient imp
 
     private final Settings settings;
     
-    private final ImmutableMap<ServerClusterAction, TransportAction> actions;
+    private final ImmutableMap<ClusterAction, TransportAction> actions;
 
     @Inject
     public NodeClusterAdminClient(Settings settings, 
             Map<GenericAction, TransportAction> actions) {
         super();
         this.settings = settings;
-        MapBuilder<ServerClusterAction, TransportAction> actionsBuilder = new MapBuilder<ServerClusterAction, TransportAction>();
+        MapBuilder<ClusterAction, TransportAction> actionsBuilder = new MapBuilder<ClusterAction, TransportAction>();
         for (Map.Entry<GenericAction, TransportAction> entry : actions.entrySet()) {
-            if (entry.getKey() instanceof ServerClusterAction) {
-                actionsBuilder.put((ServerClusterAction) entry.getKey(), entry.getValue());
+            if (entry.getKey() instanceof ClusterAction) {
+                actionsBuilder.put((ClusterAction) entry.getKey(), entry.getValue());
             }
         }
         this.actions = actionsBuilder.immutableMap();
@@ -66,20 +66,6 @@ public class NodeClusterAdminClient extends AbstractServerClusterAdminClient imp
 
     @Override
     public <Request extends ActionRequest, Response extends ActionResponse, RequestBuilder extends ActionRequestBuilder<Request, Response, RequestBuilder>> 
-            ActionFuture<Response> execute(ServerClusterAction<Request, Response, RequestBuilder> action, Request request) {
-        TransportAction<Request, Response> transportAction = actions.get(action);
-        return transportAction.execute(request);
-    }
-
-    @Override
-    public <Request extends ActionRequest, Response extends ActionResponse, RequestBuilder extends ActionRequestBuilder<Request, Response, RequestBuilder>> 
-            void execute(ServerClusterAction<Request, Response, RequestBuilder> action, Request request, ActionListener<Response> listener) {
-        TransportAction<Request, Response> transportAction = actions.get(action);
-        transportAction.execute(request, listener);
-    }
-
-    @Override
-    public <Request extends ActionRequest, Response extends ActionResponse, RequestBuilder extends ActionRequestBuilder<Request, Response, RequestBuilder>> 
             ActionFuture<Response> execute(ClusterAction<Request, Response, RequestBuilder> action, Request request) {
         TransportAction<Request, Response> transportAction = actions.get(action);
         return transportAction.execute(request);
@@ -88,6 +74,20 @@ public class NodeClusterAdminClient extends AbstractServerClusterAdminClient imp
     @Override
     public <Request extends ActionRequest, Response extends ActionResponse, RequestBuilder extends ActionRequestBuilder<Request, Response, RequestBuilder>> 
             void execute(ClusterAction<Request, Response, RequestBuilder> action, Request request, ActionListener<Response> listener) {
+        TransportAction<Request, Response> transportAction = actions.get(action);
+        transportAction.execute(request, listener);
+    }
+
+    @Override
+    public <Request extends ActionRequest, Response extends ActionResponse, RequestBuilder extends ActionRequestBuilder<Request, Response, RequestBuilder>> 
+            ActionFuture<Response> execute(ServerClusterAction<Request, Response, RequestBuilder> action, Request request) {
+        TransportAction<Request, Response> transportAction = actions.get(action);
+        return transportAction.execute(request);
+    }
+
+    @Override
+    public <Request extends ActionRequest, Response extends ActionResponse, RequestBuilder extends ActionRequestBuilder<Request, Response, RequestBuilder>> 
+            void execute(ServerClusterAction<Request, Response, RequestBuilder> action, Request request, ActionListener<Response> listener) {
         TransportAction<Request, Response> transportAction = actions.get(action);
         transportAction.execute(request, listener);
     }

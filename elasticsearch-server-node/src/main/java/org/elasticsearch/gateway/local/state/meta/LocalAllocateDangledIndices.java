@@ -36,7 +36,7 @@ import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.discovery.MasterNotDiscoveredException;
-import org.elasticsearch.threadpool.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.*;
 
 import java.io.IOException;
@@ -89,7 +89,7 @@ public class LocalAllocateDangledIndices extends AbstractComponent {
 
             @Override
             public String executor() {
-                return ServerThreadPool.Names.SAME;
+                return ThreadPool.Names.SAME;
             }
         });
     }
@@ -164,7 +164,7 @@ public class LocalAllocateDangledIndices extends AbstractComponent {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SAME;
+            return ThreadPool.Names.SAME;
         }
     }
 

@@ -19,6 +19,7 @@
 
 package org.elasticsearch.threadpool;
 
+import org.elasticsearch.threadpool.server.ServerThreadPool;
 import org.elasticsearch.common.inject.AbstractModule;
 import org.elasticsearch.common.settings.Settings;
 
@@ -35,6 +36,6 @@ public class ThreadPoolModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(ServerThreadPool.class).asEagerSingleton();
+        bind(ThreadPool.class).to(ServerThreadPool.class).asEagerSingleton();
     }
 }
