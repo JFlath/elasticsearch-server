@@ -1,1 +1,1 @@
-.. image:: overview.png
+.. image:: elasticsearch-server/raw/master/overview.png
