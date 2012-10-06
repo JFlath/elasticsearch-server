@@ -136,10 +136,7 @@ public final class InternalNode implements Node {
         this.environment = tuple.v2();
 
         CompressorFactory.configure(settings);
-        logger.info("default compressor: {}", CompressorFactory.defaultCompressor().getClass().getName());
 
-        
-        
         NodeEnvironment nodeEnvironment = new NodeEnvironment(this.settings, this.environment);
 
         ModulesBuilder modules = new ModulesBuilder();

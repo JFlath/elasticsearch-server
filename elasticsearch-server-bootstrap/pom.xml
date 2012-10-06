@@ -46,14 +46,15 @@
             <scope>compile</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.elasticsearch.server</groupId>
-            <artifactId>elasticsearch-server-compression-snappy</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-
+        <!--
+                <dependency>
+                    <groupId>org.elasticsearch.server</groupId>
+                    <artifactId>elasticsearch-server-compression-snappy</artifactId>
+                    <version>${project.version}</version>
+                    <type>jar</type>
+                    <scope>compile</scope>
+                </dependency>
+        -->
         <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
@@ -89,6 +90,18 @@
     
     <build>
         <plugins>
+            <plugin>
+                <groupId>com.googlecode.maven-overview-plugin</groupId>
+                <artifactId>maven-overview-plugin</artifactId>
+                <version>1.6</version>
+                <configuration>
+                    <exclusions>
+                        <exclusion>
+                            <scope>test</scope>
+                        </exclusion>
+                    </exclusions>
+                </configuration>
+            </plugin>            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>

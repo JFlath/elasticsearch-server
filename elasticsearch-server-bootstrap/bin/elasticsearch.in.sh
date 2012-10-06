@@ -36,6 +36,9 @@ JAVA_OPTS="$JAVA_OPTS -Xss256k"
 # set to headless, just in case
 JAVA_OPTS="$JAVA_OPTS -Djava.awt.headless=true"
 
+# set java library path (for sigar)
+JAVA_OPTS="$JAVA_OPTS -Djava.library.path=$ES_HOME/lib/sigar"
+
 # Force the JVM to use IPv4 stack
 # JAVA_OPTS="$JAVA_OPTS -Djava.net.preferIPv4Stack=true"
 
