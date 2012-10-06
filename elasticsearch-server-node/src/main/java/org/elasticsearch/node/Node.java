@@ -19,6 +19,7 @@
 
 package org.elasticsearch.node;
 
+import org.elasticsearch.client.Client;
 import org.elasticsearch.client.IngestClient;
 import org.elasticsearch.client.SearchClient;
 import org.elasticsearch.client.ClusterAdminClient;
@@ -41,6 +42,12 @@ public interface Node {
      */
     Settings settings();
 
+    /**
+     * A universal client (for convenience, decorator for ingest/search/admin client)
+     * 
+     */
+    Client client();
+    
     /**
      * An ingest client
      */

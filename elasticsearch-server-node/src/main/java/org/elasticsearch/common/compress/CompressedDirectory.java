@@ -6,8 +6,6 @@ import org.elasticsearch.index.store.support.ForceSyncDirectory;
 
 import java.io.IOException;
 import java.util.Collection;
-import org.elasticsearch.common.compress.Compressor;
-import org.elasticsearch.common.compress.CompressorFactory;
 
 /**
  */

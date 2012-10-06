@@ -55,6 +55,8 @@ import org.elasticsearch.action.search.MultiSearchResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchScrollRequest;
+import org.elasticsearch.client.AdminClient;
+import org.elasticsearch.client.support.DecoratingAdminClient;
 import org.elasticsearch.client.IngestClient;
 import org.elasticsearch.client.transport.support.InternalTransportClusterAdminClient;
 import org.elasticsearch.client.transport.support.InternalTransportIndicesAdminClient;
@@ -110,10 +112,8 @@ public class TransportClient extends AbstractComponent {
     private final PluginsService pluginsService;
 
     private final TransportClientNodesService nodesService;
-
-    private final InternalTransportClusterAdminClient internalClusterAdminClient;
-
-    private final InternalTransportIndicesAdminClient internalIndicesAdminClient;
+    
+    private final AdminClient adminClient;
 
     private final InternalTransportIngestClient internalIngestClient;
     
@@ -197,12 +197,18 @@ public class TransportClient extends AbstractComponent {
 
         nodesService = injector.getInstance(TransportClientNodesService.class);
 
-        internalClusterAdminClient = injector.getInstance(InternalTransportClusterAdminClient.class);
-        internalIndicesAdminClient = injector.getInstance(InternalTransportIndicesAdminClient.class);
         internalIngestClient = injector.getInstance(InternalTransportIngestClient.class);
         internalSearchClient = injector.getInstance(InternalTransportSearchClient.class);
+        
+        InternalTransportClusterAdminClient internalClusterAdminClient = injector.getInstance(InternalTransportClusterAdminClient.class);
+        InternalTransportIndicesAdminClient internalIndicesAdminClient = injector.getInstance(InternalTransportIndicesAdminClient.class);
+        adminClient = new DecoratingAdminClient(internalClusterAdminClient, internalIndicesAdminClient);
     }
 
+    public AdminClient admin() {
+        return adminClient;
+    }
+    
     /**
      * Returns the current registered transport addresses to use (added using
      * {@link #addTransportAddress(org.elasticsearch.common.transport.TransportAddress)}.

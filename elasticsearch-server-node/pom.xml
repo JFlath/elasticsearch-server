@@ -54,6 +54,7 @@
             <scope>compile</scope>
         </dependency>
 
+
         <dependency>
             <groupId>org.elasticsearch.server</groupId>
             <artifactId>elasticsearch-server-compression-lzf</artifactId>

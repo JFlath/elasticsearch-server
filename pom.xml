@@ -85,6 +85,7 @@
         <module>elasticsearch-server-bootstrap-osgi</module>
         <module>elasticsearch-transport-client</module>
         <module>elasticsearch-lang-mvel</module>
+        <module>elasticsearch-discovery-zen</module>
     </modules>
 
     <dependencies>

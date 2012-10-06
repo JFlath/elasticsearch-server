@@ -27,6 +27,8 @@ import org.elasticsearch.bulk.udp.BulkUdpModule;
 import org.elasticsearch.bulk.udp.BulkUdpService;
 import org.elasticsearch.cache.NodeCache;
 import org.elasticsearch.cache.NodeCacheModule;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.client.support.DecoratingClient;
 import org.elasticsearch.client.IngestClient;
 import org.elasticsearch.client.SearchClient;
 import org.elasticsearch.client.ClusterAdminClient;
@@ -54,7 +56,7 @@ import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.settings.SettingsModule;
 import org.elasticsearch.common.util.concurrent.ThreadLocals;
-import org.elasticsearch.discovery.DiscoveryModule;
+import org.elasticsearch.discovery.DefaultDiscoveryModule;
 import org.elasticsearch.discovery.DiscoveryService;
 import org.elasticsearch.env.ClusterEnvironment;
 import org.elasticsearch.env.EnvironmentModule;
@@ -116,6 +118,8 @@ public final class InternalNode implements Node {
     private final ClusterAdminClient clusterAdminClient;
 
     private final IndicesAdminClient indicesAdminClient;
+    
+    private final Client client;
 
     public InternalNode() throws ElasticSearchException {
         this(ImmutableSettings.Builder.EMPTY_SETTINGS, true);
@@ -132,9 +136,10 @@ public final class InternalNode implements Node {
         this.environment = tuple.v2();
 
         CompressorFactory.configure(settings);
-        
         logger.info("default compressor: {}", CompressorFactory.defaultCompressor().getClass().getName());
 
+        
+        
         NodeEnvironment nodeEnvironment = new NodeEnvironment(this.settings, this.environment);
 
         ModulesBuilder modules = new ModulesBuilder();
@@ -149,7 +154,7 @@ public final class InternalNode implements Node {
         modules.add(new NodeEnvironmentModule(nodeEnvironment));
         modules.add(new ClusterNameModule(settings));
         modules.add(new ThreadPoolModule(settings));
-        modules.add(new DiscoveryModule(settings));
+        modules.add(new DefaultDiscoveryModule(settings));
         modules.add(new ClusterModule(settings));
         modules.add(new RestModule(settings));
         modules.add(new TransportModule(settings));
@@ -172,6 +177,7 @@ public final class InternalNode implements Node {
         searchClient = injector.getInstance(SearchClient.class);
         clusterAdminClient = injector.getInstance(ClusterAdminClient.class);
         indicesAdminClient = injector.getInstance(IndicesAdminClient.class);
+        client = new DecoratingClient(ingestClient, searchClient, clusterAdminClient, indicesAdminClient);
 
         logger.info("{{}}[{}]: initialized", Version.CURRENT, JvmInfo.jvmInfo().pid());
     }
@@ -181,6 +187,11 @@ public final class InternalNode implements Node {
         return this.settings;
     }
 
+    @Override
+    public Client client() {
+        return client;        
+    }
+    
     @Override
     public IngestClient ingestClient() {
         return ingestClient;
@@ -224,6 +235,7 @@ public final class InternalNode implements Node {
         injector.getInstance(MonitorService.class).start();
         injector.getInstance(RestController.class).start();
         injector.getInstance(TransportService.class).start();
+        
         DiscoveryService discoService = injector.getInstance(DiscoveryService.class).start();
 
         // gateway should start after disco, so it can try and recovery from gateway on "start"
