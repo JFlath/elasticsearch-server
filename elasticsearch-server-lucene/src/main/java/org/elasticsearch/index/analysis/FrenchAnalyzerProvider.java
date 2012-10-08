@@ -24,7 +24,7 @@ import org.apache.lucene.analysis.fr.FrenchAnalyzer;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.inject.assistedinject.Assisted;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.env.Environment;
+import org.elasticsearch.env.ClientEnvironment;
 import org.elasticsearch.index.Index;
 import org.elasticsearch.index.settings.IndexSettings;
 
@@ -36,7 +36,7 @@ public class FrenchAnalyzerProvider extends AbstractIndexAnalyzerProvider<French
     private final FrenchAnalyzer analyzer;
 
     @Inject
-    public FrenchAnalyzerProvider(Index index, @IndexSettings Settings indexSettings, Environment env, @Assisted String name, @Assisted Settings settings) {
+    public FrenchAnalyzerProvider(Index index, @IndexSettings Settings indexSettings, ClientEnvironment env, @Assisted String name, @Assisted Settings settings) {
         super(index, indexSettings, name, settings);
         analyzer = new FrenchAnalyzer(version,
                 Analysis.parseStopWords(env, settings, FrenchAnalyzer.getDefaultStopSet(), version),

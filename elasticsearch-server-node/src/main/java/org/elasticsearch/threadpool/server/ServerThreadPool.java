@@ -65,7 +65,7 @@ public class ServerThreadPool extends AbstractComponent implements ThreadPool {
     @Inject
     public ServerThreadPool(Settings settings) {
         super(settings);
-
+        
         Map<String, Settings> groupSettings = settings.getGroups("threadpool");
 
         Map<String, ExecutorHolder> executors = Maps.newHashMap();

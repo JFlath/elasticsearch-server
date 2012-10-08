@@ -56,7 +56,7 @@ import org.elasticsearch.ElasticSearchIllegalArgumentException;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.collect.MapBuilder;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.env.Environment;
+import org.elasticsearch.env.ClientEnvironment;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -125,7 +125,7 @@ public class Analysis {
             .put("_turkish_", TurkishAnalyzer.getDefaultStopSet())
             .immutableMap();
 
-    public static Set<?> parseArticles(Environment env, Settings settings, Version version) {
+    public static Set<?> parseArticles(ClientEnvironment env, Settings settings, Version version) {
         String value = settings.get("articles");
         if (value != null) {
             if ("_none_".equals(value)) {
@@ -146,7 +146,7 @@ public class Analysis {
         return null;
     }
 
-    public static Set<?> parseStopWords(Environment env, Settings settings, Set<?> defaultStopWords, Version version) {
+    public static Set<?> parseStopWords(ClientEnvironment env, Settings settings, Set<?> defaultStopWords, Version version) {
         String value = settings.get("stopwords");
         if (value != null) {
             if ("_none_".equals(value)) {
@@ -183,7 +183,7 @@ public class Analysis {
         return defaultStopWords;
     }
 
-    public static CharArraySet getWordSet(Environment env, Settings settings, String settingsPrefix, Version version) {
+    public static CharArraySet getWordSet(ClientEnvironment env, Settings settings, String settingsPrefix, Version version) {
         List<String> wordList = getWordList(env, settings, settingsPrefix);
         if (wordList == null) {
             return null;
@@ -198,7 +198,7 @@ public class Analysis {
      * @throws ElasticSearchIllegalArgumentException
      *          If the word list cannot be found at either key.
      */
-    public static List<String> getWordList(Environment env, Settings settings, String settingPrefix) {
+    public static List<String> getWordList(ClientEnvironment env, Settings settings, String settingPrefix) {
         String wordListPath = settings.get(settingPrefix + "_path", null);
 
         if (wordListPath == null) {
@@ -250,7 +250,7 @@ public class Analysis {
      * @throws ElasticSearchIllegalArgumentException
      *          If the Reader can not be instantiated.
      */
-    public static Reader getReaderFromFile(Environment env, Settings settings, String settingPrefix) {
+    public static Reader getReaderFromFile(ClientEnvironment env, Settings settings, String settingPrefix) {
         String filePath = settings.get(settingPrefix, null);
 
         if (filePath == null) {

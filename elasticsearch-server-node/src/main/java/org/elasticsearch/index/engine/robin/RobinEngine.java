@@ -24,7 +24,6 @@ import com.google.common.collect.Lists;
 import org.apache.lucene.index.*;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.AlreadyClosedException;
-//import org.apache.lucene.util.UnicodeUtil;
 import org.elasticsearch.common.lucene.util.UnicodeUtil;
 import org.elasticsearch.ElasticSearchException;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
@@ -63,6 +62,7 @@ import org.elasticsearch.index.translog.Translog;
 import org.elasticsearch.index.translog.TranslogStreams;
 import org.elasticsearch.indices.warmer.IndicesWarmer;
 import org.elasticsearch.indices.warmer.InternalIndicesWarmer;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.threadpool.server.ServerThreadPool;
 
 import java.io.IOException;
@@ -98,7 +98,7 @@ public class RobinEngine extends AbstractIndexShardComponent implements Engine {
 
     private volatile boolean enableGcDeletes = true;
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final ShardIndexingService indexingService;
 
@@ -164,7 +164,7 @@ public class RobinEngine extends AbstractIndexShardComponent implements Engine {
     private SegmentInfos lastCommittedSegmentInfos;
 
     @Inject
-    public RobinEngine(ShardId shardId, @IndexSettings Settings indexSettings, ServerThreadPool threadPool,
+    public RobinEngine(ShardId shardId, @IndexSettings Settings indexSettings, ThreadPool threadPool,
                        IndexSettingsService indexSettingsService, ShardIndexingService indexingService, @Nullable IndicesWarmer warmer,
                        Store store, SnapshotDeletionPolicy deletionPolicy, Translog translog,
                        MergePolicyProvider mergePolicyProvider, MergeSchedulerProvider mergeScheduler,

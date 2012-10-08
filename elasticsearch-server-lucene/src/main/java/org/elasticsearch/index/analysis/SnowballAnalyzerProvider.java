@@ -30,7 +30,7 @@ import org.elasticsearch.common.collect.MapBuilder;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.inject.assistedinject.Assisted;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.env.Environment;
+import org.elasticsearch.env.ClientEnvironment;
 import org.elasticsearch.index.Index;
 import org.elasticsearch.index.settings.IndexSettings;
 
@@ -62,7 +62,7 @@ public class SnowballAnalyzerProvider extends AbstractIndexAnalyzerProvider<Snow
     private final SnowballAnalyzer analyzer;
 
     @Inject
-    public SnowballAnalyzerProvider(Index index, @IndexSettings Settings indexSettings, Environment env, @Assisted String name, @Assisted Settings settings) {
+    public SnowballAnalyzerProvider(Index index, @IndexSettings Settings indexSettings, ClientEnvironment env, @Assisted String name, @Assisted Settings settings) {
         super(index, indexSettings, name, settings);
 
         String language = settings.get("language", settings.get("name", "English"));

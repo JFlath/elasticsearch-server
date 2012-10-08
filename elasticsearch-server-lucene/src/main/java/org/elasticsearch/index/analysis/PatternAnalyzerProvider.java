@@ -26,7 +26,7 @@ import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.inject.assistedinject.Assisted;
 import org.elasticsearch.common.regex.Regex;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.env.Environment;
+import org.elasticsearch.env.ClientEnvironment;
 import org.elasticsearch.index.Index;
 import org.elasticsearch.index.settings.IndexSettings;
 
@@ -41,7 +41,7 @@ public class PatternAnalyzerProvider extends AbstractIndexAnalyzerProvider<Patte
     private final PatternAnalyzer analyzer;
 
     @Inject
-    public PatternAnalyzerProvider(Index index, @IndexSettings Settings indexSettings, Environment env, @Assisted String name, @Assisted Settings settings) {
+    public PatternAnalyzerProvider(Index index, @IndexSettings Settings indexSettings, ClientEnvironment env, @Assisted String name, @Assisted Settings settings) {
         super(index, indexSettings, name, settings);
 
         boolean lowercase = settings.getAsBoolean("lowercase", true);

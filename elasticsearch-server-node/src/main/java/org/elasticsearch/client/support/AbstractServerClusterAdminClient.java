@@ -26,24 +26,11 @@ import org.elasticsearch.action.admin.cluster.reroute.ClusterRerouteRequest;
 import org.elasticsearch.action.admin.cluster.reroute.ClusterRerouteRequestBuilder;
 import org.elasticsearch.action.admin.cluster.reroute.ClusterRerouteResponse;
 import org.elasticsearch.client.ServerClusterAdminClient;
-import org.elasticsearch.threadpool.server.ServerThreadPool;
-import org.elasticsearch.threadpool.ThreadPool;
 
 /**
  *
  */
 public abstract class AbstractServerClusterAdminClient extends AbstractClusterAdminClient implements ServerClusterAdminClient {
-
-    private final ThreadPool threadPool;
-    
-    public AbstractServerClusterAdminClient() {
-        this.threadPool = new ServerThreadPool();
-    }
-    
-    @Override
-    public ThreadPool threadPool() {
-        return threadPool;
-    }    
     
     @Override
     public <Request extends ActionRequest, Response extends ActionResponse, RequestBuilder extends ActionRequestBuilder<Request, Response, RequestBuilder>> 

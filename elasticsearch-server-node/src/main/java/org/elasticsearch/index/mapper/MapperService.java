@@ -40,7 +40,7 @@ import org.elasticsearch.common.lucene.search.TermFilter;
 import org.elasticsearch.common.lucene.search.XBooleanFilter;
 import org.elasticsearch.common.regex.Regex;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.env.ClusterEnvironment;
+import org.elasticsearch.env.Environment;
 import org.elasticsearch.env.FailedToResolveConfigException;
 import org.elasticsearch.index.AbstractIndexComponent;
 import org.elasticsearch.index.Index;
@@ -99,7 +99,7 @@ public class MapperService extends AbstractIndexComponent implements Iterable<Do
     private final SmartIndexNameSearchQuoteAnalyzer searchQuoteAnalyzer;
 
     @Inject
-    public MapperService(Index index, @IndexSettings Settings indexSettings, ClusterEnvironment environment, AnalysisService analysisService) {
+    public MapperService(Index index, @IndexSettings Settings indexSettings, Environment environment, AnalysisService analysisService) {
         super(index, indexSettings);
         this.analysisService = analysisService;
         this.documentParser = new DocumentMapperParser(index, indexSettings, analysisService);

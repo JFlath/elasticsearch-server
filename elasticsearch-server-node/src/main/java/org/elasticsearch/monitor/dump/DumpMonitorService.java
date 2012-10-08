@@ -24,7 +24,7 @@ import org.elasticsearch.common.Nullable;
 import org.elasticsearch.common.component.AbstractComponent;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.env.ClusterEnvironment;
+import org.elasticsearch.env.Environment;
 import org.elasticsearch.monitor.dump.heap.HeapDumpContributor;
 import org.elasticsearch.monitor.dump.summary.SummaryDumpContributor;
 import org.elasticsearch.monitor.dump.thread.ThreadDumpContributor;
@@ -58,11 +58,11 @@ public class DumpMonitorService extends AbstractComponent {
     private final File workFile;
 
     public DumpMonitorService() {
-        this(EMPTY_SETTINGS, new ClusterEnvironment(EMPTY_SETTINGS), null, null);
+        this(EMPTY_SETTINGS, new Environment(EMPTY_SETTINGS), null, null);
     }
 
     @Inject
-    public DumpMonitorService(Settings settings, ClusterEnvironment environment,
+    public DumpMonitorService(Settings settings, Environment environment,
                               @Nullable ClusterService clusterService, @Nullable Map<String, DumpContributorFactory> contributors) {
         super(settings);
         this.clusterService = clusterService;

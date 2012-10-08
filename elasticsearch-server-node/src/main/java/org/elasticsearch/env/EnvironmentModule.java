@@ -26,14 +26,14 @@ import org.elasticsearch.common.inject.AbstractModule;
  */
 public class EnvironmentModule extends AbstractModule {
 
-    private final ClusterEnvironment environment;
+    private final Environment environment;
 
-    public EnvironmentModule(ClusterEnvironment environment) {
+    public EnvironmentModule(Environment environment) {
         this.environment = environment;
     }
 
     @Override
     protected void configure() {
-        bind(ClusterEnvironment.class).toInstance(environment);
+        bind(Environment.class).toInstance(environment);
     }
 }

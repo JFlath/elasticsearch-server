@@ -35,6 +35,7 @@ import static com.google.common.collect.Lists.newArrayList;
  */
 public class AndFilterParser implements FilterParser {
 
+    public static final String NAME = "and";
 
     @Inject
     public AndFilterParser() {
@@ -42,7 +43,7 @@ public class AndFilterParser implements FilterParser {
 
     @Override
     public String[] names() {
-        return new String[]{AndFilterBuilder.NAME};
+        return new String[]{NAME};
     }
 
     @Override

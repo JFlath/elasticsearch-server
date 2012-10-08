@@ -221,7 +221,6 @@ public class BlockJoinQuery extends Query {
 
         public BlockJoinScorer(Weight weight, Scorer childScorer, FixedBitSet parentBits, int firstChildDoc, ScoreMode scoreMode, Collector childCollector) {
             super(weight);
-            //System.out.println("Q.init firstChildDoc=" + firstChildDoc);
             this.parentBits = parentBits;
             this.childScorer = childScorer;
             this.scoreMode = scoreMode;
@@ -269,16 +268,13 @@ public class BlockJoinQuery extends Query {
 
         @Override
         public int nextDoc() throws IOException {
-            //System.out.println("Q.nextDoc() nextChildDoc=" + nextChildDoc);
 
             if (nextChildDoc == NO_MORE_DOCS) {
-                //System.out.println("  end");
                 return parentDoc = NO_MORE_DOCS;
             }
 
             // Gather all children sharing the same parent as nextChildDoc
             parentDoc = parentBits.nextSetBit(nextChildDoc);
-            //System.out.println("  parentDoc=" + parentDoc);
             assert parentDoc != -1;
 
             float totalScore = 0;
@@ -286,7 +282,6 @@ public class BlockJoinQuery extends Query {
 
             childDocUpto = 0;
             do {
-                //System.out.println("  c=" + nextChildDoc);
                 if (pendingChildDocs.length == childDocUpto) {
                     pendingChildDocs = ArrayUtil.grow(pendingChildDocs);
                     if (scoreMode != ScoreMode.None) {
@@ -308,7 +303,6 @@ public class BlockJoinQuery extends Query {
                 childDocUpto++;
                 nextChildDoc = childScorer.nextDoc();
             } while (nextChildDoc < parentDoc);
-            //System.out.println("  nextChildDoc=" + nextChildDoc);
 
             // Parent & child docs are supposed to be orthogonal:
             assert nextChildDoc != parentDoc;
@@ -327,7 +321,6 @@ public class BlockJoinQuery extends Query {
                     break;
             }
 
-            //System.out.println("  return parentDoc=" + parentDoc);
             return parentDoc;
         }
 
@@ -344,7 +337,6 @@ public class BlockJoinQuery extends Query {
         @Override
         public int advance(int parentTarget) throws IOException {
 
-            //System.out.println("Q.advance parentTarget=" + parentTarget);
             if (parentTarget == NO_MORE_DOCS) {
                 return parentDoc = NO_MORE_DOCS;
             }
@@ -361,20 +353,15 @@ public class BlockJoinQuery extends Query {
 
             final int prevParentDoc = parentBits.prevSetBit(parentTarget - 1);
 
-            //System.out.println("  rolled back to prevParentDoc=" + prevParentDoc + " vs parentDoc=" + parentDoc);
             assert prevParentDoc >= parentDoc;
             if (prevParentDoc > nextChildDoc) {
                 nextChildDoc = childScorer.advance(prevParentDoc);
-                // System.out.println("  childScorer advanced to child docID=" + nextChildDoc);
-                //} else {
-                //System.out.println("  skip childScorer advance");
             }
 
             // Parent & child docs are supposed to be orthogonal:
             assert nextChildDoc != prevParentDoc;
 
             final int nd = nextDoc();
-            //System.out.println("  return nextParentDoc=" + nd);
             return nd;
         }
     }

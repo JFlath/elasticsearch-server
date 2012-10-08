@@ -26,7 +26,7 @@ import org.elasticsearch.common.component.AbstractLifecycleComponent;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.io.Streams;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.env.ClusterEnvironment;
+import org.elasticsearch.env.Environment;
 import org.elasticsearch.node.service.NodeService;
 import org.elasticsearch.rest.RestFilterChain;
 import org.elasticsearch.rest.RestFilter;
@@ -48,7 +48,7 @@ import static org.elasticsearch.rest.RestStatus.*;
  */
 public class HttpServer extends AbstractLifecycleComponent<HttpServer> {
 
-    private final ClusterEnvironment environment;
+    private final Environment environment;
 
     private final HttpServerTransport transport;
 
@@ -61,7 +61,7 @@ public class HttpServer extends AbstractLifecycleComponent<HttpServer> {
     private final PluginSiteFilter pluginSiteFilter = new PluginSiteFilter();
 
     @Inject
-    public HttpServer(Settings settings, ClusterEnvironment environment, HttpServerTransport transport,
+    public HttpServer(Settings settings, Environment environment, HttpServerTransport transport,
                       RestController restController,
                       NodeService nodeService) {
         super(settings);

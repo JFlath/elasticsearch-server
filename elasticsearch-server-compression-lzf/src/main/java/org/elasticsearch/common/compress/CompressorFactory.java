@@ -29,6 +29,7 @@ import org.elasticsearch.common.io.stream.StreamInput;
 import org.jboss.netty.buffer.ChannelBuffer;
 
 import java.io.IOException;
+import org.elasticsearch.common.compress.lzf.LZFCompressor;
 
 /**
  */
@@ -39,6 +40,10 @@ public class CompressorFactory extends BasicCompressorFactory {
     }
 
     public static Compressor defaultCompressor() {
+        if (defaultCompressor == null) {
+            // fallback, in case ServiceLoader did not find a compressor
+            setDefaultCompressor(new LZFCompressor());
+        }
         return (Compressor)defaultCompressor;
     }
 

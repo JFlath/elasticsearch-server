@@ -10,7 +10,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.elasticsearch.plugins</groupId>
+    <groupId>org.elasticsearch.plugin</groupId>
     <artifactId>elasticsearch-lang-mvel</artifactId>
 
     <packaging>jar</packaging>

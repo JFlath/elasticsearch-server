@@ -29,7 +29,7 @@ import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.inject.assistedinject.Assisted;
 import org.elasticsearch.common.lucene.Lucene;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.env.Environment;
+import org.elasticsearch.env.ClientEnvironment;
 import org.elasticsearch.index.Index;
 import org.elasticsearch.index.settings.IndexSettings;
 import org.elasticsearch.indices.analysis.IndicesAnalysisService;
@@ -46,7 +46,7 @@ public class SynonymTokenFilterFactory extends AbstractTokenFilterFactory {
     private final boolean ignoreCase;
 
     @Inject
-    public SynonymTokenFilterFactory(Index index, @IndexSettings Settings indexSettings, Environment env, IndicesAnalysisService indicesAnalysisService, Map<String, TokenizerFactoryFactory> tokenizerFactories,
+    public SynonymTokenFilterFactory(Index index, @IndexSettings Settings indexSettings, ClientEnvironment env, IndicesAnalysisService indicesAnalysisService, Map<String, TokenizerFactoryFactory> tokenizerFactories,
                                      @Assisted String name, @Assisted Settings settings) {
         super(index, indexSettings, name, settings);
 

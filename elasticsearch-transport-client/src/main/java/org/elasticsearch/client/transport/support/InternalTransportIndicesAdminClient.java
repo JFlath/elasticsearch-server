@@ -33,6 +33,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.transport.TransportService;
 
 import java.util.Map;
+import org.elasticsearch.threadpool.ThreadPool;
 
 /**
  *
@@ -43,13 +44,15 @@ public class InternalTransportIndicesAdminClient extends AbstractIndicesAdminCli
     
     private final TransportClientNodesService nodesService;
 
+    private final ThreadPool threadPool;
+
     private final ImmutableMap<IndicesAction, TransportActionNodeProxy> actions;
 
     @Inject
-    public InternalTransportIndicesAdminClient(Settings settings, TransportClientNodesService nodesService, TransportService transportService,
+    public InternalTransportIndicesAdminClient(Settings settings, TransportClientNodesService nodesService, ThreadPool threadPool, TransportService transportService,
                                                Map<String, GenericAction> actions) {
-        super();
         this.settings = settings;
+        this.threadPool = threadPool;
         this.nodesService = nodesService;
         MapBuilder<IndicesAction, TransportActionNodeProxy> actionsBuilder = new MapBuilder<IndicesAction, TransportActionNodeProxy>();
         for (GenericAction action : actions.values()) {
@@ -60,6 +63,10 @@ public class InternalTransportIndicesAdminClient extends AbstractIndicesAdminCli
         this.actions = actionsBuilder.immutableMap();
     }
 
+    @Override
+    public ThreadPool threadPool() {
+        return this.threadPool;
+    }
 
     @SuppressWarnings("unchecked")
     @Override

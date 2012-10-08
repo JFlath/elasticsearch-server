@@ -23,6 +23,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableSet.Builder;
 import org.elasticsearch.ElasticSearchIllegalArgumentException;
 import org.elasticsearch.common.Nullable;
 import org.elasticsearch.common.component.AbstractComponent;
@@ -30,7 +31,7 @@ import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.io.Streams;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.util.concurrent.ConcurrentCollections;
-import org.elasticsearch.env.ClusterEnvironment;
+import org.elasticsearch.env.Environment;
 import org.elasticsearch.index.cache.field.data.FieldDataCache;
 import org.elasticsearch.index.mapper.MapperService;
 import org.elasticsearch.search.lookup.SearchLookup;
@@ -39,7 +40,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
@@ -58,15 +61,24 @@ public class ScriptService extends AbstractComponent {
     private final Cache<CacheKey, CompiledScript> cache = CacheBuilder.newBuilder().build();
 
     private final boolean disableDynamic;
+    
+    static ImmutableSet<ScriptEngineService> getScriptEngineServices() {
+        Builder<ScriptEngineService> set = ImmutableSet.<ScriptEngineService>builder();
+        ServiceLoader<ScriptEngineService> loader = ServiceLoader.load(ScriptEngineService.class);
+        Iterator<ScriptEngineService> it = loader.iterator();
+        while (it.hasNext()) {
+            ScriptEngineService se = it.next();
+            set.add(se);
+        }
+        return set.build();
+    }
 
     public ScriptService(Settings settings) {
-        this(settings, new ClusterEnvironment(), ImmutableSet.<ScriptEngineService>builder()
-                .build()
-        );
+        this(settings, new Environment(), getScriptEngineServices());
     }
 
     @Inject
-    public ScriptService(Settings settings, ClusterEnvironment env, Set<ScriptEngineService> scriptEngines) {
+    public ScriptService(Settings settings, Environment env, Set<ScriptEngineService> scriptEngines) {
         super(settings);
 
         this.defaultLang = componentSettings.get("default_lang", "mvel");

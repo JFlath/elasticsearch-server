@@ -37,7 +37,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Set;
-import org.elasticsearch.env.ClusterEnvironment;
+import org.elasticsearch.env.Environment;
 
 /**
  *
@@ -52,7 +52,7 @@ public class NodeEnvironment extends AbstractComponent {
     private final int localNodeId;
 
     @Inject
-    public NodeEnvironment(Settings settings, ClusterEnvironment environment) {
+    public NodeEnvironment(Settings settings, Environment environment) {
         super(settings);
 
         if (!DiscoveryNode.nodeRequiresLocalStorage(settings)) {

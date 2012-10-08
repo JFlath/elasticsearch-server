@@ -25,26 +25,31 @@ import org.elasticsearch.action.*;
 import org.elasticsearch.action.admin.cluster.ClusterAction;
 import org.elasticsearch.action.admin.cluster.ServerClusterAction;
 import org.elasticsearch.action.support.TransportAction;
+import org.elasticsearch.client.ClusterAdminClient;
 import org.elasticsearch.client.ServerClusterAdminClient;
 import org.elasticsearch.client.support.AbstractServerClusterAdminClient;
 import org.elasticsearch.common.collect.MapBuilder;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.threadpool.ThreadPool;
 
 /**
  *
  */
-public class NodeClusterAdminClient extends AbstractServerClusterAdminClient implements ServerClusterAdminClient {
+public class NodeClusterAdminClient extends AbstractServerClusterAdminClient 
+    implements ServerClusterAdminClient, ClusterAdminClient  {
 
     private final Settings settings;
+    
+    private final ThreadPool threadPool;
     
     private final ImmutableMap<ClusterAction, TransportAction> actions;
 
     @Inject
-    public NodeClusterAdminClient(Settings settings, 
+    public NodeClusterAdminClient(Settings settings, ThreadPool threadPool,
             Map<GenericAction, TransportAction> actions) {
-        super();
         this.settings = settings;
+        this.threadPool = threadPool;
         MapBuilder<ClusterAction, TransportAction> actionsBuilder = new MapBuilder<ClusterAction, TransportAction>();
         for (Map.Entry<GenericAction, TransportAction> entry : actions.entrySet()) {
             if (entry.getKey() instanceof ClusterAction) {
@@ -60,18 +65,21 @@ public class NodeClusterAdminClient extends AbstractServerClusterAdminClient imp
     }
 
     @Override
+    public ThreadPool threadPool() {
+        return threadPool;
+    }
+    
+    @Override
     public void close() {
         // nothing really to do
     }
 
-    @Override
     public <Request extends ActionRequest, Response extends ActionResponse, RequestBuilder extends ActionRequestBuilder<Request, Response, RequestBuilder>> 
             ActionFuture<Response> execute(ClusterAction<Request, Response, RequestBuilder> action, Request request) {
         TransportAction<Request, Response> transportAction = actions.get(action);
         return transportAction.execute(request);
     }
 
-    @Override
     public <Request extends ActionRequest, Response extends ActionResponse, RequestBuilder extends ActionRequestBuilder<Request, Response, RequestBuilder>> 
             void execute(ClusterAction<Request, Response, RequestBuilder> action, Request request, ActionListener<Response> listener) {
         TransportAction<Request, Response> transportAction = actions.get(action);

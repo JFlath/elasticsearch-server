@@ -31,7 +31,7 @@ import org.elasticsearch.common.component.LifecycleComponent;
 import org.elasticsearch.common.inject.Module;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.env.ClusterEnvironment;
+import org.elasticsearch.env.Environment;
 import org.elasticsearch.index.CloseableIndexComponent;
 
 import java.io.File;
@@ -48,7 +48,7 @@ import static com.google.common.collect.Maps.newHashMap;
  */
 public class PluginsService extends AbstractComponent {
 
-    private final ClusterEnvironment environment;
+    private final Environment environment;
 
     private final ImmutableMap<String, Plugin> plugins;
 
@@ -69,7 +69,7 @@ public class PluginsService extends AbstractComponent {
      * @param settings The settings of the system
      * @param environment The environment of the system
      */
-    public PluginsService(Settings settings, ClusterEnvironment environment) {
+    public PluginsService(Settings settings, Environment environment) {
         super(settings);
         this.environment = environment;
 

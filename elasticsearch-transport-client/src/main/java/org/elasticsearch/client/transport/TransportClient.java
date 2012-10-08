@@ -78,7 +78,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.settings.SettingsModule;
 import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.common.util.concurrent.ThreadLocals;
-import org.elasticsearch.env.ClusterEnvironment;
+import org.elasticsearch.env.Environment;
 import org.elasticsearch.env.EnvironmentModule;
 import org.elasticsearch.monitor.MonitorService;
 import org.elasticsearch.node.internal.InternalSettingsPerparer;
@@ -91,6 +91,21 @@ import org.elasticsearch.transport.TransportModule;
 import org.elasticsearch.transport.TransportService;
 
 import java.util.concurrent.TimeUnit;
+import org.elasticsearch.action.bulk.BulkRequestBuilder;
+import org.elasticsearch.action.count.CountRequestBuilder;
+import org.elasticsearch.action.delete.DeleteRequestBuilder;
+import org.elasticsearch.action.deletebyquery.DeleteByQueryRequestBuilder;
+import org.elasticsearch.action.explain.ExplainRequestBuilder;
+import org.elasticsearch.action.get.GetRequestBuilder;
+import org.elasticsearch.action.get.MultiGetRequestBuilder;
+import org.elasticsearch.action.index.IndexRequestBuilder;
+import org.elasticsearch.action.mlt.MoreLikeThisRequestBuilder;
+import org.elasticsearch.action.percolate.PercolateRequestBuilder;
+import org.elasticsearch.action.search.MultiSearchRequestBuilder;
+import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchScrollRequestBuilder;
+import org.elasticsearch.action.update.UpdateRequestBuilder;
+import org.elasticsearch.client.Client;
 
 import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
 
@@ -101,11 +116,11 @@ import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilde
  * <p>The transport client important modules used is the {@link org.elasticsearch.transport.TransportModule} which is
  * started in client mode (only connects, no bind).
  */
-public class TransportClient extends AbstractComponent {
+public class TransportClient extends AbstractComponent implements Client {
 
     private final Injector injector;
 
-    private final ClusterEnvironment environment;
+    private final Environment environment;
 
     private final Settings settings;
 
@@ -167,7 +182,7 @@ public class TransportClient extends AbstractComponent {
      */
     public TransportClient(Settings pSettings, boolean loadConfigSettings) throws ElasticSearchException {
         super(pSettings);
-        Tuple<Settings, ClusterEnvironment> tuple = InternalSettingsPerparer.prepareSettings(pSettings, loadConfigSettings);
+        Tuple<Settings, Environment> tuple = InternalSettingsPerparer.prepareSettings(pSettings, loadConfigSettings);
         Settings settings = settings = settingsBuilder().put(tuple.v1())
                 .put("network.server", false)
                 .put("node.client", true)
@@ -288,12 +303,12 @@ public class TransportClient extends AbstractComponent {
         try {
             injector.getInstance(ThreadPool.class).awaitTermination(10, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            // ignore
+            logger.warn(e.getMessage(), e);
         }
         try {
             injector.getInstance(ThreadPool.class).shutdownNow();
         } catch (Exception e) {
-            // ignore
+            logger.warn(e.getMessage(), e);
         }
 
         CacheRecycler.clear();
@@ -421,5 +436,100 @@ public class TransportClient extends AbstractComponent {
 
     public void explain(ExplainRequest request, ActionListener<ExplainResponse> listener) {
         internalSearchClient.explain(request, listener);
+    }
+
+    @Override
+    public IndexRequestBuilder prepareIndex() {
+        return internalIngestClient.prepareIndex();
+    }
+
+    @Override
+    public UpdateRequestBuilder prepareUpdate() {
+        return internalIngestClient.prepareUpdate();
+    }
+
+    @Override
+    public UpdateRequestBuilder prepareUpdate(String index, String type, String id) {
+        return internalIngestClient.prepareUpdate(index, type, id);
+    }
+
+    @Override
+    public IndexRequestBuilder prepareIndex(String index, String type) {
+        return internalIngestClient.prepareIndex(index, type);
+    }
+
+    @Override
+    public IndexRequestBuilder prepareIndex(String index, String type, String id) {
+        return internalIngestClient.prepareIndex(index, type, id);
+    }
+
+    @Override
+    public DeleteRequestBuilder prepareDelete() {
+        return internalIngestClient.prepareDelete();
+    }
+
+    @Override
+    public DeleteRequestBuilder prepareDelete(String index, String type, String id) {
+        return internalIngestClient.prepareDelete(index, type, id);
+    }
+
+    @Override
+    public BulkRequestBuilder prepareBulk() {
+        return internalIngestClient.prepareBulk();
+    }
+
+    @Override
+    public DeleteByQueryRequestBuilder prepareDeleteByQuery(String... indices) {
+        return internalSearchClient.prepareDeleteByQuery(indices);
+    }
+
+    @Override
+    public GetRequestBuilder prepareGet() {
+        return internalIngestClient.prepareGet();
+    }
+
+    @Override
+    public GetRequestBuilder prepareGet(String index, String type, String id) {
+        return internalIngestClient.prepareGet(index, type, id);
+    }
+
+    @Override
+    public MultiGetRequestBuilder prepareMultiGet() {
+        return internalIngestClient.prepareMultiGet();
+    }
+
+    @Override
+    public CountRequestBuilder prepareCount(String... indices) {
+        return internalSearchClient.prepareCount(indices);
+    }
+
+    @Override
+    public SearchRequestBuilder prepareSearch(String... indices) {
+        return internalSearchClient.prepareSearch(indices);
+    }
+
+    @Override
+    public SearchScrollRequestBuilder prepareSearchScroll(String scrollId) {
+        return internalSearchClient.prepareSearchScroll(scrollId);
+    }
+
+    @Override
+    public MultiSearchRequestBuilder prepareMultiSearch() {
+        return internalSearchClient.prepareMultiSearch();
+    }
+
+    @Override
+    public MoreLikeThisRequestBuilder prepareMoreLikeThis(String index, String type, String id) {
+        return internalSearchClient.prepareMoreLikeThis(index, type, id);
+    }
+
+    @Override
+    public PercolateRequestBuilder preparePercolate(String index, String type) {
+        return internalIngestClient.preparePercolate(index, type);
+    }
+
+    @Override
+    public ExplainRequestBuilder prepareExplain(String index, String type, String id) {
+        return internalSearchClient.prepareExplain(index, type, id);
     }
 }

@@ -49,7 +49,7 @@ import org.elasticsearch.client.IndicesAdminClient;
 import org.elasticsearch.client.IngestClient;
 import org.elasticsearch.client.SearchClient;
 
-public class DecoratingClient  implements Client {
+public class DecoratingClient implements Client {
 
     private final IngestClient ingestClient;
     private final SearchClient searchClient;

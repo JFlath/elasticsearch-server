@@ -55,7 +55,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.settings.SettingsModule;
 import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.common.util.concurrent.ThreadLocals;
-import org.elasticsearch.env.ClusterEnvironment;
+import org.elasticsearch.env.Environment;
 import org.elasticsearch.env.EnvironmentModule;
 import org.elasticsearch.monitor.MonitorService;
 import org.elasticsearch.node.internal.InternalSettingsPerparer;
@@ -63,13 +63,20 @@ import org.elasticsearch.plugins.PluginsModule;
 import org.elasticsearch.plugins.PluginsService;
 import org.elasticsearch.search.TransportSearchModule;
 import org.elasticsearch.threadpool.ThreadPoolModule;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportModule;
 import org.elasticsearch.transport.TransportService;
 
 import java.util.concurrent.TimeUnit;
+import org.elasticsearch.action.bulk.BulkRequestBuilder;
+import org.elasticsearch.action.delete.DeleteRequestBuilder;
+import org.elasticsearch.action.get.GetRequestBuilder;
+import org.elasticsearch.action.get.MultiGetRequestBuilder;
+import org.elasticsearch.action.index.IndexRequestBuilder;
+import org.elasticsearch.action.percolate.PercolateRequestBuilder;
+import org.elasticsearch.action.update.UpdateRequestBuilder;
 
 import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
-import org.elasticsearch.threadpool.client.ClientThreadPool;
 
 /**
  * The transport client allows to create a client that is not part of the cluster, but simply connects to one
@@ -84,7 +91,7 @@ public class TransportIngestClient extends AbstractIngestClient {
 
     private final Settings settings;
 
-    private final ClusterEnvironment environment;
+    private final Environment environment;
 
     private final PluginsService pluginsService;
 
@@ -140,7 +147,7 @@ public class TransportIngestClient extends AbstractIngestClient {
      * @throws ElasticSearchException
      */
     public TransportIngestClient(Settings pSettings, boolean loadConfigSettings) throws ElasticSearchException {
-        Tuple<Settings, ClusterEnvironment> tuple = InternalSettingsPerparer.prepareSettings(pSettings, loadConfigSettings);
+        Tuple<Settings, Environment> tuple = InternalSettingsPerparer.prepareSettings(pSettings, loadConfigSettings);
         Settings settings = settings = settingsBuilder().put(tuple.v1())
                 .put("network.server", false)
                 .put("node.client", true)
@@ -248,14 +255,14 @@ public class TransportIngestClient extends AbstractIngestClient {
             injector.getInstance(plugin).close();
         }
 
-        injector.getInstance(ClientThreadPool.class).shutdown();
+        injector.getInstance(ThreadPool.class).shutdown();
         try {
-            injector.getInstance(ClientThreadPool.class).awaitTermination(10, TimeUnit.SECONDS);
+            injector.getInstance(ThreadPool.class).awaitTermination(10, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             // ignore
         }
         try {
-            injector.getInstance(ClientThreadPool.class).shutdownNow();
+            injector.getInstance(ThreadPool.class).shutdownNow();
         } catch (Exception e) {
             // ignore
         }
@@ -350,6 +357,67 @@ public class TransportIngestClient extends AbstractIngestClient {
     @Override
     public void percolate(PercolateRequest request, ActionListener<PercolateResponse> listener) {
         internalClient.percolate(request, listener);
+    }
+
+
+    @Override
+    public IndexRequestBuilder prepareIndex() {
+        return internalClient.prepareIndex();
+    }
+
+    @Override
+    public UpdateRequestBuilder prepareUpdate() {
+        return internalClient.prepareUpdate();
+    }
+
+    @Override
+    public UpdateRequestBuilder prepareUpdate(String index, String type, String id) {
+        return internalClient.prepareUpdate(index, type, id);
+    }
+
+    @Override
+    public IndexRequestBuilder prepareIndex(String index, String type) {
+        return internalClient.prepareIndex(index, type);
+    }
+
+    @Override
+    public IndexRequestBuilder prepareIndex(String index, String type, String id) {
+        return internalClient.prepareIndex(index, type, id);
+    }
+
+    @Override
+    public DeleteRequestBuilder prepareDelete() {
+        return internalClient.prepareDelete();
+    }
+
+    @Override
+    public DeleteRequestBuilder prepareDelete(String index, String type, String id) {
+        return internalClient.prepareDelete(index, type, id);
+    }
+
+    @Override
+    public BulkRequestBuilder prepareBulk() {
+        return internalClient.prepareBulk();
+    }
+
+    @Override
+    public GetRequestBuilder prepareGet() {
+        return internalClient.prepareGet();
+    }
+
+    @Override
+    public GetRequestBuilder prepareGet(String index, String type, String id) {
+        return internalClient.prepareGet(index, type, id);
+    }
+
+    @Override
+    public MultiGetRequestBuilder prepareMultiGet() {
+        return internalClient.prepareMultiGet();
+    }
+
+    @Override
+    public PercolateRequestBuilder preparePercolate(String index, String type) {
+        return internalClient.preparePercolate(index, type);
     }
 
 }

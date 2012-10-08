@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.elasticsearch.server</groupId>
+        <artifactId>elasticsearch-server</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <groupId>org.elasticsearch.test</groupId>
+    <artifactId>elasticsearch-test-integration</artifactId>
+
+    <packaging>jar</packaging>
+
+    <name>elasticsearch-test-integration</name>
+    
+    <description>
+        Elasticsearch Integration Tests
+    </description>
+
+    <dependencies>
+        
+        <dependency>
+            <groupId>org.elasticsearch.server</groupId>
+            <artifactId>elasticsearch-server-node</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.elasticsearch.server</groupId>
+            <artifactId>elasticsearch-discovery-zen</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.elasticsearch.plugin</groupId>
+            <artifactId>elasticsearch-lang-mvel</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.elasticsearch.server</groupId>
+            <artifactId>elasticsearch-transport-client</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.12.3</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Tests.java</include>
+                    </includes>
+                    <properties>
+                        <property>
+                            <name>listener</name>
+                            <value>org.elasticsearch.test.TestNGLoggingListener</value>
+                        </property>
+                    </properties>
+                    <argLine>-Xmx512m -Des.logger.prefix=</argLine>
+                    <systemPropertyVariables>
+                        <es.node.local>${env.ES_TEST_LOCAL}</es.node.local>
+                        <es.transport.tcp.compress>${env.ES_TEST_COMPRESS}</es.transport.tcp.compress>
+                        <es.index.store.compress.stored>${env.ES_TEST_COMPRESS}</es.index.store.compress.stored>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>            
+        </plugins>
+    </build>    
+    
+</project>

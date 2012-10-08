@@ -46,7 +46,7 @@ import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentHelper;
 import org.elasticsearch.common.xcontent.XContentParser;
-import org.elasticsearch.env.ClusterEnvironment;
+import org.elasticsearch.env.Environment;
 import org.elasticsearch.index.Index;
 import org.elasticsearch.index.mapper.DocumentMapper;
 import org.elasticsearch.index.mapper.MapperParsingException;
@@ -78,7 +78,7 @@ import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilde
  */
 public class MetaDataCreateIndexService extends AbstractComponent {
 
-    private final ClusterEnvironment environment;
+    private final Environment environment;
 
     private final ThreadPool threadPool;
 
@@ -95,7 +95,7 @@ public class MetaDataCreateIndexService extends AbstractComponent {
     private final String riverIndexName;
 
     @Inject
-    public MetaDataCreateIndexService(Settings settings, ClusterEnvironment environment, ThreadPool threadPool, ClusterService clusterService, IndicesService indicesService,
+    public MetaDataCreateIndexService(Settings settings, Environment environment, ThreadPool threadPool, ClusterService clusterService, IndicesService indicesService,
                                       AllocationService allocationService, NodeIndexCreatedAction nodeIndexCreatedAction, MetaDataService metaDataService, @RiverIndexName String riverIndexName) {
         super(settings);
         this.environment = environment;

@@ -7,7 +7,7 @@ import org.elasticsearch.common.http.client.HttpDownloadHelper;
 import org.elasticsearch.common.io.FileSystemUtils;
 import org.elasticsearch.common.io.Streams;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.env.ClusterEnvironment;
+import org.elasticsearch.env.Environment;
 import org.elasticsearch.node.internal.InternalSettingsPerparer;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -29,11 +29,11 @@ import static org.elasticsearch.common.settings.ImmutableSettings.Builder.EMPTY_
  */
 public class PluginManager {
 
-    private final ClusterEnvironment environment;
+    private final Environment environment;
 
     private String url;
 
-    public PluginManager(ClusterEnvironment environment, String url) {
+    public PluginManager(Environment environment, String url) {
         this.environment = environment;
         this.url = url;
 
@@ -250,7 +250,7 @@ public class PluginManager {
     }
 
     public static void main(String[] args) {
-        Tuple<Settings, ClusterEnvironment> initialSettings = InternalSettingsPerparer.prepareSettings(EMPTY_SETTINGS, true);
+        Tuple<Settings, Environment> initialSettings = InternalSettingsPerparer.prepareSettings(EMPTY_SETTINGS, true);
 
         if (!initialSettings.v2().pluginsFile().exists()) {
             FileSystemUtils.mkdirs(initialSettings.v2().pluginsFile());

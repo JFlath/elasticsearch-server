@@ -20,20 +20,7 @@
 package org.elasticsearch.client.support;
 
 import org.elasticsearch.client.SearchClient;
-import org.elasticsearch.threadpool.ThreadPool;
-import org.elasticsearch.threadpool.server.ServerThreadPool;
 
 public abstract class AbstractServerSearchClient extends AbstractSearchClient implements SearchClient {
-
-    private final ThreadPool threadPool;
-    
-    public AbstractServerSearchClient() {
-        this.threadPool = new ServerThreadPool();
-    }
-    
-    @Override
-    public ThreadPool threadPool() {
-        return threadPool;
-    }
         
 }

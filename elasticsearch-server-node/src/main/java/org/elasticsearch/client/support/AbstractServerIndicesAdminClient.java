@@ -20,20 +20,7 @@
 package org.elasticsearch.client.support;
 
 import org.elasticsearch.client.ServerIndicesAdminClient;
-import org.elasticsearch.threadpool.ThreadPool;
-import org.elasticsearch.threadpool.server.ServerThreadPool;
 
 public abstract class AbstractServerIndicesAdminClient extends AbstractIndicesAdminClient implements ServerIndicesAdminClient {
-
-    private final ThreadPool threadPool;
-    
-    public AbstractServerIndicesAdminClient() {
-        this.threadPool = new ServerThreadPool();
-    }
-    
-    @Override
-    public ThreadPool threadPool() {
-        return threadPool;
-    }
         
 }

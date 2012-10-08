@@ -24,7 +24,7 @@ import org.elasticsearch.common.Names;
 import org.elasticsearch.common.collect.Tuple;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.env.ClusterEnvironment;
+import org.elasticsearch.env.Environment;
 import org.elasticsearch.env.FailedToResolveConfigException;
 
 import static org.elasticsearch.common.Strings.cleanPath;
@@ -35,7 +35,7 @@ import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilde
  */
 public class InternalSettingsPerparer {
 
-    public static Tuple<Settings, ClusterEnvironment> prepareSettings(Settings pSettings, boolean loadConfigSettings) {
+    public static Tuple<Settings, Environment> prepareSettings(Settings pSettings, boolean loadConfigSettings) {
         // ignore this prefixes when getting properties from es. and elasticsearch.
         String[] ignorePrefixes = new String[]{"es.default.", "elasticsearch.default."};
         // just create enough settings to build the environment
@@ -47,7 +47,7 @@ public class InternalSettingsPerparer {
                 .putProperties("es.", System.getProperties(), ignorePrefixes)
                 .replacePropertyPlaceholders();
 
-        ClusterEnvironment environment = new ClusterEnvironment(settingsBuilder.build());
+        Environment environment = new Environment(settingsBuilder.build());
 
         if (loadConfigSettings) {
             boolean loadFromEnv = true;
@@ -112,7 +112,7 @@ public class InternalSettingsPerparer {
         }
 
         Settings v1 = settingsBuilder.build();
-        environment = new ClusterEnvironment(v1);
+        environment = new Environment(v1);
 
         // put back the env settings
         settingsBuilder = settingsBuilder().put(v1);
@@ -121,6 +121,6 @@ public class InternalSettingsPerparer {
 
         v1 = settingsBuilder.build();
 
-        return new Tuple<Settings, ClusterEnvironment>(v1, environment);
+        return new Tuple<Settings, Environment>(v1, environment);
     }
 }

@@ -31,7 +31,7 @@ import org.elasticsearch.common.transport.BoundTransportAddress;
 import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.common.util.concurrent.ConcurrentCollections;
 import org.elasticsearch.common.util.concurrent.ConcurrentMapLong;
-import org.elasticsearch.threadpool.TransportThreadPool;
+import org.elasticsearch.threadpool.transport.TransportThreadPool;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;

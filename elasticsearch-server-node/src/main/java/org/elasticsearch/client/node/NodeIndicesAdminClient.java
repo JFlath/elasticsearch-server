@@ -30,6 +30,7 @@ import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
 
 import java.util.Map;
+import org.elasticsearch.threadpool.ThreadPool;
 
 /**
  *
@@ -38,13 +39,15 @@ public class NodeIndicesAdminClient extends AbstractIndicesAdminClient implement
 
     private final Settings settings;
     
+    private final ThreadPool threadPool;
+    
     private final ImmutableMap<IndicesAction, TransportAction> actions;
 
     @Inject
-    public NodeIndicesAdminClient(Settings settings, 
+    public NodeIndicesAdminClient(Settings settings, ThreadPool threadPool,
            Map<GenericAction, TransportAction> actions) {
-        super();
         this.settings = settings;
+        this.threadPool = threadPool;
         MapBuilder<IndicesAction, TransportAction> actionsBuilder = new MapBuilder<IndicesAction, TransportAction>();
         for (Map.Entry<GenericAction, TransportAction> entry : actions.entrySet()) {
             if (entry.getKey() instanceof IndicesAction) {
@@ -59,6 +62,11 @@ public class NodeIndicesAdminClient extends AbstractIndicesAdminClient implement
         return this.settings;
     }
 
+    @Override
+    public ThreadPool threadPool() {
+        return threadPool;
+    }    
+    
     @Override
     public void close() {
         // nothing really to do

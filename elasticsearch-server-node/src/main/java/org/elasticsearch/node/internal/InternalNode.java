@@ -58,7 +58,7 @@ import org.elasticsearch.common.settings.SettingsModule;
 import org.elasticsearch.common.util.concurrent.ThreadLocals;
 import org.elasticsearch.discovery.DefaultDiscoveryModule;
 import org.elasticsearch.discovery.DiscoveryService;
-import org.elasticsearch.env.ClusterEnvironment;
+import org.elasticsearch.env.Environment;
 import org.elasticsearch.env.EnvironmentModule;
 import org.elasticsearch.env.NodeEnvironment;
 import org.elasticsearch.env.NodeEnvironmentModule;
@@ -91,6 +91,7 @@ import org.elasticsearch.search.SearchModule;
 import org.elasticsearch.search.SearchService;
 import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.threadpool.ThreadPoolModule;
+import org.elasticsearch.threadpool.server.ServerThreadPool;
 import org.elasticsearch.transport.TransportModule;
 import org.elasticsearch.transport.TransportService;
 
@@ -107,7 +108,7 @@ public final class InternalNode implements Node {
 
     private final Settings settings;
 
-    private final ClusterEnvironment environment;
+    private final Environment environment;
 
     private final PluginsService pluginsService;
 
@@ -126,7 +127,7 @@ public final class InternalNode implements Node {
     }
 
     public InternalNode(Settings pSettings, boolean loadConfigSettings) throws ElasticSearchException {
-        Tuple<Settings, ClusterEnvironment> tuple = InternalSettingsPerparer.prepareSettings(pSettings, loadConfigSettings);
+        Tuple<Settings, Environment> tuple = InternalSettingsPerparer.prepareSettings(pSettings, loadConfigSettings);
 
         ESLogger logger = Loggers.getLogger(Node.class, tuple.v1().get("name"));
         logger.info("{{}}[{}]: initializing ...", Version.CURRENT, JvmInfo.jvmInfo().pid());
@@ -358,22 +359,22 @@ public final class InternalNode implements Node {
         stopWatch.stop().start("node_cache");
         injector.getInstance(NodeCache.class).close();
 
-        stopWatch.stop().start("script");
-        injector.getInstance(ScriptService.class).close();
-
         stopWatch.stop().start("thread_pool");
         injector.getInstance(ThreadPool.class).shutdown();
         try {
             injector.getInstance(ThreadPool.class).awaitTermination(10, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
+           logger.warn(e.getMessage(), e);
             // ignore
         }
         stopWatch.stop().start("thread_pool_force_shutdown");
         try {
             injector.getInstance(ThreadPool.class).shutdownNow();
         } catch (Exception e) {
-            // ignore
+           logger.warn(e.getMessage(), e);
         }
+        stopWatch.stop().start("script");
+        injector.getInstance(ScriptService.class).close();
         stopWatch.stop();
 
         CacheRecycler.clear();

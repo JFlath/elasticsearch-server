@@ -20,20 +20,7 @@
 package org.elasticsearch.client.support;
 
 import org.elasticsearch.client.IngestClient;
-import org.elasticsearch.threadpool.ThreadPool;
-import org.elasticsearch.threadpool.server.ServerThreadPool;
 
 public abstract class AbstractServerIngestClient extends AbstractIngestClient  implements IngestClient {
-
-    private final ThreadPool threadPool;
-    
-    public AbstractServerIngestClient() {
-        this.threadPool = new ServerThreadPool();
-    }
-    
-    @Override
-    public ThreadPool threadPool() {
-        return threadPool;
-    }
         
 }

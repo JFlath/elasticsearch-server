@@ -44,7 +44,8 @@ import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.common.unit.ByteSizeValue;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.monitor.jvm.JvmInfo;
-import org.elasticsearch.threadpool.TransportThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
+import org.elasticsearch.threadpool.transport.TransportThreadPool;
 import org.elasticsearch.transport.*;
 import org.elasticsearch.transport.support.TransportStatus;
 import org.jboss.netty.bootstrap.ClientBootstrap;
@@ -127,7 +128,7 @@ public class ServerNettyTransport extends AbstractLifecycleComponent<Transport> 
     final ByteSizeValue maxCumulationBufferCapacity;
     final int maxCompositeBufferComponents;
 
-    private final TransportThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private volatile OpenChannelsHandler serverOpenChannels;
 
@@ -150,16 +151,16 @@ public class ServerNettyTransport extends AbstractLifecycleComponent<Transport> 
     // connections while no connect operations is going on... (this might help with 100% CPU when stopping the transport?)
     private final ReadWriteLock globalLock = new ReentrantReadWriteLock();
 
-    public ServerNettyTransport(TransportThreadPool threadPool) {
+    public ServerNettyTransport(ThreadPool threadPool) {
         this(EMPTY_SETTINGS, threadPool, new NetworkService(EMPTY_SETTINGS));
     }
 
-    public ServerNettyTransport(Settings settings, TransportThreadPool threadPool) {
+    public ServerNettyTransport(Settings settings, ThreadPool threadPool) {
         this(settings, threadPool, new NetworkService(settings));
     }
 
     @Inject
-    public ServerNettyTransport(Settings settings, TransportThreadPool threadPool, NetworkService networkService) {
+    public ServerNettyTransport(Settings settings, ThreadPool threadPool, NetworkService networkService) {
         super(settings);
         this.threadPool = threadPool;
         this.networkService = networkService;
@@ -224,7 +225,7 @@ public class ServerNettyTransport extends AbstractLifecycleComponent<Transport> 
     }
     
     @Override
-    public TransportThreadPool threadPool() {
+    public ThreadPool threadPool() {
         return threadPool;
     }
     

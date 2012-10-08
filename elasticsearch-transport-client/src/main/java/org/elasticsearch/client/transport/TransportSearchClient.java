@@ -53,7 +53,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.settings.SettingsModule;
 import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.common.util.concurrent.ThreadLocals;
-import org.elasticsearch.env.ClusterEnvironment;
+import org.elasticsearch.env.Environment;
 import org.elasticsearch.env.EnvironmentModule;
 import org.elasticsearch.monitor.MonitorService;
 import org.elasticsearch.node.internal.InternalSettingsPerparer;
@@ -64,8 +64,17 @@ import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.threadpool.ThreadPoolModule;
 import org.elasticsearch.transport.TransportModule;
 import org.elasticsearch.transport.TransportService;
+import org.elasticsearch.action.count.CountRequestBuilder;
+import org.elasticsearch.action.deletebyquery.DeleteByQueryRequestBuilder;
+import org.elasticsearch.action.explain.ExplainRequestBuilder;
+import org.elasticsearch.action.mlt.MoreLikeThisRequestBuilder;
+import org.elasticsearch.action.search.MultiSearchRequestBuilder;
+import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchScrollRequestBuilder;
+
 
 import java.util.concurrent.TimeUnit;
+
 
 import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
 
@@ -82,7 +91,7 @@ public class TransportSearchClient extends AbstractServerSearchClient {
 
     private final Settings settings;
 
-    private final ClusterEnvironment environment;
+    private final Environment environment;
 
 
     private final PluginsService pluginsService;
@@ -139,7 +148,7 @@ public class TransportSearchClient extends AbstractServerSearchClient {
      * @throws ElasticSearchException
      */
     public TransportSearchClient(Settings pSettings, boolean loadConfigSettings) throws ElasticSearchException {
-        Tuple<Settings, ClusterEnvironment> tuple = InternalSettingsPerparer.prepareSettings(pSettings, loadConfigSettings);
+        Tuple<Settings, Environment> tuple = InternalSettingsPerparer.prepareSettings(pSettings, loadConfigSettings);
         Settings settings = settings = settingsBuilder().put(tuple.v1())
                 .put("network.server", false)
                 .put("node.client", true)
@@ -350,4 +359,40 @@ public class TransportSearchClient extends AbstractServerSearchClient {
     public void explain(ExplainRequest request, ActionListener<ExplainResponse> listener) {
         internalClient.explain(request, listener);
     }
+
+    @Override
+    public DeleteByQueryRequestBuilder prepareDeleteByQuery(String... indices) {
+        return internalClient.prepareDeleteByQuery(indices);
+    }
+
+    @Override
+    public CountRequestBuilder prepareCount(String... indices) {
+        return internalClient.prepareCount(indices);
+    }
+
+    @Override
+    public SearchRequestBuilder prepareSearch(String... indices) {
+        return internalClient.prepareSearch(indices);
+    }
+
+    @Override
+    public SearchScrollRequestBuilder prepareSearchScroll(String scrollId) {
+        return internalClient.prepareSearchScroll(scrollId);
+    }
+
+    @Override
+    public MultiSearchRequestBuilder prepareMultiSearch() {
+        return internalClient.prepareMultiSearch();
+    }
+
+    @Override
+    public MoreLikeThisRequestBuilder prepareMoreLikeThis(String index, String type, String id) {
+        return internalClient.prepareMoreLikeThis(index, type, id);
+    }
+
+    @Override
+    public ExplainRequestBuilder prepareExplain(String index, String type, String id) {
+        return internalClient.prepareExplain(index, type, id);
+    }
+
 }

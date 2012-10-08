@@ -15,18 +15,21 @@ import org.elasticsearch.client.support.AbstractServerSearchClient;
 import org.elasticsearch.common.collect.MapBuilder;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.threadpool.ThreadPool;
 
 public class NodeSearchClient extends AbstractServerSearchClient {
     
     private final Settings settings;
+    
+    private final ThreadPool threadPool;
 
     private final ImmutableMap<Action, TransportAction> actions;
 
     @Inject
-    public NodeSearchClient(Settings settings,
+    public NodeSearchClient(Settings settings, ThreadPool threadPool,
              Map<GenericAction, TransportAction> actions) {
-        super();
         this.settings = settings;
+        this.threadPool = threadPool;
         MapBuilder<Action, TransportAction> actionsBuilder = new MapBuilder<Action, TransportAction>();
         for (Map.Entry<GenericAction, TransportAction> entry : actions.entrySet()) {
             if (entry.getKey() instanceof Action) {
@@ -41,6 +44,10 @@ public class NodeSearchClient extends AbstractServerSearchClient {
         return this.settings;
     }
 
+    @Override
+    public ThreadPool threadPool() {
+        return threadPool;
+    }
     @Override
     public void close() {
         // nothing really to do

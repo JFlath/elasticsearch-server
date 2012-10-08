@@ -30,7 +30,7 @@ import org.elasticsearch.common.logging.ESLogger;
 import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.common.logging.log4j.LogConfigurator;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.env.ClusterEnvironment;
+import org.elasticsearch.env.Environment;
 import org.elasticsearch.monitor.jvm.JvmInfo;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
@@ -56,7 +56,7 @@ public class Bootstrap {
 
     private static Bootstrap bootstrap;
 
-    private void setup(boolean addShutdownHook, Tuple<Settings, ClusterEnvironment> tuple) throws Exception {
+    private void setup(boolean addShutdownHook, Tuple<Settings, Environment> tuple) throws Exception {
 //        Loggers.getLogger(Bootstrap.class, tuple.v1().get("name")).info("heap_size {}/{}", JvmStats.jvmStats().mem().heapCommitted(), JvmInfo.jvmInfo().mem().heapMax());
         if (tuple.v1().getAsBoolean("bootstrap.mlockall", false)) {
             Natives.tryMlockall();
@@ -75,17 +75,17 @@ public class Bootstrap {
         }
     }
 
-    private static Tuple<Settings, ClusterEnvironment> setupJmx(Tuple<Settings, ClusterEnvironment> tuple) {
+    private static Tuple<Settings, Environment> setupJmx(Tuple<Settings, Environment> tuple) {
         // We disable JMX on by default, since we don't really want the overhead of RMI (and RMI GC...)
 //        if (tuple.v1().get(JmxService.SettingsConstants.CREATE_CONNECTOR) == null) {
 //            // automatically create the connector if we are bootstrapping
 //            Settings updated = settingsBuilder().put(tuple.v1()).put(JmxService.SettingsConstants.CREATE_CONNECTOR, true).build();
-//            tuple = new Tuple<Settings, ClusterEnvironment>(updated, tuple.v2());
+//            tuple = new Tuple<Settings, Environment>(updated, tuple.v2());
 //        }
         return tuple;
     }
 
-    private static void setupLogging(Tuple<Settings, ClusterEnvironment> tuple) {
+    private static void setupLogging(Tuple<Settings, Environment> tuple) {
         try {
             tuple.v1().getClassLoader().loadClass("org.apache.log4j.Logger");
             LogConfigurator.configure(tuple.v1());
@@ -99,7 +99,7 @@ public class Bootstrap {
         }
     }
 
-    private static Tuple<Settings, ClusterEnvironment> initialSettings() {
+    private static Tuple<Settings, Environment> initialSettings() {
         return InternalSettingsPerparer.prepareSettings(EMPTY_SETTINGS, true);
     }
 
@@ -107,7 +107,7 @@ public class Bootstrap {
      * hook for JSVC
      */
     public void init(String[] args) throws Exception {
-        Tuple<Settings, ClusterEnvironment> tuple = initialSettings();
+        Tuple<Settings, Environment> tuple = initialSettings();
         setupLogging(tuple);
         setup(true, tuple);
     }
@@ -169,7 +169,7 @@ public class Bootstrap {
             foreground = false;
         }
 
-        Tuple<Settings, ClusterEnvironment> tuple = null;
+        Tuple<Settings, Environment> tuple = null;
         try {
             tuple = initialSettings();
             setupLogging(tuple);

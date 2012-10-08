@@ -27,7 +27,7 @@ import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.inject.Module;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.util.concurrent.EsExecutors;
-import org.elasticsearch.env.ClusterEnvironment;
+import org.elasticsearch.env.Environment;
 import org.elasticsearch.gateway.blobstore.BlobStoreGateway;
 import org.elasticsearch.index.gateway.fs.FsIndexGatewayModule;
 import org.elasticsearch.threadpool.ThreadPool;
@@ -46,7 +46,7 @@ public class FsGateway extends BlobStoreGateway {
 
     @Inject
     public FsGateway(Settings settings, ThreadPool threadPool, ClusterService clusterService,
-                     ClusterEnvironment environment, ClusterName clusterName) throws IOException {
+                     Environment environment, ClusterName clusterName) throws IOException {
         super(settings, threadPool, clusterService);
 
         File gatewayFile;
