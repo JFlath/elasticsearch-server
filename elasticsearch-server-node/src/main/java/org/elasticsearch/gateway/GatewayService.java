@@ -41,7 +41,6 @@ import org.elasticsearch.threadpool.ThreadPool;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
-import org.elasticsearch.gateway.Gateway;
 
 import static org.elasticsearch.cluster.ClusterState.newClusterStateBuilder;
 import static org.elasticsearch.cluster.metadata.MetaData.newMetaDataBuilder;

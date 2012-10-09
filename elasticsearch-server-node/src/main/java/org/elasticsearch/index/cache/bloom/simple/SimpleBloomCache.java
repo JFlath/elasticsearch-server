@@ -22,7 +22,6 @@ package org.elasticsearch.index.cache.bloom.simple;
 import org.apache.lucene.index.*;
 import org.apache.lucene.store.AlreadyClosedException;
 import org.apache.lucene.util.StringHelper;
-//import org.apache.lucene.util.UnicodeUtil;
 import org.elasticsearch.common.lucene.util.UnicodeUtil;
 import org.elasticsearch.ElasticSearchException;
 import org.elasticsearch.common.Unicode;

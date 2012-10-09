@@ -25,7 +25,6 @@ import org.elasticsearch.common.inject.Module;
 import org.elasticsearch.common.inject.Modules;
 import org.elasticsearch.common.inject.SpawnModules;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.http.HttpServer;
 import org.elasticsearch.http.netty.NettyHttpServerTransportModule;
 
 /**

@@ -28,9 +28,9 @@ import org.elasticsearch.client.support.AbstractIndicesAdminClient;
 import org.elasticsearch.common.collect.MapBuilder;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.util.Map;
-import org.elasticsearch.threadpool.ThreadPool;
 
 /**
  *

@@ -24,8 +24,6 @@ import org.elasticsearch.common.inject.AbstractModule;
 import org.elasticsearch.common.inject.Module;
 import org.elasticsearch.common.inject.PreProcessModule;
 import org.elasticsearch.gateway.Gateway;
-import org.elasticsearch.gateway.local.LocalGateway;
-import org.elasticsearch.gateway.local.LocalGatewayAllocator;
 import org.elasticsearch.gateway.local.state.meta.LocalAllocateDangledIndices;
 import org.elasticsearch.gateway.local.state.meta.LocalGatewayMetaState;
 import org.elasticsearch.gateway.local.state.meta.TransportNodesListGatewayMetaState;

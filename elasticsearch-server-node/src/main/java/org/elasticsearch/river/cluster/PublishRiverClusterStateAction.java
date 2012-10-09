@@ -19,7 +19,6 @@
 
 package org.elasticsearch.river.cluster;
 
-import org.elasticsearch.transport.TransportService;
 import org.elasticsearch.cluster.ClusterService;
 import org.elasticsearch.cluster.node.DiscoveryNode;
 import org.elasticsearch.cluster.node.DiscoveryNodes;

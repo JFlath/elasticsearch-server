@@ -55,7 +55,7 @@ import org.elasticsearch.search.internal.SearchContext;
 import org.elasticsearch.search.internal.ShardSearchRequest;
 import org.elasticsearch.search.query.*;
 import org.elasticsearch.search.warmer.IndexWarmersMetaData;
-import org.elasticsearch.threadpool.server.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -70,7 +70,7 @@ import static org.elasticsearch.common.unit.TimeValue.timeValueMinutes;
  */
 public class SearchService extends AbstractLifecycleComponent<SearchService> {
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final ClusterService clusterService;
 
@@ -101,7 +101,7 @@ public class SearchService extends AbstractLifecycleComponent<SearchService> {
     private final ImmutableMap<String, SearchParseElement> elementParsers;
 
     @Inject
-    public SearchService(Settings settings, ClusterService clusterService, IndicesService indicesService, IndicesLifecycle indicesLifecycle, IndicesWarmer indicesWarmer, ServerThreadPool threadPool,
+    public SearchService(Settings settings, ClusterService clusterService, IndicesService indicesService, IndicesLifecycle indicesLifecycle, IndicesWarmer indicesWarmer, ThreadPool threadPool,
                          ScriptService scriptService, DfsPhase dfsPhase, QueryPhase queryPhase, FetchPhase fetchPhase) {
         super(settings);
         this.threadPool = threadPool;
@@ -626,7 +626,7 @@ public class SearchService extends AbstractLifecycleComponent<SearchService> {
 
         @Override
         public String executor() {
-            return ServerThreadPool.Names.SEARCH;
+            return ThreadPool.Names.SEARCH;
         }
 
         @Override

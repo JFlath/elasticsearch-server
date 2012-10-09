@@ -22,6 +22,7 @@ package org.elasticsearch.river.routing;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.elasticsearch.ElasticSearchException;
+import org.elasticsearch.ElasticSearchParseException;
 import org.elasticsearch.action.NoShardAvailableActionException;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.client.IngestClient;
@@ -32,6 +33,7 @@ import org.elasticsearch.cluster.block.ClusterBlockException;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
 import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.cluster.node.DiscoveryNode;
+import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.component.AbstractLifecycleComponent;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
@@ -43,13 +45,11 @@ import org.elasticsearch.river.cluster.RiverClusterService;
 import org.elasticsearch.river.cluster.RiverClusterState;
 import org.elasticsearch.river.cluster.RiverClusterStateUpdateTask;
 import org.elasticsearch.river.cluster.RiverNodeHelper;
+import org.elasticsearch.search.lookup.SourceLookup;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.elasticsearch.ElasticSearchParseException;
-import org.elasticsearch.common.bytes.BytesReference;
-import org.elasticsearch.search.lookup.SourceLookup;
 
 /**
  *

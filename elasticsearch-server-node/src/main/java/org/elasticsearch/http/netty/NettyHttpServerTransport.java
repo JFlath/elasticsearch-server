@@ -19,11 +19,6 @@
 
 package org.elasticsearch.http.netty;
 
-import org.elasticsearch.http.BindHttpException;
-import org.elasticsearch.http.HttpStats;
-import org.elasticsearch.http.HttpServerTransport;
-import org.elasticsearch.http.HttpChannel;
-import org.elasticsearch.http.HttpServerAdapter;
 import org.elasticsearch.ElasticSearchException;
 import org.elasticsearch.common.component.AbstractLifecycleComponent;
 import org.elasticsearch.common.inject.Inject;

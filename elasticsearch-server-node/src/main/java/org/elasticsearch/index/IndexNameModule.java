@@ -20,7 +20,6 @@
 package org.elasticsearch.index;
 
 import org.elasticsearch.common.inject.AbstractModule;
-import org.elasticsearch.index.Index;
 
 /**
  *

@@ -30,11 +30,11 @@ import org.elasticsearch.transport.Transport;
 @MBean(objectName = "service=transport,transportType=netty", description = "Netty Transport")
 public class NettyTransportManagement {
 
-    private final ClientNettyTransport transport;
+    private final ServerNettyTransport transport;
 
     @Inject
     public NettyTransportManagement(Transport transport) {
-        this.transport = (ClientNettyTransport) transport;
+        this.transport = (ServerNettyTransport) transport;
     }
 
     @ManagedAttribute(description = "Number of connections this node has to other nodes")

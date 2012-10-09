@@ -22,8 +22,8 @@ package org.elasticsearch.transport;
 import com.google.common.collect.ImmutableMap;
 import org.elasticsearch.ElasticSearchException;
 import org.elasticsearch.cluster.node.DiscoveryNode;
-import org.elasticsearch.common.component.AbstractLifecycleComponent;
 import org.elasticsearch.common.collect.MapBuilder;
+import org.elasticsearch.common.component.AbstractLifecycleComponent;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.metrics.MeanMetric;
 import org.elasticsearch.common.settings.Settings;
@@ -47,8 +47,6 @@ import static org.elasticsearch.common.settings.ImmutableSettings.Builder.EMPTY_
  */
 public class TransportService extends AbstractLifecycleComponent<TransportService> {
 
-    private boolean stoppedOrClosed;
-    
     private final Transport transport;
 
     private final ThreadPool threadPool;
@@ -98,13 +96,11 @@ public class TransportService extends AbstractLifecycleComponent<TransportServic
     @Override
     protected void doStop() throws ElasticSearchException {
         transport.stop();
-        stoppedOrClosed = true;
     }
 
     @Override
     protected void doClose() throws ElasticSearchException {
         transport.close();
-        stoppedOrClosed = true;
     }
 
     public boolean addressSupported(Class<? extends TransportAddress> address) {
@@ -286,7 +282,7 @@ public class TransportService extends AbstractLifecycleComponent<TransportServic
 
         @Override
         public void raiseNodeDisconnected(final DiscoveryNode node) {
-            if (stoppedOrClosed) {
+            if (lifecycle.stoppedOrClosed()) {
                 return;
             }
             threadPool.generic().execute(new Runnable() {

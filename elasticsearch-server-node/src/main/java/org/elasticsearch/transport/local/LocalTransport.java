@@ -100,7 +100,7 @@ public class LocalTransport extends AbstractLifecycleComponent<Transport> implem
             }
         }
     }
-    
+
     @Override
     protected void doClose() throws ElasticSearchException {
     }

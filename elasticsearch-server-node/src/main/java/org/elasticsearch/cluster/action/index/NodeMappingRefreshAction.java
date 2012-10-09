@@ -19,7 +19,6 @@
 
 package org.elasticsearch.cluster.action.index;
 
-import org.elasticsearch.transport.TransportService;
 import org.elasticsearch.ElasticSearchException;
 import org.elasticsearch.cluster.ClusterService;
 import org.elasticsearch.cluster.metadata.MetaDataMappingService;

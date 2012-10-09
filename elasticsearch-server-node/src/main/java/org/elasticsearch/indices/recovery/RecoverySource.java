@@ -19,7 +19,6 @@
 
 package org.elasticsearch.indices.recovery;
 
-import org.elasticsearch.transport.TransportService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.apache.lucene.store.IndexInput;

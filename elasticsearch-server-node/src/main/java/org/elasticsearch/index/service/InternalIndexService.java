@@ -19,8 +19,6 @@
 
 package org.elasticsearch.index.service;
 
-import org.elasticsearch.index.IndexShardAlreadyExistsException;
-import org.elasticsearch.index.IndexShardMissingException;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.UnmodifiableIterator;

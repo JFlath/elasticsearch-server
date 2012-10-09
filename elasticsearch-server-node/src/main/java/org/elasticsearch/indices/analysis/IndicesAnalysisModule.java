@@ -20,7 +20,6 @@
 package org.elasticsearch.indices.analysis;
 
 import org.elasticsearch.common.inject.AbstractModule;
-import org.elasticsearch.indices.analysis.IndicesAnalysisService;
 
 public class IndicesAnalysisModule extends AbstractModule {
 

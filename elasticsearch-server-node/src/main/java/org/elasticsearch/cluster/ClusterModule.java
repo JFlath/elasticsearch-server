@@ -20,8 +20,6 @@
 package org.elasticsearch.cluster;
 
 import com.google.common.collect.ImmutableList;
-import org.elasticsearch.cluster.ClusterService;
-import org.elasticsearch.cluster.ClusterService;
 import org.elasticsearch.cluster.action.index.*;
 import org.elasticsearch.cluster.action.shard.ShardStateAction;
 import org.elasticsearch.cluster.metadata.*;

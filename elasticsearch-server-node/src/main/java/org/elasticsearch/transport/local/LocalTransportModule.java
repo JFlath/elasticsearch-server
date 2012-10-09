@@ -23,10 +23,6 @@ import org.elasticsearch.common.inject.AbstractModule;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.jmx.JmxService;
 import org.elasticsearch.transport.Transport;
-import org.elasticsearch.transport.local.LocalTransport;
-import org.elasticsearch.transport.local.LocalTransport;
-import org.elasticsearch.transport.local.LocalTransportManagement;
-import org.elasticsearch.transport.local.LocalTransportManagement;
 
 /**
  *

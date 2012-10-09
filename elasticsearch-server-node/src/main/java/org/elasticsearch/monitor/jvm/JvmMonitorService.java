@@ -35,9 +35,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
-import org.elasticsearch.monitor.jvm.DeadlockAnalyzer;
-import org.elasticsearch.monitor.jvm.JvmInfo;
-import org.elasticsearch.monitor.jvm.JvmStats;
 
 import static org.elasticsearch.common.unit.TimeValue.timeValueSeconds;
 import static org.elasticsearch.monitor.dump.summary.SummaryDumpContributor.SUMMARY;

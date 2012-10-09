@@ -359,6 +359,9 @@ public final class InternalNode implements Node {
         stopWatch.stop().start("node_cache");
         injector.getInstance(NodeCache.class).close();
 
+        stopWatch.stop().start("script");
+        injector.getInstance(ScriptService.class).close();
+
         stopWatch.stop().start("thread_pool");
         injector.getInstance(ServerThreadPool.class).shutdown();
         try {
@@ -372,8 +375,6 @@ public final class InternalNode implements Node {
         } catch (Exception e) {
            logger.warn(e.getMessage(), e);
         }
-        stopWatch.stop().start("script");
-        injector.getInstance(ScriptService.class).close();
         stopWatch.stop();
 
         CacheRecycler.clear();

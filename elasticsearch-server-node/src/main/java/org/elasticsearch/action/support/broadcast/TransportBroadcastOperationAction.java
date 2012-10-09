@@ -19,7 +19,6 @@
 
 package org.elasticsearch.action.support.broadcast;
 
-import org.elasticsearch.transport.TransportService;
 import org.elasticsearch.ElasticSearchException;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.support.TransportAction;

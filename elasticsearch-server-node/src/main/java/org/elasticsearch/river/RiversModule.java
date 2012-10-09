@@ -28,10 +28,6 @@ import org.elasticsearch.river.cluster.RiverClusterService;
 import org.elasticsearch.river.routing.RiversRouter;
 
 import java.util.Map;
-import org.elasticsearch.river.RiverIndexName;
-import org.elasticsearch.river.RiverIndexName;
-import org.elasticsearch.river.RiversTypesRegistry;
-import org.elasticsearch.river.RiversTypesRegistry;
 
 /**
  *

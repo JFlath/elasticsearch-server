@@ -82,10 +82,6 @@ public class LocalDiscovery extends AbstractLifecycleComponent<Discovery> implem
         this.transportService = transportService;
         this.discoveryNodeService = discoveryNodeService;
     }
-    
-    public String type() {
-        return "local";
-    }
 
     @Override
     public void setNodeService(@Nullable NodeService nodeService) {

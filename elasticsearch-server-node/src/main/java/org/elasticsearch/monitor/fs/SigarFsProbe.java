@@ -31,8 +31,6 @@ import org.hyperic.sigar.SigarException;
 
 import java.io.File;
 import java.util.Map;
-import org.elasticsearch.monitor.fs.FsProbe;
-import org.elasticsearch.monitor.fs.FsStats;
 
 /**
  */

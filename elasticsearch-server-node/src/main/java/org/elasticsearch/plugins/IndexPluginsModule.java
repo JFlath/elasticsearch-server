@@ -28,7 +28,6 @@ import org.elasticsearch.common.settings.Settings;
 
 import java.util.Collection;
 import java.util.List;
-import org.elasticsearch.plugins.PluginsService;
 
 import static org.elasticsearch.common.inject.Modules.createModule;
 

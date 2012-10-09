@@ -40,7 +40,7 @@ public class DiscoveryService extends AbstractLifecycleComponent<DiscoveryServic
     private final Discovery discovery;
 
     private volatile boolean initialStateReceived;
-    
+
     @Inject
     public DiscoveryService(Settings settings, Discovery discovery) {
         super(settings);

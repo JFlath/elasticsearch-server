@@ -19,7 +19,6 @@
 
 package org.elasticsearch.index.engine.robin;
 
-import org.apache.lucene.index.XIndexWriter;
 import com.google.common.collect.Lists;
 import org.apache.lucene.index.*;
 import org.apache.lucene.search.*;

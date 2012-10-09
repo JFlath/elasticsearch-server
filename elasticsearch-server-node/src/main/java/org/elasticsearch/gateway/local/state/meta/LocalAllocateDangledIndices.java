@@ -19,7 +19,6 @@
 
 package org.elasticsearch.gateway.local.state.meta;
 
-import org.elasticsearch.transport.TransportService;
 import org.elasticsearch.cluster.ClusterService;
 import org.elasticsearch.cluster.ClusterState;
 import org.elasticsearch.cluster.ProcessedClusterStateUpdateTask;

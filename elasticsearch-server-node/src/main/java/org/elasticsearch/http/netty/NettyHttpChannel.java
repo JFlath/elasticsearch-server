@@ -27,7 +27,7 @@ import org.elasticsearch.rest.RestResponse;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.rest.XContentRestResponse;
 import org.elasticsearch.rest.support.RestUtils;
-import org.elasticsearch.transport.netty.ClientNettyTransport;
+import org.elasticsearch.transport.netty.ServerNettyTransport;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
@@ -100,7 +100,7 @@ public class NettyHttpChannel implements HttpChannel {
                 // after we write the response, and no need to do an extra copy because its not thread safe
                 XContentBuilder builder = ((XContentRestResponse) response).builder();
                 if (builder.payload() instanceof NettyCachedStreamOutput.Entry) {
-                    releaseContentListener = new ClientNettyTransport.CacheFutureListener((NettyCachedStreamOutput.Entry) builder.payload());
+                    releaseContentListener = new ServerNettyTransport.CacheFutureListener((NettyCachedStreamOutput.Entry) builder.payload());
                     buf = ((NettyBytesArray)builder.bytes()).toChannelBuffer();
                 } else if (response.contentThreadSafe()) {
                     buf = ChannelBuffers.wrappedBuffer(response.content(), 0, response.contentLength());

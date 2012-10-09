@@ -19,7 +19,6 @@
 
 package org.elasticsearch.search.action;
 
-import org.elasticsearch.transport.TransportService;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.cluster.ClusterService;
 import org.elasticsearch.cluster.node.DiscoveryNode;

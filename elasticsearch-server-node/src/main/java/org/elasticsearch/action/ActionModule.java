@@ -117,12 +117,6 @@ import org.elasticsearch.common.inject.AbstractModule;
 import org.elasticsearch.common.inject.multibindings.MapBinder;
 
 import java.util.Map;
-import org.elasticsearch.action.ActionRequest;
-import org.elasticsearch.action.ActionRequest;
-import org.elasticsearch.action.ActionResponse;
-import org.elasticsearch.action.ActionResponse;
-import org.elasticsearch.action.GenericAction;
-import org.elasticsearch.action.GenericAction;
 
 /**
  *

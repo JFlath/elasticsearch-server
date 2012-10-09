@@ -26,7 +26,6 @@ import org.elasticsearch.common.inject.Modules;
 import org.elasticsearch.common.inject.SpawnModules;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.jmx.JmxService;
-import org.elasticsearch.transport.TransportServiceManagement;
 import org.elasticsearch.transport.local.LocalTransportModule;
 import org.elasticsearch.transport.netty.NettyTransportModule;
 

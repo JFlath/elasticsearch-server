@@ -19,7 +19,6 @@
 
 package org.elasticsearch.http;
 
-
 import com.google.common.collect.ImmutableMap;
 import org.elasticsearch.ElasticSearchException;
 import org.elasticsearch.common.component.AbstractLifecycleComponent;

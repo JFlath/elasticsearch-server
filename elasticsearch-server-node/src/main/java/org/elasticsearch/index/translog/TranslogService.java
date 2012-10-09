@@ -34,7 +34,7 @@ import org.elasticsearch.index.shard.IllegalIndexShardStateException;
 import org.elasticsearch.index.shard.IndexShardState;
 import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.index.shard.service.IndexShard;
-import org.elasticsearch.threadpool.server.ServerThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.util.concurrent.ScheduledFuture;
 
@@ -45,7 +45,7 @@ import static org.elasticsearch.common.unit.TimeValue.timeValueMillis;
  */
 public class TranslogService extends AbstractIndexShardComponent {
 
-    private final ServerThreadPool threadPool;
+    private final ThreadPool threadPool;
 
     private final IndexSettingsService indexSettingsService;
 
@@ -68,7 +68,7 @@ public class TranslogService extends AbstractIndexShardComponent {
     private final ApplySettings applySettings = new ApplySettings();
 
     @Inject
-    public TranslogService(ShardId shardId, @IndexSettings Settings indexSettings, IndexSettingsService indexSettingsService, ServerThreadPool threadPool, IndexShard indexShard, Translog translog) {
+    public TranslogService(ShardId shardId, @IndexSettings Settings indexSettings, IndexSettingsService indexSettingsService, ThreadPool threadPool, IndexShard indexShard, Translog translog) {
         super(shardId, indexSettings);
         this.threadPool = threadPool;
         this.indexSettingsService = indexSettingsService;
@@ -83,7 +83,7 @@ public class TranslogService extends AbstractIndexShardComponent {
 
         logger.debug("interval [{}], flush_threshold_ops [{}], flush_threshold_size [{}], flush_threshold_period [{}]", interval, flushThresholdOperations, flushThresholdSize, flushThresholdPeriod);
 
-        this.future = threadPool.schedule(interval, ServerThreadPool.Names.SAME, new TranslogBasedFlush());
+        this.future = threadPool.schedule(interval, ThreadPool.Names.SAME, new TranslogBasedFlush());
 
         indexSettingsService.addListener(applySettings);
     }
@@ -180,11 +180,11 @@ public class TranslogService extends AbstractIndexShardComponent {
         }
 
         private void reschedule() {
-            future = threadPool.schedule(interval, ServerThreadPool.Names.SAME, this);
+            future = threadPool.schedule(interval, ThreadPool.Names.SAME, this);
         }
 
         private void asyncFlushAndReschedule() {
-            threadPool.executor(ServerThreadPool.Names.FLUSH).execute(new Runnable() {
+            threadPool.executor(ThreadPool.Names.FLUSH).execute(new Runnable() {
                 @Override
                 public void run() {
                     try {
@@ -199,7 +199,7 @@ public class TranslogService extends AbstractIndexShardComponent {
                     lastFlushTime = threadPool.estimatedTimeInMillis();
 
                     if (indexShard.state() != IndexShardState.CLOSED) {
-                        future = threadPool.schedule(interval, ServerThreadPool.Names.SAME, TranslogBasedFlush.this);
+                        future = threadPool.schedule(interval, ThreadPool.Names.SAME, TranslogBasedFlush.this);
                     }
                 }
             });

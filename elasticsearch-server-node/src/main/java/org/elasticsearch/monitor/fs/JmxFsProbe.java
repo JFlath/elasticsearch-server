@@ -25,8 +25,6 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.NodeEnvironment;
 
 import java.io.File;
-import org.elasticsearch.monitor.fs.FsProbe;
-import org.elasticsearch.monitor.fs.FsStats;
 
 /**
  */

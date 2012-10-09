@@ -19,7 +19,6 @@
 
 package org.elasticsearch.action.mlt;
 
-import org.elasticsearch.transport.TransportService;
 import org.apache.lucene.document.Fieldable;
 import org.apache.lucene.index.Term;
 import org.elasticsearch.ElasticSearchException;
