@@ -45,7 +45,6 @@ import org.elasticsearch.common.unit.ByteSizeValue;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.monitor.jvm.JvmInfo;
 import org.elasticsearch.threadpool.ThreadPool;
-import org.elasticsearch.threadpool.transport.TransportThreadPool;
 import org.elasticsearch.transport.*;
 import org.elasticsearch.transport.support.TransportStatus;
 import org.jboss.netty.bootstrap.ClientBootstrap;

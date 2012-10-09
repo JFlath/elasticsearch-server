@@ -360,16 +360,15 @@ public final class InternalNode implements Node {
         injector.getInstance(NodeCache.class).close();
 
         stopWatch.stop().start("thread_pool");
-        injector.getInstance(ThreadPool.class).shutdown();
+        injector.getInstance(ServerThreadPool.class).shutdown();
         try {
-            injector.getInstance(ThreadPool.class).awaitTermination(10, TimeUnit.SECONDS);
+            injector.getInstance(ServerThreadPool.class).awaitTermination(10, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
            logger.warn(e.getMessage(), e);
-            // ignore
         }
         stopWatch.stop().start("thread_pool_force_shutdown");
         try {
-            injector.getInstance(ThreadPool.class).shutdownNow();
+            injector.getInstance(ServerThreadPool.class).shutdownNow();
         } catch (Exception e) {
            logger.warn(e.getMessage(), e);
         }

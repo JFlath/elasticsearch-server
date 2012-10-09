@@ -17,26 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.threadpool;
-
-import org.elasticsearch.threadpool.server.ServerThreadPool;
-import org.elasticsearch.common.inject.AbstractModule;
-import org.elasticsearch.common.settings.Settings;
+package org.elasticsearch.test.integration.gateway.fs;
 
 /**
  *
  */
-public class ThreadPoolModule extends AbstractModule {
+public class SimpleFsIndexGatewayTests extends AbstractSimpleIndexGatewayTests {
 
-    private final Settings settings;
-
-    public ThreadPoolModule(Settings settings) {
-        this.settings = settings;
-    }
-
-    @Override
-    protected void configure() {
-        bind(ServerThreadPool.class).asEagerSingleton();
-        bind(ThreadPool.class).to(ServerThreadPool.class).asEagerSingleton();
-    }
 }

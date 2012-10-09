@@ -31,6 +31,7 @@ import org.elasticsearch.common.collect.MapBuilder;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.transport.TransportService;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import java.util.Map;
 
@@ -41,17 +42,19 @@ public class InternalTransportIngestClient extends AbstractIngestClient implemen
 
     private final Settings settings;
 
+    private final ThreadPool threadPool;
+
     private final TransportClientNodesService nodesService;
 
     private final ImmutableMap<Action, TransportActionNodeProxy> actions;
 
     @Inject
     public InternalTransportIngestClient(Settings settings, TransportService transportService,
-                                   TransportClientNodesService nodesService,
+                                   TransportClientNodesService nodesService, ThreadPool threadPool,
                                    Map<String, GenericAction> actions) {
-        super();
-        this.settings = settings;
+        this.settings = settings;        
         this.nodesService = nodesService;
+        this.threadPool = threadPool;
 
         MapBuilder<Action, TransportActionNodeProxy> actionsBuilder = new MapBuilder<Action, TransportActionNodeProxy>();
         for (GenericAction action : actions.values()) {
@@ -70,6 +73,11 @@ public class InternalTransportIngestClient extends AbstractIngestClient implemen
     @Override
     public Settings settings() {
         return this.settings;
+    }
+
+    @Override
+    public ThreadPool threadPool() {
+        return threadPool;
     }
 
     @Override

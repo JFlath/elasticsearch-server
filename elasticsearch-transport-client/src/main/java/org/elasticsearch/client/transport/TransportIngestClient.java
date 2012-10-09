@@ -77,6 +77,7 @@ import org.elasticsearch.action.percolate.PercolateRequestBuilder;
 import org.elasticsearch.action.update.UpdateRequestBuilder;
 
 import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
+import org.elasticsearch.threadpool.server.ServerThreadPool;
 
 /**
  * The transport client allows to create a client that is not part of the cluster, but simply connects to one
@@ -98,6 +99,8 @@ public class TransportIngestClient extends AbstractIngestClient {
     private final TransportClientNodesService nodesService;
 
     private final InternalTransportIngestClient internalClient;
+    
+    private final ThreadPool threadPool;
 
 
     /**
@@ -176,6 +179,7 @@ public class TransportIngestClient extends AbstractIngestClient {
         injector.getInstance(TransportService.class).start();
 
         nodesService = injector.getInstance(TransportClientNodesService.class);
+        threadPool = injector.getInstance(ServerThreadPool.class);
         internalClient = injector.getInstance(InternalTransportIngestClient.class);
     }
 
@@ -238,6 +242,11 @@ public class TransportIngestClient extends AbstractIngestClient {
         return this;
     }
 
+    @Override
+    public ThreadPool threadPool() {
+        return threadPool;
+    }
+    
     /**
      * Closes the client.
      */
@@ -255,14 +264,14 @@ public class TransportIngestClient extends AbstractIngestClient {
             injector.getInstance(plugin).close();
         }
 
-        injector.getInstance(ThreadPool.class).shutdown();
+        threadPool.shutdown();
         try {
-            injector.getInstance(ThreadPool.class).awaitTermination(10, TimeUnit.SECONDS);
+            threadPool.awaitTermination(10, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             // ignore
         }
         try {
-            injector.getInstance(ThreadPool.class).shutdownNow();
+            threadPool.shutdownNow();
         } catch (Exception e) {
             // ignore
         }

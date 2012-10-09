@@ -17,26 +17,26 @@
  * under the License.
  */
 
-package org.elasticsearch.threadpool;
+package org.elasticsearch.test.unit.common.unit;
 
-import org.elasticsearch.threadpool.server.ServerThreadPool;
-import org.elasticsearch.common.inject.AbstractModule;
-import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.unit.DistanceUnit;
+import org.hamcrest.MatcherAssert;
+import org.testng.annotations.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.closeTo;
 
 /**
  *
  */
-public class ThreadPoolModule extends AbstractModule {
+@Test
+public class DistanceUnitTests {
 
-    private final Settings settings;
-
-    public ThreadPoolModule(Settings settings) {
-        this.settings = settings;
-    }
-
-    @Override
-    protected void configure() {
-        bind(ServerThreadPool.class).asEagerSingleton();
-        bind(ThreadPool.class).to(ServerThreadPool.class).asEagerSingleton();
+    @Test
+    void testSimpleDistanceUnit() {
+        MatcherAssert.assertThat(DistanceUnit.MILES.toKilometers(10), closeTo(16.09344, 0.001));
+        assertThat(DistanceUnit.MILES.toMiles(10), closeTo(10, 0.001));
+        assertThat(DistanceUnit.KILOMETERS.toMiles(10), closeTo(6.21371192, 0.001));
+        assertThat(DistanceUnit.KILOMETERS.toKilometers(10), closeTo(10, 0.001));
     }
 }

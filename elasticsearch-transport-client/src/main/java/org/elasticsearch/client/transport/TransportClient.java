@@ -106,6 +106,7 @@ import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchScrollRequestBuilder;
 import org.elasticsearch.action.update.UpdateRequestBuilder;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.threadpool.server.ServerThreadPool;
 
 import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
 
@@ -133,6 +134,10 @@ public class TransportClient extends AbstractComponent implements Client {
     private final InternalTransportIngestClient internalIngestClient;
     
     private final InternalTransportSearchClient internalSearchClient;
+    
+    private final InternalTransportClusterAdminClient internalClusterAdminClient;
+    
+    private final InternalTransportIndicesAdminClient internalIndicesAdminClient;
     
     /**
      * Constructs a new transport client with settings loaded either from the classpath or the file system (the
@@ -214,9 +219,8 @@ public class TransportClient extends AbstractComponent implements Client {
 
         internalIngestClient = injector.getInstance(InternalTransportIngestClient.class);
         internalSearchClient = injector.getInstance(InternalTransportSearchClient.class);
-        
-        InternalTransportClusterAdminClient internalClusterAdminClient = injector.getInstance(InternalTransportClusterAdminClient.class);
-        InternalTransportIndicesAdminClient internalIndicesAdminClient = injector.getInstance(InternalTransportIndicesAdminClient.class);
+        internalClusterAdminClient = injector.getInstance(InternalTransportClusterAdminClient.class);
+        internalIndicesAdminClient = injector.getInstance(InternalTransportIndicesAdminClient.class);
         adminClient = new DecoratingAdminClient(internalClusterAdminClient, internalIndicesAdminClient);
     }
 
@@ -287,6 +291,12 @@ public class TransportClient extends AbstractComponent implements Client {
      * Closes the client.
      */
     public void close() {
+        
+        internalIndicesAdminClient.close();
+        internalClusterAdminClient.close();
+        internalSearchClient.close();
+        internalIngestClient.close();
+        
         injector.getInstance(TransportClientNodesService.class).close();
         injector.getInstance(TransportService.class).close();
         try {
@@ -299,14 +309,15 @@ public class TransportClient extends AbstractComponent implements Client {
             injector.getInstance(plugin).close();
         }
 
-        injector.getInstance(ThreadPool.class).shutdown();
+        System.err.println("shutdown threadpool...");
+        injector.getInstance(ServerThreadPool.class).shutdown();
         try {
-            injector.getInstance(ThreadPool.class).awaitTermination(10, TimeUnit.SECONDS);
+            injector.getInstance(ServerThreadPool.class).awaitTermination(10, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             logger.warn(e.getMessage(), e);
         }
         try {
-            injector.getInstance(ThreadPool.class).shutdownNow();
+            injector.getInstance(ServerThreadPool.class).shutdownNow();
         } catch (Exception e) {
             logger.warn(e.getMessage(), e);
         }

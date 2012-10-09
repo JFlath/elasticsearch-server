@@ -71,6 +71,7 @@ import org.elasticsearch.action.mlt.MoreLikeThisRequestBuilder;
 import org.elasticsearch.action.search.MultiSearchRequestBuilder;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchScrollRequestBuilder;
+import org.elasticsearch.threadpool.server.ServerThreadPool;
 
 
 import java.util.concurrent.TimeUnit;
@@ -99,6 +100,8 @@ public class TransportSearchClient extends AbstractServerSearchClient {
     private final TransportClientNodesService nodesService;
 
     private final InternalTransportSearchClient internalClient;
+    
+    private final ThreadPool threadPool;
 
 
     /**
@@ -177,6 +180,7 @@ public class TransportSearchClient extends AbstractServerSearchClient {
         injector.getInstance(TransportService.class).start();
 
         nodesService = injector.getInstance(TransportClientNodesService.class);
+        threadPool = injector.getInstance(ServerThreadPool.class);
         internalClient = injector.getInstance(InternalTransportSearchClient.class);
     }
 
@@ -239,6 +243,12 @@ public class TransportSearchClient extends AbstractServerSearchClient {
         return this;
     }
 
+
+    @Override
+    public ThreadPool threadPool() {
+        return threadPool;
+    }
+
     /**
      * Closes the client.
      */
@@ -256,14 +266,14 @@ public class TransportSearchClient extends AbstractServerSearchClient {
             injector.getInstance(plugin).close();
         }
 
-        injector.getInstance(ThreadPool.class).shutdown();
+        threadPool.shutdown();
         try {
-            injector.getInstance(ThreadPool.class).awaitTermination(10, TimeUnit.SECONDS);
+            threadPool.awaitTermination(10, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             // ignore
         }
         try {
-            injector.getInstance(ThreadPool.class).shutdownNow();
+            threadPool.shutdownNow();
         } catch (Exception e) {
             // ignore
         }
