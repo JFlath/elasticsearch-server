@@ -33,7 +33,7 @@ import java.util.List;
 
 /**
  */
-public class ThrottlingAllocationDecider extends AllocationDecider {
+public class ThrottlingAllocationDecider extends ServerAllocationDecider {
 
     static {
         MetaData.addDynamicSettings(
@@ -45,6 +45,9 @@ public class ThrottlingAllocationDecider extends AllocationDecider {
     private volatile int primariesInitialRecoveries;
     private volatile int concurrentRecoveries;
 
+    public ThrottlingAllocationDecider() {
+    }
+    
     @Inject
     public ThrottlingAllocationDecider(Settings settings, NodeSettingsService nodeSettingsService) {
         super(settings);

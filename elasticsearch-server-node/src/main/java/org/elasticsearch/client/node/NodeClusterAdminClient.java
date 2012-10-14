@@ -21,13 +21,12 @@ package org.elasticsearch.client.node;
 
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
+import org.elasticsearch.ElasticSearchIllegalArgumentException;
 import org.elasticsearch.action.*;
 import org.elasticsearch.action.admin.cluster.ClusterAction;
-import org.elasticsearch.action.admin.cluster.ServerClusterAction;
 import org.elasticsearch.action.support.TransportAction;
 import org.elasticsearch.client.ClusterAdminClient;
-import org.elasticsearch.client.ServerClusterAdminClient;
-import org.elasticsearch.client.support.AbstractServerClusterAdminClient;
+import org.elasticsearch.client.support.AbstractClusterAdminClient;
 import org.elasticsearch.common.collect.MapBuilder;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
@@ -36,8 +35,8 @@ import org.elasticsearch.threadpool.ThreadPool;
 /**
  *
  */
-public class NodeClusterAdminClient extends AbstractServerClusterAdminClient 
-    implements ServerClusterAdminClient, ClusterAdminClient  {
+public class NodeClusterAdminClient extends AbstractClusterAdminClient 
+    implements ClusterAdminClient  {
 
     private final Settings settings;
     
@@ -82,20 +81,6 @@ public class NodeClusterAdminClient extends AbstractServerClusterAdminClient
 
     public <Request extends ActionRequest, Response extends ActionResponse, RequestBuilder extends ActionRequestBuilder<Request, Response, RequestBuilder>> 
             void execute(ClusterAction<Request, Response, RequestBuilder> action, Request request, ActionListener<Response> listener) {
-        TransportAction<Request, Response> transportAction = actions.get(action);
-        transportAction.execute(request, listener);
-    }
-
-    @Override
-    public <Request extends ActionRequest, Response extends ActionResponse, RequestBuilder extends ActionRequestBuilder<Request, Response, RequestBuilder>> 
-            ActionFuture<Response> execute(ServerClusterAction<Request, Response, RequestBuilder> action, Request request) {
-        TransportAction<Request, Response> transportAction = actions.get(action);
-        return transportAction.execute(request);
-    }
-
-    @Override
-    public <Request extends ActionRequest, Response extends ActionResponse, RequestBuilder extends ActionRequestBuilder<Request, Response, RequestBuilder>> 
-            void execute(ServerClusterAction<Request, Response, RequestBuilder> action, Request request, ActionListener<Response> listener) {
         TransportAction<Request, Response> transportAction = actions.get(action);
         transportAction.execute(request, listener);
     }

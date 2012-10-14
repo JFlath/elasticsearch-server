@@ -24,10 +24,17 @@ import org.elasticsearch.ElasticSearchException;
 import org.elasticsearch.ElasticSearchIllegalStateException;
 import org.elasticsearch.cluster.ClusterState;
 import org.elasticsearch.cluster.node.DiscoveryNode;
-import org.elasticsearch.cluster.routing.*;
+import org.elasticsearch.cluster.routing.ImmutableShardRouting;
+import org.elasticsearch.cluster.routing.IndexRoutingTable;
+import org.elasticsearch.cluster.routing.MutableShardRouting;
+import org.elasticsearch.cluster.routing.RoutingNode;
+import org.elasticsearch.cluster.routing.RoutingNodes;
+import org.elasticsearch.cluster.routing.RoutingTable;
+import org.elasticsearch.cluster.routing.ShardRouting;
+import org.elasticsearch.cluster.routing.ShardRoutingState;
 import org.elasticsearch.cluster.routing.allocation.allocator.ShardsAllocators;
 import org.elasticsearch.cluster.routing.allocation.command.AllocationCommands;
-import org.elasticsearch.cluster.routing.allocation.decider.AllocationDeciders;
+import org.elasticsearch.cluster.routing.allocation.decider.ServerAllocationDeciders;
 import org.elasticsearch.common.component.AbstractComponent;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.ImmutableSettings;
@@ -47,8 +54,8 @@ import static org.elasticsearch.cluster.routing.ShardRoutingState.RELOCATING;
  */
 public class AllocationService extends AbstractComponent {
 
-    private final AllocationDeciders allocationDeciders;
-
+    private final ServerAllocationDeciders allocationDeciders;
+    
     private final ShardsAllocators shardsAllocators;
 
     public AllocationService() {
@@ -57,13 +64,13 @@ public class AllocationService extends AbstractComponent {
 
     public AllocationService(Settings settings) {
         this(settings,
-                new AllocationDeciders(settings, new NodeSettingsService(ImmutableSettings.Builder.EMPTY_SETTINGS)),
+                new ServerAllocationDeciders(settings, new NodeSettingsService(ImmutableSettings.Builder.EMPTY_SETTINGS)),
                 new ShardsAllocators(settings)
         );
     }
 
     @Inject
-    public AllocationService(Settings settings, AllocationDeciders allocationDeciders, ShardsAllocators shardsAllocators) {
+    public AllocationService(Settings settings, ServerAllocationDeciders allocationDeciders, ShardsAllocators shardsAllocators) {
         super(settings);
         this.allocationDeciders = allocationDeciders;
         this.shardsAllocators = shardsAllocators;
@@ -112,7 +119,7 @@ public class AllocationService extends AbstractComponent {
         // we don't shuffle the unassigned shards here, to try and get as close as possible to
         // a consistent result of the effect the commands have on the routing
         // this allows systems to dry run the commands, see the resulting cluster state, and act on it
-        RoutingAllocation allocation = new RoutingAllocation(allocationDeciders, routingNodes, clusterState.nodes());
+        RoutingAllocation allocation = new SimpleRoutingAllocation(allocationDeciders, routingNodes, clusterState.nodes());
         // we ignore disable allocation, because commands are explicit
         allocation.ignoreDisable(true);
         commands.execute(allocation);
@@ -133,7 +140,7 @@ public class AllocationService extends AbstractComponent {
         RoutingNodes routingNodes = clusterState.routingNodes();
         // shuffle the unassigned nodes, just so we won't have things like poison failed shards
         Collections.shuffle(routingNodes.unassigned());
-        RoutingAllocation allocation = new RoutingAllocation(allocationDeciders, routingNodes, clusterState.nodes());
+        RoutingAllocation allocation = new SimpleRoutingAllocation(allocationDeciders, routingNodes, clusterState.nodes());
         if (!reroute(allocation)) {
             return new RoutingAllocationResult(false, clusterState.routingTable(), allocation.explanation());
         }
@@ -149,7 +156,7 @@ public class AllocationService extends AbstractComponent {
         RoutingNodes routingNodes = clusterState.routingNodes();
         // shuffle the unassigned nodes, just so we won't have things like poison failed shards
         Collections.shuffle(routingNodes.unassigned());
-        RoutingAllocation allocation = new RoutingAllocation(allocationDeciders, routingNodes, clusterState.nodes());
+        RoutingAllocation allocation = new SimpleRoutingAllocation(allocationDeciders, routingNodes, clusterState.nodes());
         Iterable<DiscoveryNode> dataNodes = allocation.nodes().dataNodes().values();
         boolean changed = false;
         // first, clear from the shards any node id they used to belong to that is now dead

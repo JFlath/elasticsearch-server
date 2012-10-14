@@ -31,7 +31,7 @@ import org.elasticsearch.node.settings.NodeSettingsService;
 
 import java.util.List;
 
-public class ConcurrentRebalanceAllocationDecider extends AllocationDecider {
+public class ConcurrentRebalanceAllocationDecider extends ServerAllocationDecider {
 
     static {
         MetaData.addDynamicSettings(
@@ -52,6 +52,9 @@ public class ConcurrentRebalanceAllocationDecider extends AllocationDecider {
 
     private volatile int clusterConcurrentRebalance;
 
+    public ConcurrentRebalanceAllocationDecider() {
+    }
+    
     @Inject
     public ConcurrentRebalanceAllocationDecider(Settings settings, NodeSettingsService nodeSettingsService) {
         super(settings);

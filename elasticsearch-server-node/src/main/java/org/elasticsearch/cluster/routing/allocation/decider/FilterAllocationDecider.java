@@ -32,7 +32,7 @@ import org.elasticsearch.node.settings.NodeSettingsService;
 
 /**
  */
-public class FilterAllocationDecider extends AllocationDecider {
+public class FilterAllocationDecider extends ServerAllocationDecider {
 
     static {
         MetaData.addDynamicSettings(
@@ -48,6 +48,9 @@ public class FilterAllocationDecider extends AllocationDecider {
     private volatile DiscoveryNodeFilters clusterIncludeFilters;
     private volatile DiscoveryNodeFilters clusterExcludeFilters;
 
+    public FilterAllocationDecider() {        
+    }
+    
     @Inject
     public FilterAllocationDecider(Settings settings, NodeSettingsService nodeSettingsService) {
         super(settings);

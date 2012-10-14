@@ -447,8 +447,9 @@ public class SimpleQueryTests extends AbstractNodesTests {
         assertThat("3", equalTo(searchResponse.hits().getAt(0).id()));
         assertThat("1", equalTo(searchResponse.hits().getAt(1).id()));
 
-        /*client.admin().indices().prepareRefresh("test").execute().actionGet();
-        builder = QueryBuilders.multiMatchQuery("value1").field("field1").field("field3", 1.5f)
+        client.admin().indices().prepareRefresh("test").execute().actionGet();
+        builder = QueryBuilders.multiMatchQuery("value1")
+                .field("field1").field("field3", 1.5f)
                 .operator(MatchQueryBuilder.Operator.AND); // Operator only applies on terms inside a field! Fields are always OR-ed together.
         searchResponse = client.prepareSearch()
                 .setQuery(builder)
@@ -456,7 +457,6 @@ public class SimpleQueryTests extends AbstractNodesTests {
         assertThat(searchResponse.hits().totalHits(), equalTo(2l));
         assertThat("3", equalTo(searchResponse.hits().getAt(0).id()));
         assertThat("1", equalTo(searchResponse.hits().getAt(1).id()));
-        * */
 
         // Test lenient
         client.prepareIndex("test", "type1", "3").setSource("field1", "value7", "field2", "value8", "field4", 5).execute().actionGet();

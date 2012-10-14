@@ -35,9 +35,11 @@ import org.elasticsearch.node.settings.NodeSettingsService;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.elasticsearch.common.settings.ImmutableSettings.Builder.EMPTY_SETTINGS;
+
 /**
  */
-public class AwarenessAllocationDecider extends AllocationDecider {
+public class AwarenessAllocationDecider extends ServerAllocationDecider {
 
     static {
         MetaData.addDynamicSettings(
@@ -73,7 +75,7 @@ public class AwarenessAllocationDecider extends AllocationDecider {
     private Map<String, String[]> forcedAwarenessAttributes;
 
     public AwarenessAllocationDecider() {
-        this(ImmutableSettings.Builder.EMPTY_SETTINGS);
+        this(EMPTY_SETTINGS);
     }
 
     public AwarenessAllocationDecider(Settings settings) {

@@ -8,3 +8,16 @@
 /.settings
 /.project
 /.classpath
+/elasticsearch-test-integration/target/
+/elasticsearch-server-node/target/
+/elasticsearch-server-common/target/
+/elasticsearch-server-lucene/target/
+/elasticsearch-server-rest/target/
+/elasticsearch-server-monitor/target/
+/elasticsearch-server-compression-lzf/target/
+/elasticsearch-server-compression-snappy/target/
+/elasticsearch-discovery-zen/target/
+/elasticsearch-transport-client/target/
+/elasticsearch-server-bootstrap/target/
+/elasticsearch-cloud-aws/target/
+/elasticsearch-lang-mvel/target/

@@ -60,6 +60,6 @@ public class AllocationDecidersModule extends AbstractModule {
             allocationMultibinder.addBinding().to(allocation);
         }
 
-        bind(AllocationDeciders.class).asEagerSingleton();
+        bind(ServerAllocationDeciders.class).asEagerSingleton();
     }
 }

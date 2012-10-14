@@ -23,13 +23,14 @@ import org.elasticsearch.cluster.metadata.MetaData;
 import org.elasticsearch.cluster.routing.RoutingNode;
 import org.elasticsearch.cluster.routing.ShardRouting;
 import org.elasticsearch.cluster.routing.allocation.RoutingAllocation;
+import org.elasticsearch.cluster.routing.allocation.decider.AllocationDecider.Decision;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.settings.NodeSettingsService;
 
 /**
  */
-public class DisableAllocationDecider extends AllocationDecider {
+public class DisableAllocationDecider extends ServerAllocationDecider {
 
     static {
         MetaData.addDynamicSettings(
@@ -66,6 +67,9 @@ public class DisableAllocationDecider extends AllocationDecider {
     private volatile boolean disableAllocation;
     private volatile boolean disableReplicaAllocation;
 
+    public DisableAllocationDecider() {
+    }
+    
     @Inject
     public DisableAllocationDecider(Settings settings, NodeSettingsService nodeSettingsService) {
         super(settings);

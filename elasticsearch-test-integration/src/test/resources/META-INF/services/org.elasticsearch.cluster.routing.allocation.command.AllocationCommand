@@ -1,0 +1,3 @@
+org.elasticsearch.cluster.routing.allocation.command.AllocateAllocationCommand
+org.elasticsearch.cluster.routing.allocation.command.MoveAllocationCommand
+org.elasticsearch.cluster.routing.allocation.command.CancelAllocationCommand
