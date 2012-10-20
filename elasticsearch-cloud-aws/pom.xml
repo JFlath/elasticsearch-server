@@ -24,12 +24,17 @@
             <groupId>org.elasticsearch.server</groupId>
             <artifactId>elasticsearch-server-node</artifactId>
             <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+            <classifier>all</classifier>
         </dependency>
 
         <dependency>
             <groupId>org.elasticsearch.server</groupId>
             <artifactId>elasticsearch-discovery-zen</artifactId>
             <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>

@@ -1,8 +1,8 @@
 /*
- * Licensed to ElasticSearch and Shay Banon under one
+ * Licensed to Elastic Search and Shay Banon under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
- * regarding copyright ownership. ElasticSearch licenses this
+ * regarding copyright ownership. Elastic Search licenses this
  * file to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
@@ -17,27 +17,21 @@
  * under the License.
  */
 
-package org.elasticsearch.script;
+// Using javax instead of java because of JVM security measures!
+package javax.io;
+
+import java.io.Reader;
 
 /**
- *
+ * Interface for {@link java.io.Reader} duplicators.
+ * @author ofavre
  */
-public class CompiledScript {
+public interface ReaderCloner {
 
-    private final String type;
+    /**
+     * Returns a new duplicate of some initial Reader.
+     * @return A new, independent Reader.
+     */
+    public Reader giveAClone();
 
-    private final Object compiled;
-
-    public CompiledScript(String type, Object compiled) {
-        this.type = type;
-        this.compiled = compiled;
-    }
-
-    public String lang() {
-        return type;
-    }
-
-    public Object compiled() {
-        return compiled;
-    }
 }

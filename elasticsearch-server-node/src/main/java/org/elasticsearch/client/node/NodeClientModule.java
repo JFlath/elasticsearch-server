@@ -19,6 +19,7 @@
 
 package org.elasticsearch.client.node;
 
+import org.elasticsearch.client.Client;
 import org.elasticsearch.client.ClusterAdminClient;
 import org.elasticsearch.client.IndicesAdminClient;
 import org.elasticsearch.client.IngestClient;
@@ -32,9 +33,15 @@ public class NodeClientModule extends AbstractModule {
 
     @Override
     protected void configure() {
+        
+        // special clients
         bind(ClusterAdminClient.class).to(NodeClusterAdminClient.class).asEagerSingleton();
         bind(IndicesAdminClient.class).to(NodeIndicesAdminClient.class).asEagerSingleton();
         bind(SearchClient.class).to(NodeSearchClient.class).asEagerSingleton();
         bind(IngestClient.class).to(NodeIngestClient.class).asEagerSingleton();
+        
+        // universal client
+        bind(Client.class).to(NodeClient.class).asEagerSingleton();
+        
     }
 }

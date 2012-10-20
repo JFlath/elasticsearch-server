@@ -18,6 +18,7 @@
                 <include>plugin.bat</include>
             </includes>
         </fileSet>
+        
         <fileSet>
             <filtered>true</filtered>
             <directory>bin</directory>
@@ -30,6 +31,14 @@
                 <include>elasticsearch</include>
                 <include>plugin</include>
             </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>bin/service</directory>
+            <outputDirectory>/bin/service</outputDirectory>
+            <excludes>
+                <exclude>*</exclude>
+            </excludes>
         </fileSet>
 
         <fileSet>

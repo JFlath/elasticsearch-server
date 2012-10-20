@@ -73,22 +73,6 @@
         </repository>
     </repositories>
 
-    <modules>
-        <module>elasticsearch-server-common</module>
-        <module>elasticsearch-server-lucene</module>
-        <module>elasticsearch-server-rest</module>
-        <module>elasticsearch-server-monitor</module>
-        <module>elasticsearch-server-node</module>
-        <module>elasticsearch-server-compression-lzf</module>
-        <module>elasticsearch-server-compression-snappy</module>
-        <module>elasticsearch-server-bootstrap</module>
-        <module>elasticsearch-transport-client</module>
-        <module>elasticsearch-lang-mvel</module>
-        <module>elasticsearch-discovery-zen</module>
-        <module>elasticsearch-cloud-aws</module>
-        <module>elasticsearch-test-integration</module>
-    </modules>
-
     <dependencies>
 
         <dependency>
@@ -122,7 +106,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.8.1</version>
+                <version>2.9</version>
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <locale>en</locale>
@@ -150,7 +134,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>2.3.2</version>
+                    <version>2.5.1</version>
                     <configuration>
                         <source>${compiler.source.version}</source>
                         <target>${compiler.target.version}</target>
@@ -174,7 +158,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.12.3</version>
+                    <version>2.12.4</version>
                     <configuration>
                         <includes>
                             <include>**/*Tests.java</include>
@@ -184,7 +168,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>2.2</version>
+                    <version>2.2.1</version>
                     <executions>
                         <execution>
                             <id>attach-sources</id>
@@ -197,7 +181,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>  
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>2.8.1</version>
+                    <version>2.9</version>
                     <configuration>
                         <docfilessubdirs>true</docfilessubdirs>
                         <charset>UTF-8</charset>
@@ -226,7 +210,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
-                    <version>3.0</version>
+                    <version>3.1</version>
                     <configuration>
                         <locales>en</locales>
                         <inputEncoding>UTF-8</inputEncoding>  
@@ -252,5 +236,24 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <modules>
+        <module>elasticsearch-server-common</module>
+        <module>elasticsearch-server-lucene</module>
+        <module>elasticsearch-server-rest</module>
+        <module>elasticsearch-server-monitor</module>
+        <module>elasticsearch-server-node</module>
+        <module>elasticsearch-server-compression-lzf</module>
+        <module>elasticsearch-server-compression-snappy</module>
+        <module>elasticsearch-transport-client</module>
+        <module>elasticsearch-lang-mvel</module>
+        <module>elasticsearch-discovery-zen</module>
+        <module>elasticsearch-server-bootstrap</module>
+        <!-- <module>elasticsearch-test-integration</module> will be moved into test profile -->
+        <!-- plugins start here -->
+        <module>elasticsearch-cloud-aws</module>
+        <module>elasticsearch-analysis-icu</module>
+        <module>elasticsearch-transport-websocket</module>
+    </modules>
 
 </project>

@@ -17,20 +17,14 @@
  * under the License.
  */
 
-package org.elasticsearch.script;
-
-import org.elasticsearch.ElasticSearchException;
+package org.elasticsearch.websocket;
 
 /**
- *
+ * The presence states of a websocket client
+ * 
+ * @author Jörg Prante <joergprante@gmail.com>
  */
-public class ScriptException extends ElasticSearchException {
+public enum Presence {
 
-    public ScriptException(String msg) {
-        super(msg);
-    }
-
-    public ScriptException(String msg, Throwable cause) {
-        super(msg, cause);
-    }
+    CONNECTED, DISCONNECTED
 }

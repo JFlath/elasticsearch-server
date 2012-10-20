@@ -19,7 +19,7 @@
 
 package org.elasticsearch.client.transport.support;
 
-import com.google.common.collect.ImmutableMap;
+import org.elasticsearch.common.collect.ImmutableMap;
 import org.elasticsearch.ElasticSearchException;
 import org.elasticsearch.action.*;
 import org.elasticsearch.action.admin.cluster.ClusterAction;

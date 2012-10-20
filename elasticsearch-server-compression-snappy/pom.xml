@@ -26,12 +26,16 @@
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-client-compression-snappy</artifactId>
             <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.elasticsearch.server</groupId>
             <artifactId>elasticsearch-server-compression-lzf</artifactId>
             <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>

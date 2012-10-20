@@ -29,6 +29,7 @@
             <version>${project.version}</version>
             <type>jar</type>
             <scope>compile</scope>
+            <classifier>all</classifier>
         </dependency>
                 
         <dependency>

@@ -26,6 +26,8 @@
             <groupId>org.elasticsearch.server</groupId>
             <artifactId>elasticsearch-server-node</artifactId>
             <version>${project.version}</version>
+            <classifier>all</classifier>
+            <type>jar</type>
         </dependency>
 
     </dependencies>

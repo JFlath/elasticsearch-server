@@ -17,23 +17,28 @@
  * under the License.
  */
 
-package org.elasticsearch.script;
+package org.elasticsearch.search.facet.terms.comparator.icu;
+
+import org.elasticsearch.search.facet.icu.TermsFacet.Entry;
 
 /**
- * An executable script, can't be used concurrently.
+ * A comparator for terms facet counts
  */
-public interface ExecutableScript {
+public class TermsFacetCountComparator extends AbstractTermsFacetComparator {
 
-    void setNextVar(String name, Object value);
-
-    /**
-     * Executes the script.
-     */
-    Object run();
-
-    /**
-     * Unwraps a possible script value. For example, when passing vars and expecting the returned value to
-     * be part of the vars.
-     */
-    Object unwrap(Object value);
+    public TermsFacetCountComparator(String type, boolean reverse) {
+        super(type, reverse);
+    }
+    
+    @Override
+    public int compare(Entry o1, Entry o2) {
+        int i = o2.count() - o1.count();
+        if (i == 0) {
+            i = o2.compareTo(o1);
+            if (i == 0) {
+                i = System.identityHashCode(o2) - System.identityHashCode(o1);
+            }
+        }
+        return reverse ? -i : i;
+    }
 }

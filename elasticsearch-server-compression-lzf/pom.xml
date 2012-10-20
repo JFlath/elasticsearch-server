@@ -26,18 +26,24 @@
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-client-compression-lzf</artifactId>
             <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-transport-netty</artifactId>
             <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.elasticsearch.server</groupId>
             <artifactId>elasticsearch-server-lucene</artifactId>
             <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>

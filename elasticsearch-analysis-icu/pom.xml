@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.elasticsearch.server</groupId>
+        <artifactId>elasticsearch-server</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>elasticsearch-analysis-icu</artifactId>
+    <packaging>jar</packaging>
+
+    
+    <name>elasticsearch-analysis-icu</name>
+    
+    <description>ICU Analysis for ElasticSearch</description>
+
+    <dependencies>
+        
+        <dependency>
+            <groupId>org.elasticsearch.server</groupId>
+            <artifactId>elasticsearch-server-node</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>compile</scope>
+            <classifier>all</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-icu</artifactId>
+            <version>3.6.1</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.elasticsearch.server</groupId>
+            <artifactId>elasticsearch-discovery-zen</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+</project>

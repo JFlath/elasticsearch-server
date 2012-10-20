@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.elasticsearch.server</groupId>
+        <artifactId>elasticsearch-server</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>elasticsearch-transport-websocket</artifactId>
+    <packaging>jar</packaging>
+
+    <name>elasticsearch-transport-websocket</name>
+    <description>
+        WebSockets define a full-duplex single socket connection 
+        over which messages can be sent between client and server. 
+        WebSockets provides ElasticSearch with a drop-in replacement
+        for HTTP and extends it with an asynchronous distributed framework 
+        for publish/subscribe actions.
+    </description>
+
+    <inceptionYear>2012</inceptionYear>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        
+        <dependency>
+            <groupId>org.elasticsearch.server</groupId>
+            <artifactId>elasticsearch-server-node</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>jar</type>
+            <classifier>all</classifier>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.elasticsearch.server</groupId>
+            <artifactId>elasticsearch-discovery-zen</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- include transport-netty once again to get unshaded classes -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty</artifactId>
+            <version>3.5.8.Final</version>
+            <scope>compile</scope>
+        </dependency>
+
+    </dependencies>
+
+</project>
