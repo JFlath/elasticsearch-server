@@ -43,11 +43,11 @@
     <distributionManagement>
         <repository>
             <id>repo</id>
-            <url>https://github.com/xbib/maven-repo/raw/master/releases</url>
+            <url>https://raw.github.com/xbib/maven-repo/master/releases</url>
         </repository>
         <snapshotRepository>
             <id>snapshot-repo</id>
-            <url>https://github.com/xbib/maven-repo/raw/master/snapshots</url>
+            <url>https://raw.github.com/xbib/maven-repo/master/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -64,12 +64,12 @@
         <repository>
             <id>xbib-repo</id>
             <name>xbib Maven Repository</name>
-            <url>http://github.com/xbib/maven-repo/raw/master/releases</url>
+            <url>http://raw.github.com/xbib/maven-repo/master/releases</url>
         </repository>
         <repository>
             <id>xbib-snapshot-repo</id>
             <name>xbib Maven Repository</name>
-            <url>http://github.com/xbib/maven-repo/raw/master/snapshots</url>
+            <url>http://raw.github.com/xbib/maven-repo/master/snapshots</url>
         </repository>
     </repositories>
 
@@ -238,7 +238,9 @@
     </build>
 
     <modules>
+        <!-- core -->
         <module>elasticsearch-server-common</module>
+        <module>elasticsearch-server-geo</module>
         <module>elasticsearch-server-lucene</module>
         <module>elasticsearch-server-rest</module>
         <module>elasticsearch-server-monitor</module>
@@ -250,10 +252,27 @@
         <module>elasticsearch-discovery-zen</module>
         <module>elasticsearch-server-bootstrap</module>
         <!-- <module>elasticsearch-test-integration</module> will be moved into test profile -->
-        <!-- plugins start here -->
-        <module>elasticsearch-cloud-aws</module>
+
+        <!-- plugins -->
         <module>elasticsearch-analysis-icu</module>
-        <module>elasticsearch-transport-websocket</module>
+        <module>elasticsearch-analysis-kuromoji</module>
+        <module>elasticsearch-analysis-phonetic</module>
+        <module>elasticsearch-analysis-smartcn</module>
+        <module>elasticsearch-analysis-stempel</module>
+        <module>elasticsearch-cloud-aws</module>
+        <module>elasticsearch-hadoop</module>
+        <module>elasticsearch-lang-python</module>
+        <module>elasticsearch-lang-javascript</module>
+        <module>elasticsearch-lang-groovy</module>
+        <module>elasticsearch-mapper-attachments</module>
+        <module>elasticsearch-river-couchdb</module>
+        <module>elasticsearch-river-rabbitmq</module>
+        <module>elasticsearch-river-wikipedia</module>
+        <module>elasticsearch-river-twitter</module>
+        <module>elasticsearch-transport-memcached</module>
+        <module>elasticsearch-transport-thrift</module>
+        <module>elasticsearch-transport-wares</module>
+
     </modules>
 
 </project>

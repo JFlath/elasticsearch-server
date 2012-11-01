@@ -10,9 +10,9 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
+    <groupId>org.elasticsearch.plugin</groupId>
     <artifactId>elasticsearch-analysis-icu</artifactId>
     <packaging>jar</packaging>
-
     
     <name>elasticsearch-analysis-icu</name>
     
