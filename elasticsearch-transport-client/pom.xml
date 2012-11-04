@@ -27,6 +27,7 @@
             <artifactId>elasticsearch-server-node</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
+            <scope>compile</scope>
             <classifier>all</classifier>
         </dependency>
 

@@ -372,7 +372,16 @@ public class MulticastZenPing extends AbstractLifecycleComponent<ZenPing> implem
 
                     synchronized (receiveMutex) {
                         try {
-                            multicastSocket.receive(datagramPacketReceive);
+                            if (multicastSocket != null) {
+                                multicastSocket.receive(datagramPacketReceive);
+                            }
+                        } catch (SocketException e) {
+                            if (running && "Socket closed".equals(e.getMessage())) {
+                                running = false;
+                                break;
+                            } else {
+                                continue;
+                            }
                         } catch (SocketTimeoutException ignore) {
                             continue;
                         } catch (Exception e) {

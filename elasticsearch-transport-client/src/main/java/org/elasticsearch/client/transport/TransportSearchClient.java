@@ -152,14 +152,15 @@ public class TransportSearchClient extends AbstractServerSearchClient {
      */
     public TransportSearchClient(Settings pSettings, boolean loadConfigSettings) throws ElasticSearchException {
         Tuple<Settings, Environment> tuple = InternalSettingsPerparer.prepareSettings(pSettings, loadConfigSettings);
-        Settings settings = settings = settingsBuilder().put(tuple.v1())
+        Settings settings = settingsBuilder().put(tuple.v1())
                 .put("network.server", false)
                 .put("node.client", true)
                 .build();
         this.environment = tuple.v2();
 
         this.pluginsService = new PluginsService(tuple.v1(), tuple.v2());
-        this.settings = pluginsService.updatedSettings();
+        settings = pluginsService.updatedSettings();
+        this.settings = settings;
 
         CompressorFactory.configure(settings);
 

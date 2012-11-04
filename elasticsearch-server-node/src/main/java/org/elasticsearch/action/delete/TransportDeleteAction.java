@@ -105,7 +105,7 @@ public class TransportDeleteAction extends TransportShardReplicationOperationAct
             MappingMetaData mappingMd = state.metaData().index(request.index()).mappingOrDefault(request.type());
             if (mappingMd != null && mappingMd.routing().required()) {
                 if (request.routing() == null) {
-                    indexDeleteAction.execute(new IndexDeleteRequest(request), new ActionListener<IndexDeleteResponse>() {
+                    indexDeleteAction.execute(new IndexDeleteRequest(request.index(), request.type(), request.id()), new ActionListener<IndexDeleteResponse>() {
                         @Override
                         public void onResponse(IndexDeleteResponse indexDeleteResponse) {
                             // go over the response, see if we have found one, and the version if found
